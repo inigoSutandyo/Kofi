@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="70dp"
+    tools:context=".fragments.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:src="@drawable/kofi" />
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:letterSpacing="0.1"
+        android:text="UserName"
+        android:textAllCaps="false"
+        android:textColor="@color/brown"
+        android:textFontWeight="700"
+        android:textSize="24dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:letterSpacing="0.1"
+        android:text="username@gmail.com"
+        android:textAllCaps="false"
+        android:textColor="@color/brown"
+        android:textFontWeight="700"
+        android:textSize="16dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:letterSpacing="0.1"
+        android:text="Edit Profile"
+        android:textAllCaps="false"
+        android:textColor="@color/brown"
+        android:textFontWeight="700"
+        android:textSize="14dp"
+        android:drawableRight="@drawable/ic_baseline_edit_24"
+        android:drawablePadding="4dp"
+        />
+</LinearLayout>

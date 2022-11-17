@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/cream</item>
+        <item name="android:colorButtonNormal">@color/cream</item>
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+</resources>
