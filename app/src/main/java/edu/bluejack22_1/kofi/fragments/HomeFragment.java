@@ -1,6 +1,7 @@
 package edu.bluejack22_1.kofi.fragments;
 
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.SliderAdapter;
@@ -61,21 +63,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayList<SliderData> sliderList = new ArrayList<>();
-
-        sliderList.add(new SliderData(url1));
-        sliderList.add(new SliderData(url2));
-        sliderList.add(new SliderData(url3));
-
-        SliderView sliderView = new SliderView(this.getActivity());
-        sliderView.findViewById(R.id.imageSlider);
-
-        SliderAdapter sliderAdapter = new SliderAdapter(this.getActivity(), sliderList);
-
-        sliderView.setSliderAdapter(sliderAdapter);
-        sliderView.setScrollTimeInSec(3);
-        sliderView.setAutoCycle(true);
-        sliderView.startAutoCycle();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -86,8 +73,24 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ArrayList<SliderData> sliderList = new ArrayList<>();
+
+        sliderList.add(new SliderData(url1));
+        sliderList.add(new SliderData(url2));
+        sliderList.add(new SliderData(url3));
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        SliderView sliderView = view.findViewById(R.id.imageSlider);
+
+
+        SliderAdapter sliderAdapter = new SliderAdapter(this.getActivity(), sliderList);
+
+        sliderView.setSliderAdapter(sliderAdapter);
+        sliderView.setScrollTimeInSec(3);
+        sliderView.setAutoCycle(true);
+        sliderView.startAutoCycle();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 
 
