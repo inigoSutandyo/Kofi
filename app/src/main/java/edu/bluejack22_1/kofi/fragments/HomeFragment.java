@@ -6,7 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.smarteist.autoimageslider.SliderView;
+
+import java.util.ArrayList;
+
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.SliderAdapter;
+import edu.bluejack22_1.kofi.model.SliderData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,14 +53,35 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+
+    String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
+    String url2 = "https://qphs.fs.quoracdn.net/main-qimg-8e203d34a6a56345f86f1a92570557ba.webp";
+    String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ArrayList<SliderData> sliderList = new ArrayList<>();
+
+        sliderList.add(new SliderData(url1));
+        sliderList.add(new SliderData(url2));
+        sliderList.add(new SliderData(url3));
+
+        SliderView sliderView = new SliderView(this.getActivity());
+        sliderView.findViewById(R.id.imageSlider);
+
+        SliderAdapter sliderAdapter = new SliderAdapter(this.getActivity(), sliderList);
+
+        sliderView.setSliderAdapter(sliderAdapter);
+        sliderView.setScrollTimeInSec(3);
+        sliderView.setAutoCycle(true);
+        sliderView.startAutoCycle();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,4 +89,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
+
+
 }
