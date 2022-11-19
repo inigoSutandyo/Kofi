@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.databinding.ActivityMainBinding;
 import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.fragments.NotificationsFragment;

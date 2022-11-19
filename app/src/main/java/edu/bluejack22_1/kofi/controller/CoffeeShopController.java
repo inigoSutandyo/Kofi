@@ -62,7 +62,7 @@ public class CoffeeShopController {
                                 String name = (String) document.getData().get("shopName");
                                 String address = (String) document.getData().get("shopAddress");
                                 String description = (String) document.getData().get("shopDescription");
-                                Log.d("Coffee", document.getId() + " => " + name + " , " + address);
+//                                Log.d("Coffee", document.getId() + " => " + name + " , " + address);
 
                                 list.add(new CoffeeShop(name,address,description));
                             }

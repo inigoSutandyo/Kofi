@@ -1,6 +1,8 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,12 @@ import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 
+import edu.bluejack22_1.kofi.CoffeeShopActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
 import edu.bluejack22_1.kofi.adapter.SliderAdapter;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
+import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.SliderData;
 
@@ -27,7 +31,7 @@ import edu.bluejack22_1.kofi.model.SliderData;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -102,7 +106,7 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.coffee_shop_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        coffeeAdapter = new CoffeeShopAdapter(this.getContext(), coffeeShops);
+        coffeeAdapter = new CoffeeShopAdapter(this.getContext(), coffeeShops, this);
 
         recyclerView.setAdapter(coffeeAdapter);
         coffeeShopController.populateCoffeeShopList(coffeeShops, coffeeAdapter);
@@ -132,4 +136,13 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        Log.d("Coffee", coffeeShops.get(position).getShopName());
+        Intent intent = new Intent(getContext(), CoffeeShopActivity.class);
+        intent.putExtra("NAME", coffeeShops.get(position).getShopName());
+        intent.putExtra("ADDRESS", coffeeShops.get(position).getShopAddress());
+        intent.putExtra("DESCRIPTION", coffeeShops.get(position).getShopDescription());
+        startActivity(intent);
+    }
 }
