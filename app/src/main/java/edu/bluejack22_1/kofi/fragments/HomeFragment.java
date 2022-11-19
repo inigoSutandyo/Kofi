@@ -1,20 +1,25 @@
 package edu.bluejack22_1.kofi.fragments;
 
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
 import edu.bluejack22_1.kofi.adapter.SliderAdapter;
+import edu.bluejack22_1.kofi.controller.CoffeeShopController;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.SliderData;
 
 /**
@@ -32,9 +37,14 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private CoffeeShopController coffeeShopController;
+    private RecyclerView recyclerView;
+    private ArrayList<CoffeeShop> coffeeShops;
+    private CoffeeShopAdapter coffeeAdapter;
+//    private ProgressBar tempBar;
     public HomeFragment() {
         // Required empty public constructor
+        coffeeShopController = new CoffeeShopController();
     }
 
     /**
@@ -46,6 +56,9 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
+
+
+
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -55,10 +68,6 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
-
-    String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
-    String url2 = "https://qphs.fs.quoracdn.net/main-qimg-8e203d34a6a56345f86f1a92570557ba.webp";
-    String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +82,44 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        initSlider(view);
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initCoffeeShopsList(super.getView());
+    }
+
+
+    private void initCoffeeShopsList(View view) {
+        coffeeShops = new ArrayList<>();
+
+        recyclerView = view.findViewById(R.id.coffee_shop_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        coffeeAdapter = new CoffeeShopAdapter(this.getContext(), coffeeShops);
+
+        recyclerView.setAdapter(coffeeAdapter);
+        coffeeShopController.populateCoffeeShopList(coffeeShops, coffeeAdapter);
+    }
+
+    private String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
+    private String url2 = "https://qphs.fs.quoracdn.net/main-qimg-8e203d34a6a56345f86f1a92570557ba.webp";
+    private String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
+
+    private void initSlider(View view) {
         ArrayList<SliderData> sliderList = new ArrayList<>();
 
         sliderList.add(new SliderData(url1));
         sliderList.add(new SliderData(url2));
         sliderList.add(new SliderData(url3));
 
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         SliderView sliderView = view.findViewById(R.id.imageSlider);
 
 
@@ -89,8 +129,6 @@ public class HomeFragment extends Fragment {
         sliderView.setScrollTimeInSec(3);
         sliderView.setAutoCycle(true);
         sliderView.startAutoCycle();
-        // Inflate the layout for this fragment
-        return view;
     }
 
 
