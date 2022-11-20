@@ -1,6 +1,7 @@
 package edu.bluejack22_1.kofi.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
@@ -45,6 +49,8 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
     private ArrayList<CoffeeShop> coffeeShops;
     private CoffeeShopAdapter coffeeAdapter;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 //    private ProgressBar tempBar;
     public HomeFragment() {
         // Required empty public constructor
@@ -112,8 +118,8 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         coffeeShopController.populateCoffeeShopList(coffeeShops, coffeeAdapter);
     }
 
-    private String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
-    private String url2 = "https://qphs.fs.quoracdn.net/main-qimg-8e203d34a6a56345f86f1a92570557ba.webp";
+    private String url1 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner.png?alt=media&token=1592c856-328a-4e3c-b4c7-368f2ae7a6b1";
+    private String url2 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner2.png?alt=media&token=0e57aa5b-693f-4309-a0fd-f1ce3b8302c9";
     private String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
 
     private void initSlider(View view) {

@@ -5,15 +5,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -22,15 +33,35 @@ public class LoginActivity extends AppCompatActivity {
     EditText eEmail, ePassword;
     String email, password;
     private FirebaseAuth mAuth;
+
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    ImageView googleBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+
+
+        googleBtn = findViewById(R.id.google_btn);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this, gso);
+
+
+
         registerTxt = findViewById(R.id.txt_sign_up);
         loginBtn = findViewById(R.id.btn_login);
         eEmail = findViewById(R.id.txt_login_email);
         ePassword = findViewById(R.id.txt_login_password);
+
+        googleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 googleLogin();
+            }
+        });
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -45,6 +76,39 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+    private void googleLogin(){
+        Intent signInIntent = gsc.getSignInIntent();
+        startActivityForResult(signInIntent, 1000);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                loginWithGoogleAuth(account);
+                MoveMainPage();
+            } catch (ApiException e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loginWithGoogleAuth(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+
+            }
+        });
+    }
+
+
     private void LoginUser(){
         email = eEmail.getText().toString();
         password = ePassword.getText().toString();
@@ -57,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                             MoveMainPage();
                         } else {
                             // If sign in fails, display a message to the user.
-
+                            eEmail.setError("GA BISA LOGIN");
                         }
                     }
                 });
@@ -69,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(registerIntent);
     }
     private void MoveMainPage(){
+        finish();
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
     }
