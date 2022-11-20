@@ -79,21 +79,26 @@ public class RegisterActivity extends AppCompatActivity {
         Password = ePassword.getText().toString();
         RepeatPassword = eRepeatPassword.getText().toString();
         Address = eAddress.getText().toString();
+        boolean check = true;
         if(FullName.length() == 0){
             eFullName.setError("FullName must be filled");
-            return false;
-        } else if(Email.length() == 0){
+            check = false;
+        }
+        if(Email.length() == 0){
             eEmail.setError("Email must be filled");
-            return false;
-        } else if(Password.length() < 6){
+            check = false;
+        }
+        if(Password.length() < 6){
             ePassword.setError("Password must be more than 6 characters");
-            return false;
-        } else if(RepeatPassword == Password){
+            check = false;
+        }
+        if(RepeatPassword == Password){
             eRepeatPassword.setError("Repeat password and password must be the same");
-            return false;
-        } else if(Address.length() == 0){
+            check = false;
+        }
+        if(Address.length() == 0){
             eAddress.setError("Address must be filled");
-            return false;
+            check = false;
         }
         return true;
     }
@@ -124,4 +129,5 @@ public class RegisterActivity extends AppCompatActivity {
         Intent LoginIntent = new Intent(this, LoginActivity.class);
         startActivity(LoginIntent);
     }
+
 }
