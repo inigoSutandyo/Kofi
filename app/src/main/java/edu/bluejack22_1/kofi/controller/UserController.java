@@ -48,6 +48,12 @@ public class UserController {
             }
         });
     }
+
+    public void addGoogleUser(String uid, String fullname, String email){
+        User user = new User(fullname, email, "", "", "User");
+        db.collection("users").document(uid).set(user);
+    }
+
     private void UploadImage(Uri ImageUri, String uid)
     {
         storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);
@@ -74,8 +80,9 @@ public class UserController {
                                         replaceFragment(new ProfileFragment(tempUser), fragment);
                                     }
                                 });
+                            } else{
+                                replaceFragment(new ProfileFragment(tempUser), fragment);
                             }
-
                         }
                     });
                 } else {

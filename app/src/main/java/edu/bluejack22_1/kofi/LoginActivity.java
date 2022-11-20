@@ -24,7 +24,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import edu.bluejack22_1.kofi.controller.UserController;
+import edu.bluejack22_1.kofi.model.User;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,23 +39,23 @@ public class LoginActivity extends AppCompatActivity {
     EditText eEmail, ePassword;
     String email, password;
     private FirebaseAuth mAuth;
-
+    FirebaseUser currentuser;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     ImageView googleBtn;
+    FirebaseFirestore db;
+    UserController usercontroller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
-
+        usercontroller = new UserController();
         googleBtn = findViewById(R.id.google_btn);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
-
-
 
         registerTxt = findViewById(R.id.txt_sign_up);
         loginBtn = findViewById(R.id.btn_login);
@@ -103,7 +109,19 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-
+                currentuser = authResult.getUser();
+                db.collection("users").document(currentuser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot doc = task.getResult();
+                            if(!doc.exists()){
+                                usercontroller.addGoogleUser(currentuser.getUid(), currentuser.getDisplayName(),
+                                        currentuser.getEmail());
+                            }
+                        }
+                    }
+                });
             }
         });
     }
