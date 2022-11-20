@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,9 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -49,6 +55,7 @@ public class UpdateProfileFragment extends Fragment {
     Button updateBtn;
     UserController controller;
     User userData;
+    FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageReference;
     // TODO: Rename and change types of parameters
@@ -97,6 +104,7 @@ public class UpdateProfileFragment extends Fragment {
         binding = FragmentUpdateProfileBinding.inflate(inflater, container, false);
         eFullname = binding.txtUpdateName;
         controller = new UserController();
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentuser = mAuth.getCurrentUser();
         eAddress = binding.txtUpdateAddress;
@@ -143,14 +151,8 @@ public class UpdateProfileFragment extends Fragment {
 
     public void updateProfile(String uid, String fullname, String address, Uri uri){
         controller = new UserController();
-        controller.UpdateUser(uid, fullname, address, uri);
-        replaceFragment(new ProfileFragment());
+        controller.UpdateUser(uid, fullname, address, uri, this);
     }
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
-    }
+
 }

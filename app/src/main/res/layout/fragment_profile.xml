@@ -30,6 +30,7 @@
         android:textFontWeight="700"
         android:textSize="24dp" />
     <TextView
+        android:id="@+id/profile_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -41,16 +42,29 @@
         android:textFontWeight="700"
         android:textSize="16dp" />
     <TextView
+        android:id="@+id/profile_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:letterSpacing="0.1"
+        android:text="Somewhere in the universe"
+        android:textAllCaps="false"
+        android:textColor="@color/brown"
+        android:textFontWeight="700"
+        android:textSize="15dp" />
+    <TextView
         android:id="@+id/edit_profile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:letterSpacing="0.1"
+        android:layout_marginTop="12dp"
         android:text="Edit Profile"
         android:textAllCaps="false"
         android:textColor="@color/brown"
-        android:textFontWeight="700"
+        android:textFontWeight="800"
         android:textSize="14dp"
         android:drawableRight="@drawable/ic_baseline_edit_24"
         android:drawablePadding="4dp"

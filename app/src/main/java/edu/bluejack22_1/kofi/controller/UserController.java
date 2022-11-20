@@ -5,6 +5,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,9 +18,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Document;
 
+import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.fragments.ProfileFragment;
 import edu.bluejack22_1.kofi.fragments.UpdateProfileFragment;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.User;
@@ -48,7 +54,7 @@ public class UserController {
         storageReference.putFile(ImageUri);
     }
 
-    public void UpdateUser(String uid, String fullname, String address, Uri imageUri){
+    public void UpdateUser(String uid, String fullname, String address, Uri imageUri, Fragment fragment){
         DocumentReference ref = db.collection("users").document(uid);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -61,8 +67,15 @@ public class UserController {
                         @Override
                         public void onSuccess(Void unused) {
                             if(imageUri != null) {
-                                UploadImage(imageUri, uid);
+                                storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);
+                                storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                        replaceFragment(new ProfileFragment(tempUser), fragment);
+                                    }
+                                });
                             }
+
                         }
                     });
                 } else {
@@ -70,5 +83,11 @@ public class UserController {
                 }
             }
         });
+    }
+    private void replaceFragment(Fragment fragment, Fragment source){
+        FragmentManager fragmentManager = source.getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 }

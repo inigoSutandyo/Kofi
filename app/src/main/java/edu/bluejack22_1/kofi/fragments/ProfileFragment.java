@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
     FirebaseUser currentuser;
     FirebaseStorage storage;
     StorageReference storageReference;
-    private TextView nameTxt, editProfileBtn;
+    private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
     private ImageView profileImage;
     public User tempUser;
     // TODO: Rename and change types of parameters
@@ -57,6 +57,10 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public ProfileFragment(User user) {
+        // Required empty public constructor
+        tempUser = user;
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -90,13 +94,18 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         nameTxt = view.findViewById(R.id.profile_username);
+        emailTxt = view.findViewById(R.id.profile_email);
+        addressTxt = view.findViewById(R.id.profile_address);
         profileImage = view.findViewById(R.id.profile_image);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         currentuser = mAuth.getCurrentUser();
         storageReference = storage.getReference().child("images/"+currentuser.getUid());
-        nameTxt.setText(currentuser.getEmail());
+        nameTxt.setText(tempUser.getFullName());
+        emailTxt.setText(tempUser.getEmail());
+        addressTxt.setText(tempUser.getAddress());
+
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -116,7 +125,7 @@ public class ProfileFragment extends Fragment {
                             tempUser = task.getResult().toObject(User.class);
                             replaceFragment(new UpdateProfileFragment(tempUser));
                         } else {
-                            Log.d("User", "Error getting documents: ", task.getException());
+                            Log.d("User", "Error getting user", task.getException());
                         }
                     }
                 });
