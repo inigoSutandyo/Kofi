@@ -1,7 +1,5 @@
 package edu.bluejack22_1.kofi.fragments;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,14 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 
-import edu.bluejack22_1.kofi.CoffeeShopActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
 import edu.bluejack22_1.kofi.adapter.SliderAdapter;
