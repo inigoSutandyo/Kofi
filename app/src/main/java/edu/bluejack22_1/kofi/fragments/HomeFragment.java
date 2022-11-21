@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
 import edu.bluejack22_1.kofi.adapter.SliderAdapter;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.SliderData;
@@ -35,7 +38,7 @@ import edu.bluejack22_1.kofi.model.SliderData;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements RecyclerViewInterface {
+public class HomeFragment extends Fragment implements RecyclerViewInterface, FragmentInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -145,10 +148,14 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     @Override
     public void onItemClick(int position) {
         Log.d("Coffee", coffeeShops.get(position).getShopName());
-        Intent intent = new Intent(getContext(), CoffeeShopActivity.class);
-        intent.putExtra("NAME", coffeeShops.get(position).getShopName());
-        intent.putExtra("ADDRESS", coffeeShops.get(position).getShopAddress());
-        intent.putExtra("DESCRIPTION", coffeeShops.get(position).getShopDescription());
-        startActivity(intent);
+        replaceFragment(new CoffeeShopFragment(coffeeShops.get(position)));
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 }

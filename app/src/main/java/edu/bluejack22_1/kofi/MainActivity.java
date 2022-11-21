@@ -24,9 +24,10 @@ import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.fragments.NotificationsFragment;
 import edu.bluejack22_1.kofi.fragments.ProfileFragment;
 import edu.bluejack22_1.kofi.fragments.UpdateProfileFragment;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.model.User;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentInterface {
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
     FirebaseUser currentuser;
@@ -71,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment){
+    @Override
+    public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);

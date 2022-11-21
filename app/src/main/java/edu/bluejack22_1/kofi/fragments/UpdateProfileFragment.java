@@ -6,12 +6,8 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,7 +41,7 @@ public class UpdateProfileFragment extends Fragment {
     Uri ImageUri;
     ActivityResultLauncher<String> mImage;
     private FirebaseAuth mAuth;
-    FirebaseUser currentuser;
+    FirebaseUser currentUser;
     FragmentUpdateProfileBinding binding;
     EditText eFullname, eAddress;
     Button updateBtn;
@@ -106,12 +98,12 @@ public class UpdateProfileFragment extends Fragment {
         controller = new UserController();
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        currentuser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         eAddress = binding.txtUpdateAddress;
         updateBtn = binding.btnUpdateProfile;
         storage = FirebaseStorage.getInstance();
-        currentuser = mAuth.getCurrentUser();
-        storageReference = storage.getReference().child("images/"+currentuser.getUid());
+        currentUser = mAuth.getCurrentUser();
+        storageReference = storage.getReference().child("images/"+ currentUser.getUid());
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -143,7 +135,7 @@ public class UpdateProfileFragment extends Fragment {
             public void onClick(View view) {
                 String name = eFullname.getText().toString();
                 String address = eAddress.getText().toString();
-                updateProfile(currentuser.getUid(), name, address, ImageUri);
+                updateProfile(currentUser.getUid(), name, address, ImageUri);
             }
         });
         return binding.getRoot();
