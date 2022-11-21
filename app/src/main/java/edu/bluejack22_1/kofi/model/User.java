@@ -1,7 +1,7 @@
 package edu.bluejack22_1.kofi.model;
 
 public class User {
-    private String FullName, Email, Password, Address, Role;
+    private String FullName, Email, Password, Address, Role, userId;
 
     public User(){}
 
@@ -12,6 +12,24 @@ public class User {
         Address = address;
         Role = role;
     }
+
+    public User(String fullName, String email, String password, String address, String role, String userId) {
+        FullName = fullName;
+        Email = email;
+        Password = password;
+        Address = address;
+        Role = role;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getFullName() {
         return FullName;
     }

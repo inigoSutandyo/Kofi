@@ -97,4 +97,32 @@ public class UserController {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+    public User getUserByRef(DocumentReference ref) {
+        final User[] user = {null};
+        ref.get()
+            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String fullName = (String) document.getData().get("fullname");
+                            String email = (String) document.getData().get("email");
+                            String address = (String) document.getData().get("address");
+                            String password = (String) document.getData().get("password");
+                            String role = (String) document.getData().get("role");
+                            String userId= document.getId();
+
+                            user[0] = new User(fullName, email, password, address, role, userId);
+                        } else {
+                            Log.d("Coffee", "No such document");
+                        }
+                    } else {
+                        Log.d("Coffee", "get failed with ", task.getException());
+                    }
+                }
+            });
+        return user[0];
+    }
 }

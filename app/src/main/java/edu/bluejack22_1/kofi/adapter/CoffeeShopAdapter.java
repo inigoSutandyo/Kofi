@@ -26,6 +26,7 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
         this.coffeeShops = coffeeShops;
         this.recyclerViewInterface = recyclerViewInterface;
     }
+
     @NonNull
     @Override
     public CoffeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

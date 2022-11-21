@@ -1,35 +1,51 @@
 package edu.bluejack22_1.kofi.model;
 
 public class CoffeeShop {
-    private String ShopName, ShopAddress, ShopDescription;
+    private String shopName, shopAddress, shopDescription, shopId;
     public CoffeeShop(String shopName, String shopAddress, String shopDescription) {
-        ShopName = shopName;
-        ShopAddress = shopAddress;
-        ShopDescription = shopDescription;
+        this.shopName = shopName;
+        this.shopAddress = shopAddress;
+        this.shopDescription = shopDescription;
     }
+
+    public CoffeeShop(String shopName, String shopAddress, String shopDescription, String shopId) {
+        this.shopName = shopName;
+        this.shopAddress = shopAddress;
+        this.shopDescription = shopDescription;
+        this.shopId = shopId;
+    }
+
     public CoffeeShop(){}
 
     public String getShopName() {
-        return ShopName;
+        return shopName;
     }
 
     public void setShopName(String shopName) {
-        ShopName = shopName;
+        this.shopName = shopName;
     }
 
     public String getShopAddress() {
-        return ShopAddress;
+        return shopAddress;
     }
 
     public void setShopAddress(String shopAddress) {
-        ShopAddress = shopAddress;
+        this.shopAddress = shopAddress;
     }
 
     public String getShopDescription() {
-        return ShopDescription;
+        return shopDescription;
     }
 
     public void setShopDescription(String shopDescription) {
-        ShopDescription = shopDescription;
+        this.shopDescription = shopDescription;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 }
