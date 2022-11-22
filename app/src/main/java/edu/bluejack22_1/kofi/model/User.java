@@ -1,8 +1,11 @@
 package edu.bluejack22_1.kofi.model;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 public class User {
     private String fullName, email, password, address, role, userId;
-
+    private ArrayList<String> reviews;
     public User(){}
 
     public User(String fullName, String email, String password, String address, String role) {
@@ -11,6 +14,7 @@ public class User {
         this.password = password;
         this.address = address;
         this.role = role;
+        this.reviews = new ArrayList<>();
     }
 
     public User(String userId, String fullName, String email, String password, String address, String role) {
@@ -20,6 +24,7 @@ public class User {
         this.address = address;
         this.role = role;
         this.userId = userId;
+        this.reviews = new ArrayList<>();
     }
 
     public String getUserId() {
@@ -68,5 +73,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public ArrayList<String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<String> reviews) {
+        this.reviews = reviews;
     }
 }

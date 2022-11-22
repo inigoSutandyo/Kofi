@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import edu.bluejack22_1.kofi.LoginActivity;
+import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.ReviewController;
@@ -57,7 +60,7 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
     FirebaseStorage storage;
     StorageReference storageReference;
     private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
-    private ImageView profileImage;
+    private ImageView profileImage, logoutBtn;
     public User tempUser;
 
     private ReviewAdapter reviewAdapter;
@@ -104,6 +107,7 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
         emailTxt = view.findViewById(R.id.profile_email);
         addressTxt = view.findViewById(R.id.profile_address);
         profileImage = view.findViewById(R.id.profile_image);
+        logoutBtn = view.findViewById(R.id.profile_logout);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -139,8 +143,18 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
             }
         });
 
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

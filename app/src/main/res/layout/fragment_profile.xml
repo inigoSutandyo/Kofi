@@ -6,11 +6,18 @@
     android:gravity="top"
     android:orientation="vertical"
     android:paddingHorizontal="24dp"
-    android:paddingVertical="70dp"
     tools:context=".fragments.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ImageView
+        android:layout_marginTop="15dp"
+        android:id="@+id/profile_logout"
+        android:layout_width="70px"
+        android:layout_height="70px"
+        android:layout_gravity="top|end"
+        android:src="@drawable/ic_baseline_logout_24" />
+    <ImageView
+        android:layout_marginTop="40dp"
         android:id="@+id/profile_image"
         android:layout_width="400px"
         android:layout_height="400px"
