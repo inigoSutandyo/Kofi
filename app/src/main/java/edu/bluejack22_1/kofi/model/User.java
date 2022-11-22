@@ -1,24 +1,24 @@
 package edu.bluejack22_1.kofi.model;
 
 public class User {
-    private String FullName, Email, Password, Address, Role, userId;
+    private String fullName, email, password, address, role, userId;
 
     public User(){}
 
     public User(String fullName, String email, String password, String address, String role) {
-        FullName = fullName;
-        Email = email;
-        Password = password;
-        Address = address;
-        Role = role;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.role = role;
     }
 
     public User(String fullName, String email, String password, String address, String role, String userId) {
-        FullName = fullName;
-        Email = email;
-        Password = password;
-        Address = address;
-        Role = role;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.role = role;
         this.userId = userId;
     }
 
@@ -31,42 +31,42 @@ public class User {
     }
 
     public String getFullName() {
-        return FullName;
+        return fullName;
     }
 
     public void setFullName(String fullName) {
-        FullName = fullName;
+        this.fullName = fullName;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getRole() {
-        return Role;
+        return role;
     }
 
     public void setRole(String role) {
-        Role = role;
+        this.role = role;
     }
 }

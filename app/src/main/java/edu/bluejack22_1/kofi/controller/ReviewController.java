@@ -56,7 +56,7 @@ public class ReviewController {
 
     public void populateReviews(String shopId, ArrayList<Review> reviews, ReviewAdapter adapter) {
         CollectionReference shopRef = db.collection("coffeeshop/"+shopId+"/reviews");
-        Log.d("Coffee", shopRef.getPath());
+        Log.d("Coffee", "ShopRef = " + shopRef);
         shopRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -89,12 +89,12 @@ public class ReviewController {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                String fullName = (String) document.getData().get("fullname");
+                                String fullName = (String) document.getData().get("fullName");
                                 String email = (String) document.getData().get("email");
                                 String address = (String) document.getData().get("address");
                                 String password = (String) document.getData().get("password");
                                 String role = (String) document.getData().get("role");
-                                String userId= document.getId();
+                                String userId = document.getId();
                                 review.setUser(new User(fullName, email, password, address, role, userId));
                                 adapter.notifyDataSetChanged();
                             } else {
