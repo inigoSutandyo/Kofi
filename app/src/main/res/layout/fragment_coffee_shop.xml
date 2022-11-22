@@ -48,50 +48,55 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:weightSum="2"-->
+<!--            android:layout_marginVertical="12dp">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/current_tab">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Reviews"-->
+<!--                    android:textSize="32dp"-->
+<!--                    android:layout_marginHorizontal="12dp"-->
+<!--                    android:padding="12dp" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/other_tab">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Menus"-->
+<!--                    android:textSize="32dp"-->
+<!--                    android:layout_marginHorizontal="12dp"-->
+<!--                    android:padding="12dp"/>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/detail_shop_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:weightSum="2"
-            android:layout_marginVertical="12dp">
+            android:layout_height="match_parent"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/current_tab">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reviews"
-                    android:textSize="32dp"
-                    android:layout_marginHorizontal="12dp"
-                    android:padding="12dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/other_tab">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Menus"
-                    android:textSize="32dp"
-                    android:layout_marginHorizontal="12dp"
-                    android:padding="12dp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/detail_review_list"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/detail_shop_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 

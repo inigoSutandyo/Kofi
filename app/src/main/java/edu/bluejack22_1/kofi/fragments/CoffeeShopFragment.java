@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.CoffeeShopPagerAdapter;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
@@ -28,8 +38,8 @@ import edu.bluejack22_1.kofi.model.Review;
  * Use the {@link CoffeeShopFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CoffeeShopFragment extends Fragment implements RecyclerViewInterface {
-
+public class CoffeeShopFragment extends Fragment {
+    FirebaseFirestore db;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,29 +51,17 @@ public class CoffeeShopFragment extends Fragment implements RecyclerViewInterfac
 
     private CoffeeShop coffeeShop;
     private TextView nameView, addressView, descriptionView;
-    private RecyclerView rv;
-    private ReviewAdapter reviewAdapter;
-    private ReviewController reviewController;
 
+
+    private CoffeeShopPagerAdapter coffeeShopPagerAdapter;
+    private ViewPager2 viewPager2;
     public CoffeeShopFragment() {
         // Required empty public constructor
-        reviewController = new ReviewController();
+        db = FirebaseFirestore.getInstance();
     }
 
-    public CoffeeShopFragment(CoffeeShop coffeeShop) {
-        this.coffeeShop = coffeeShop;
-        reviewController = new ReviewController();
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CoffeeShopFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static CoffeeShopFragment newInstance(String param1, String param2) {
         CoffeeShopFragment fragment = new CoffeeShopFragment();
         Bundle args = new Bundle();
@@ -86,39 +84,56 @@ public class CoffeeShopFragment extends Fragment implements RecyclerViewInterfac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_coffee_shop, container, false);
-        initView(view);
-        return view;
-    }
-    private void initView(View view) {
         nameView = view.findViewById(R.id.detail_shop_name);
         addressView = view.findViewById(R.id.detail_shop_address);
         descriptionView = view.findViewById(R.id.detail_shop_description);
+        return view;
+    }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle args = getArguments();
+        String shopId = args.getString("SHOP_ID");
+        setShopView(shopId, view);
+
+        coffeeShopPagerAdapter = new CoffeeShopPagerAdapter(this.getActivity(), shopId);
+        viewPager2 = view.findViewById(R.id.detail_shop_pager);
+        viewPager2.setAdapter(coffeeShopPagerAdapter);
+
+        TabLayout tabLayout = view.findViewById(R.id.detail_shop_tab);
+        new TabLayoutMediator(tabLayout, viewPager2, (tab,position) -> tab.setText(position == 1 ? "Review" : "Menu")).attach();
+
+    }
+
+    private void setShopView(String shopId, View view) {
+        DocumentReference docRef = db.collection("coffeeshop").document(shopId);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot docSnap = task.getResult();
+                    if (docSnap.exists()) {
+                        String shopName = (String) docSnap.getData().get("shopName");
+                        String shopAddress = (String) docSnap.getData().get("shopAddress");
+                        String shopDescription = (String) docSnap.getData().get("shopDescription");
+
+                        coffeeShop = new CoffeeShop(shopName,shopAddress,shopDescription,shopId);
+                        populateView(view);
+                    }
+                } else {
+                    Log.d("Coffee", "Document read failed");
+                }
+            }
+        });
+    }
+
+    private void populateView(View view) {
         nameView.setText(coffeeShop.getShopName());
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initReviews(view);
-    }
-
-    private void initReviews(View view) {
-        ArrayList<Review> reviews = new ArrayList<>();
-        rv = view.findViewById(R.id.detail_review_list);
-        rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
-
-        rv.setAdapter(reviewAdapter);
-        Log.d("Coffee", coffeeShop.getShopId());
-        reviewController.populateReviews(coffeeShop.getShopId(), reviews, reviewAdapter);
-    }
-
-    @Override
-    public void onItemClick(int position) {
-
-    }
 }

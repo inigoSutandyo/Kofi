@@ -144,7 +144,11 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Fra
     @Override
     public void onItemClick(int position) {
         Log.d("Coffee", coffeeShops.get(position).getShopName());
-        replaceFragment(new CoffeeShopFragment(coffeeShops.get(position)));
+        Fragment fragment = new CoffeeShopFragment();
+        Bundle args = new Bundle();
+        args.putString("SHOP_ID", coffeeShops.get(position).getShopId());
+        fragment.setArguments(args);
+        replaceFragment(fragment);
     }
 
     @Override
