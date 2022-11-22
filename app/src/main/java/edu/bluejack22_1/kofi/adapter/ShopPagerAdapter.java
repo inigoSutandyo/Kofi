@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import edu.bluejack22_1.kofi.ShopDetailCollectionFragment;
+import edu.bluejack22_1.kofi.fragments.ShopDetailCollectionFragment;
 
 public class ShopPagerAdapter extends FragmentStateAdapter {
 

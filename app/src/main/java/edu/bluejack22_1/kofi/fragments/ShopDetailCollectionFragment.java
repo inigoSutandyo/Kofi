@@ -1,4 +1,4 @@
-package edu.bluejack22_1.kofi;
+package edu.bluejack22_1.kofi.fragments;
 
 import android.os.Bundle;
 
@@ -15,9 +15,13 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.CoffeeAdapter;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
+import edu.bluejack22_1.kofi.controller.CoffeeController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.model.Coffee;
 import edu.bluejack22_1.kofi.model.Review;
 
 /**
@@ -36,14 +40,17 @@ public class ShopDetailCollectionFragment extends Fragment implements RecyclerVi
     private String mParam1;
     private String mParam2;
     private ReviewController reviewController;
+    private CoffeeController coffeeController;
     private RecyclerView rv;
     private ReviewAdapter reviewAdapter;
+    private CoffeeAdapter coffeeAdapter;
     private String id;
     private int key;
 
     public ShopDetailCollectionFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
+        coffeeController = new CoffeeController();
     }
 
     public static ShopDetailCollectionFragment newInstance(String param1, String param2) {
@@ -67,7 +74,7 @@ public class ShopDetailCollectionFragment extends Fragment implements RecyclerVi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_review_collection, container, false);
+        return inflater.inflate(R.layout.fragment_shop_collection, container, false);
     }
 
     @Override
@@ -76,23 +83,31 @@ public class ShopDetailCollectionFragment extends Fragment implements RecyclerVi
         Bundle args = getArguments();
         key = args.getInt("KEY");
         id = args.getString("DATA");
-        if (key == 1) {
-            initReviews(view);
-        } else {
-            Log.d("Coffee", "Not Review");
-        }
-    }
 
-    private void initReviews(View view) {
-        ArrayList<Review> reviews = new ArrayList<>();
         rv = view.findViewById(R.id.detail_shop_list);
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
+        if (key == 1) {
+            initCoffees();
+        } else {
+            initReviews();
+        }
+    }
 
+    private void initReviews() {
+        ArrayList<Review> reviews = new ArrayList<>();
+
+        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
         rv.setAdapter(reviewAdapter);
         Log.d("Coffee", "ID = " + id);
         reviewController.populateReviews(id, reviews, reviewAdapter);
+    }
+
+    private void initCoffees() {
+        ArrayList<Coffee> coffees = new ArrayList<>();
+        coffeeAdapter = new CoffeeAdapter(this.getContext(), coffees, this);
+        rv.setAdapter(coffeeAdapter);
+        coffeeController.populateCoffees(id, coffees, coffeeAdapter);
     }
 
     @Override

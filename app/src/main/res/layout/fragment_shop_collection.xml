@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShopDetailCollectionFragment">
+    tools:context=".fragments.ShopDetailCollectionFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detail_shop_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:minHeight="350dp"/>
 
 </FrameLayout>
