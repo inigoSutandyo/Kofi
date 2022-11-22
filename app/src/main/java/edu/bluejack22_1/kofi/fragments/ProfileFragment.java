@@ -117,12 +117,7 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
         emailTxt.setText(tempUser.getEmail());
         addressTxt.setText(tempUser.getAddress());
 
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(view).load(uri).placeholder(R.drawable.defaultprofile).into(profileImage);
-            }
-        });
+        Glide.with(view).load(tempUser.getImageUrl()).placeholder(R.drawable.defaultprofile).into(profileImage);
 
         editProfileBtn = view.findViewById(R.id.edit_profile_btn);
         editProfileBtn.setOnClickListener(new View.OnClickListener() {

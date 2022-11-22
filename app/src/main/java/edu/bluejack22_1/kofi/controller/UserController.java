@@ -1,5 +1,7 @@
 package edu.bluejack22_1.kofi.controller;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Document;
 
+import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.fragments.ProfileFragment;
 import edu.bluejack22_1.kofi.fragments.UpdateProfileFragment;
@@ -44,20 +47,43 @@ public class UserController {
         db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                UploadImage(imageUri, uid);
+                if(imageUri != null){
+                    UploadImage(imageUri, uid, user);
+                }
             }
         });
     }
 
-    public void addGoogleUser(String uid, String fullname, String email){
+    public void addGoogleUser(String uid, String fullname, String email, String imageUrl, Activity activity){
         User user = new User(fullname, email, "", "", "User");
-        db.collection("users").document(uid).set(user);
+        user.setImageUrl(imageUrl);
+        db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                MoveMainPage(activity);
+            }
+        });
     }
-
-    private void UploadImage(Uri ImageUri, String uid)
+    private void MoveMainPage(Activity activity){
+        activity.finish();
+        Intent mainIntent = new Intent(activity, MainActivity.class);
+        activity.startActivity(mainIntent);
+    }
+    private void UploadImage(Uri ImageUri, String uid, User user)
     {
         storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);
-        storageReference.putFile(ImageUri);
+        storageReference.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        db.collection("users").document(uid).update("imageUrl", uri.toString());
+                    }
+                });
+            }
+        });
+
     }
 
     public void UpdateUser(String uid, String fullname, String address, Uri imageUri, Fragment fragment){
@@ -74,12 +100,23 @@ public class UserController {
                         public void onSuccess(Void unused) {
                             if(imageUri != null) {
                                 storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);
-                                storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                        replaceFragment(new ProfileFragment(tempUser), fragment);
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                db.collection("users").document(uid).update("imageUrl", uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        replaceFragment(new ProfileFragment(tempUser), fragment);
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }
                                 });
+
                             } else{
                                 replaceFragment(new ProfileFragment(tempUser), fragment);
                             }

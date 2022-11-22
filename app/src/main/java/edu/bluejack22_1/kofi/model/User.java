@@ -1,10 +1,12 @@
 package edu.bluejack22_1.kofi.model;
 
+import android.net.Uri;
+
 import java.sql.Array;
 import java.util.ArrayList;
 
 public class User {
-    private String fullName, email, password, address, role, userId;
+    private String fullName, email, password, address, role, userId, imageUrl;
     private ArrayList<String> reviews;
     public User(){}
 
@@ -15,6 +17,7 @@ public class User {
         this.address = address;
         this.role = role;
         this.reviews = new ArrayList<>();
+        this.imageUrl = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fdefaultprofile.png?alt=media&token=059d3e03-7c52-414f-a673-f50deb428122";
     }
 
     public User(String userId, String fullName, String email, String password, String address, String role) {
@@ -25,6 +28,7 @@ public class User {
         this.role = role;
         this.userId = userId;
         this.reviews = new ArrayList<>();
+        this.imageUrl = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fdefaultprofile.png?alt=media&token=059d3e03-7c52-414f-a673-f50deb428122";
     }
 
     public String getUserId() {
@@ -81,5 +85,13 @@ public class User {
 
     public void setReviews(ArrayList<String> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

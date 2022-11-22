@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -52,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+
+
+
         usercontroller = new UserController();
         googleBtn = findViewById(R.id.google_btn);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
@@ -61,7 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.btn_login);
         eEmail = findViewById(R.id.txt_login_email);
         ePassword = findViewById(R.id.txt_login_password);
-
+        if(mAuth.getCurrentUser() != null){
+            MoveMainPage();
+        }
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 loginWithGoogleAuth(account);
-                MoveMainPage();
             } catch (ApiException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -106,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginWithGoogleAuth(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        Activity currActivity = this;
         mAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -117,7 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                             DocumentSnapshot doc = task.getResult();
                             if(!doc.exists()){
                                 usercontroller.addGoogleUser(currentuser.getUid(), currentuser.getDisplayName(),
-                                        currentuser.getEmail());
+                                        currentuser.getEmail(), currentuser.getPhotoUrl().toString(),currActivity);
+                            } else{
+                                MoveMainPage();
                             }
                         }
                     }

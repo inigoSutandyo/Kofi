@@ -105,12 +105,7 @@ public class UpdateProfileFragment extends Fragment {
         currentUser = mAuth.getCurrentUser();
         storageReference = storage.getReference().child("images/"+ currentUser.getUid());
 
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(binding.getRoot()).load(uri).placeholder(R.drawable.defaultprofile).into(binding.updateProfileImage);
-            }
-        });
+        Glide.with(binding.getRoot()).load(userData.getImageUrl()).placeholder(R.drawable.defaultprofile).into(binding.updateProfileImage);
 
         eFullname.setText(userData.getFullName());
         eAddress.setText(userData.getAddress());
@@ -145,6 +140,4 @@ public class UpdateProfileFragment extends Fragment {
         controller = new UserController();
         controller.UpdateUser(uid, fullname, address, uri, this);
     }
-
-
 }
