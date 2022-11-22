@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInterface
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     User tempUser = task.getResult().toObject(User.class);
+                    tempUser.setUserId(currentuser.getUid());
                     replaceFragment(new ProfileFragment(tempUser));
                 } else {
                     Log.d("User", "Error getting documents: ", task.getException());

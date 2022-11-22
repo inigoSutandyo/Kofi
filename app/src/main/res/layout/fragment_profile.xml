@@ -69,4 +69,10 @@
         android:drawableRight="@drawable/ic_baseline_edit_24"
         android:drawablePadding="4dp"
         />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profile_review_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"/>
 </LinearLayout>

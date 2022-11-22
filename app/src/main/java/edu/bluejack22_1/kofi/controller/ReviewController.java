@@ -56,7 +56,7 @@ public class ReviewController {
 
     public void populateReviews(String shopId, ArrayList<Review> reviews, ReviewAdapter adapter) {
         CollectionReference shopRef = db.collection("coffeeshop/"+shopId+"/reviews");
-        Log.d("Coffee", "ShopRef = " + shopRef);
+//        Log.d("Coffee", "ShopRef = " + shopRef);
         shopRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -66,7 +66,7 @@ public class ReviewController {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String content = (String) document.getData().get("content");
                                 double rating = (Double) document.getData().get("rating");
-                                Log.d("Coffee", "Ref = " + document.getData().get("user"));
+//                                Log.d("Coffee", "Ref = " + document.getData().get("user"));
                                 DocumentReference userRef = (DocumentReference) document.getData().get("user");
                                 String reviewId = document.getId();
                                 Review rev = new Review(content, rating, reviewId);
@@ -105,7 +105,48 @@ public class ReviewController {
                         }
                     }
                 });
-
-
     }
+
+    public void getMyReviews(User user, ArrayList<Review> reviews, ReviewAdapter adapter) {
+//        Log.d("Coffee", "Ref = " + user.getUserId());
+        db.collection("users/").document(user.getUserId()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot docSnap = task.getResult();
+                            if (docSnap.exists()) {
+                                ArrayList<DocumentReference> docRefs = (ArrayList<DocumentReference>) docSnap.getData().get("reviews");
+
+                                for (DocumentReference docRef: docRefs) {
+                                    addReviewFromRef(docRef, user, reviews, adapter);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void addReviewFromRef(DocumentReference docRef, User user, ArrayList<Review> reviews, ReviewAdapter adapter) {
+        docRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot docSnap = task.getResult();
+                            Log.d("Coffee", "DocSnap = " + docSnap);
+                            if (docSnap.exists()) {
+                                String content = (String) docSnap.getData().get("content");
+                                double rating = (Double) docSnap.getData().get("rating");
+                                String reviewId = docSnap.getId();
+                                Review rev = new Review(content, rating, user, reviewId);
+                                reviews.add(rev);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+    }
+
+
 }

@@ -10,12 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
+import edu.bluejack22_1.kofi.controller.ReviewController;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
+import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
 import com.bumptech.glide.Glide;
@@ -30,12 +38,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements FragmentInterface, RecyclerViewInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,6 +59,11 @@ public class ProfileFragment extends Fragment {
     private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
     private ImageView profileImage;
     public User tempUser;
+
+    private ReviewAdapter reviewAdapter;
+    private ReviewController reviewController;
+    private RecyclerView recyclerView;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -61,15 +76,7 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
         tempUser = user;
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -135,11 +142,28 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void replaceFragment(Fragment fragment){
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ArrayList<Review> reviews = new ArrayList<>();
+        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
+        reviewController = new ReviewController();
+        recyclerView = view.findViewById(R.id.profile_review_list);
+        recyclerView.setAdapter(reviewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        reviewController.getMyReviews(tempUser, reviews, reviewAdapter);
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onItemClick(int position) {
+
+    }
 }
