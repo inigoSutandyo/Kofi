@@ -28,7 +28,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -74,15 +73,15 @@ public class LoginActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            String fullName = (String) document.getData().get("fullname");
+                            String fullName = (String) document.getData().get("fullName");
                             String email = (String) document.getData().get("email");
                             String address = (String) document.getData().get("address");
                             String password = (String) document.getData().get("password");
                             String role = (String) document.getData().get("role");
 
-                            User.setCurrentUser(new User(fullName, email, password, address, role));
+                            User.setCurrentUser(new User(fullName, email, password, address, role, document.getId()));
                             Log.d("Login", User.getCurrentUser()+"");
-                            MoveMainPage();
+                            moveMainPage();
                         }
                     }
                 }
@@ -97,13 +96,13 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                LoginUser();
+                loginUser();
             }
         });
         registerTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MoveRegisterPage();
+                moveRegisterPage();
             }
         });
     }
@@ -145,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                                 usercontroller.addGoogleUser(currentuser.getUid(), currentuser.getDisplayName(),
                                         currentuser.getEmail(), currentuser.getPhotoUrl().toString(),currActivity);
                             } else{
-                                MoveMainPage();
+                                moveMainPage();
                             }
                         }
                     }
@@ -155,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void LoginUser(){
+    private void loginUser(){
         email = eEmail.getText().toString();
         password = ePassword.getText().toString();
         mAuth.signInWithEmailAndPassword(email, password)
@@ -170,15 +169,15 @@ public class LoginActivity extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            String fullName = (String) document.getData().get("fullname");
+                                            String fullName = (String) document.getData().get("fullName");
                                             String email = (String) document.getData().get("email");
                                             String address = (String) document.getData().get("address");
                                             String password = (String) document.getData().get("password");
                                             String role = (String) document.getData().get("role");
 
-                                            User.setCurrentUser(new User(fullName, email, password, address, role));
+                                            User.setCurrentUser(new User(fullName, email, password, address, role, document.getId()));
                                             finish();
-                                            MoveMainPage();
+                                            moveMainPage();
                                         }
                                     }
                                 }
@@ -192,11 +191,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void MoveRegisterPage(){
+    private void moveRegisterPage(){
         Intent registerIntent = new Intent(this, RegisterActivity.class);
         startActivity(registerIntent);
     }
-    private void MoveMainPage(){
+    private void moveMainPage(){
         finish();
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);

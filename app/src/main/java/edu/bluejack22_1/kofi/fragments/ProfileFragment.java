@@ -26,6 +26,7 @@ import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
@@ -38,6 +39,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -48,7 +50,10 @@ import java.util.ArrayList;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment implements FragmentInterface, RecyclerViewInterface {
+public class ProfileFragment extends Fragment implements
+        FragmentInterface,
+        RecyclerViewInterface,
+        ReviewListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +64,7 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
     FirebaseUser currentuser;
     FirebaseStorage storage;
     StorageReference storageReference;
+
     private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
     private ImageView profileImage, logoutBtn;
     public User tempUser;
@@ -66,6 +72,7 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
     private ReviewAdapter reviewAdapter;
     private ReviewController reviewController;
     private RecyclerView recyclerView;
+    private ArrayList<Review> reviews;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -155,13 +162,13 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<Review> reviews = new ArrayList<>();
+        reviews = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
         reviewController = new ReviewController();
         recyclerView = view.findViewById(R.id.profile_review_list);
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        reviewController.getMyReviews(tempUser, reviews, reviewAdapter);
+        reviewController.getMyReviews(tempUser, this);
     }
 
     @Override
@@ -174,6 +181,31 @@ public class ProfileFragment extends Fragment implements FragmentInterface, Recy
 
     @Override
     public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onCompleteReview(DocumentSnapshot docSnap) {
+        if (docSnap.exists()) {
+            String content = (String) docSnap.getData().get("content");
+            String rating = (String) docSnap.getData().get("rating");
+            double ratingD = Double.parseDouble(rating);
+
+            String reviewId = docSnap.getId();
+            Review rev = new Review(content, ratingD, reviewId);
+            rev.setUser(tempUser);
+            reviews.add(rev);
+        }
+        reviewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCompleteReviewCollection(QuerySnapshot querySnap) {
+
+    }
+
+    @Override
+    public void onSuccessReview() {
 
     }
 }

@@ -2,28 +2,20 @@ package edu.bluejack22_1.kofi.model;
 
 import android.net.Uri;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.sql.Array;
 import java.util.ArrayList;
 
 public class User {
     private String fullName, email, password, address, role, userId, imageUrl;
-    private ArrayList<String> reviews;
+    private ArrayList<DocumentReference> reviews;
     private static User currentUser;
 
     public static void setCurrentUser(User user){currentUser = user;}
     public static User getCurrentUser(){ return currentUser;}
 
     public User(){}
-
-    public User(String fullName, String email, String password, String address, String role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.role = role;
-        this.reviews = new ArrayList<>();
-        this.imageUrl = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fdefaultprofile.png?alt=media&token=059d3e03-7c52-414f-a673-f50deb428122";
-    }
 
     public User(String fullName, String email, String password, String address, String role, String userId) {
         this.fullName = fullName;
@@ -84,11 +76,11 @@ public class User {
         this.role = role;
     }
 
-    public ArrayList<String> getReviews() {
+    public ArrayList<DocumentReference> getReviews() {
         return reviews;
     }
 
-    public void setReviews(ArrayList<String> reviews) {
+    public void setReviews(ArrayList<DocumentReference> reviews) {
         this.reviews = reviews;
     }
 

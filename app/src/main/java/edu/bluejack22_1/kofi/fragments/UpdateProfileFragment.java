@@ -7,6 +7,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +17,19 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.UserController;
 import edu.bluejack22_1.kofi.databinding.FragmentUpdateProfileBinding;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.User;
 
 /**
@@ -32,7 +37,7 @@ import edu.bluejack22_1.kofi.model.User;
  * Use the {@link UpdateProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UpdateProfileFragment extends Fragment {
+public class UpdateProfileFragment extends Fragment implements FragmentInterface, UserListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -138,6 +143,34 @@ public class UpdateProfileFragment extends Fragment {
 
     public void updateProfile(String uid, String fullname, String address, Uri uri){
         controller = new UserController();
-        controller.UpdateUser(uid, fullname, address, uri, this);
+        controller.updateUser(uid, fullname, address, uri, this);
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = this.getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onCompleteUser(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
+    public void onCompleteUserCollection(QuerySnapshot querySnap) {
+
+    }
+
+    @Override
+    public void onSuccessUpdateUser(User user) {
+        replaceFragment(new ProfileFragment(user));
+    }
+
+    @Override
+    public void onSuccessUser() {
+
     }
 }

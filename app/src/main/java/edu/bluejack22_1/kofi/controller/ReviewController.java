@@ -16,6 +16,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
@@ -32,118 +35,61 @@ public class ReviewController {
 //        db.collection("reviews").add(review);
 //    }
 
-    public ArrayList<Review> getReviews(String shopId) {
+    public void getReviews(String shopId, ReviewListener listener) {
         CollectionReference shopRef = db.collection("coffeeshop/"+shopId+"/reviews");
-        ArrayList<Review> list = new ArrayList<>();
+        Log.d("COFFEE", "ID = " + shopId);
         shopRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                        if (task.isSuccessful()) {
-                           for (QueryDocumentSnapshot document : task.getResult()) {
-                               String content = (String) document.getData().get("content");
-                               int rating = (int) document.getData().get("rating");
-                               User user = userController.getUserByRef((DocumentReference) document.getData().get("user"));
-                               String reviewId = document.getId();
-
-                               list.add(new Review(content, rating, user, reviewId));
-                           }
+                           listener.onCompleteReviewCollection(task.getResult());
+                       } else {
+                           Log.d("REVIEW", "Error getting documents: ", task.getException());
                        }
                      }
                 });
-        return list;
     }
 
-    public void populateReviews(String shopId, ArrayList<Review> reviews, ReviewAdapter adapter) {
-        CollectionReference shopRef = db.collection("coffeeshop/"+shopId+"/reviews");
-//        Log.d("Coffee", "ShopRef = " + shopRef);
-        shopRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String content = (String) document.getData().get("content");
-                                double rating = (Double) document.getData().get("rating");
-//                                Log.d("Coffee", "Ref = " + document.getData().get("user"));
-                                DocumentReference userRef = (DocumentReference) document.getData().get("user");
-                                String reviewId = document.getId();
-                                Review rev = new Review(content, rating, reviewId);
-                                addUserByRef(userRef, rev, adapter);
-                                reviews.add(rev);
-                            }
-
-                        } else {
-                            Log.d("Coffee", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
-
-    private void addUserByRef(DocumentReference ref, Review review, ReviewAdapter adapter) {
+    public void addUserByRef(DocumentReference ref, Review review, ReviewAdapter adapter) {
         ref.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String fullName = (String) document.getData().get("fullName");
-                                String email = (String) document.getData().get("email");
-                                String address = (String) document.getData().get("address");
-                                String password = (String) document.getData().get("password");
-                                String role = (String) document.getData().get("role");
-                                String userId = document.getId();
-                                review.setUser(new User(fullName, email, password, address, role, userId));
-                                adapter.notifyDataSetChanged();
-                            } else {
-                                Log.d("Coffee", "No such document");
-                            }
-                        } else {
-                            Log.d("Coffee", "get failed with ", task.getException());
-                        }
-                    }
-                });
-    }
-
-    public void getMyReviews(User user, ArrayList<Review> reviews, ReviewAdapter adapter) {
-//        Log.d("Coffee", "Ref = " + user.getUserId());
-        db.collection("users/").document(user.getUserId()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot docSnap = task.getResult();
-                            if (docSnap.exists()) {
-                                ArrayList<DocumentReference> docRefs = (ArrayList<DocumentReference>) docSnap.getData().get("reviews");
-
-                                for (DocumentReference docRef: docRefs) {
-                                    addReviewFromRef(docRef, user, reviews, adapter);
-                                }
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void addReviewFromRef(DocumentReference docRef, User user, ArrayList<Review> reviews, ReviewAdapter adapter) {
-        docRef.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot docSnap = task.getResult();
-                            Log.d("Coffee", "DocSnap = " + docSnap);
-                            if (docSnap.exists()) {
-                                String content = (String) docSnap.getData().get("content");
-                                double rating = (Double) docSnap.getData().get("rating");
-                                String reviewId = docSnap.getId();
-                                Review rev = new Review(content, rating, user, reviewId);
-                                reviews.add(rev);
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String fullName = (String) document.getData().get("fullName");
+                            String email = (String) document.getData().get("email");
+                            String address = (String) document.getData().get("address");
+                            String password = (String) document.getData().get("password");
+                            String role = (String) document.getData().get("role");
+                            String userId = document.getId();
+                            review.setUser(new User(fullName, email, password, address, role, userId));
                             adapter.notifyDataSetChanged();
+                        } else {
+                            Log.d("Coffee", "No such document");
                         }
+                    } else {
+                        Log.d("Coffee", "get failed with ", task.getException());
+                    }
+                });
+    }
+
+    public void getMyReviews(User user, ReviewListener listener) {
+        if (user.getReviews().size() < 1) {
+            return;
+        }
+        for (DocumentReference docRef: user.getReviews()) {
+            addReviewFromRef(docRef, listener);
+        }
+    }
+
+    private void addReviewFromRef(DocumentReference docRef, ReviewListener listener) {
+        docRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot docSnap = task.getResult();
+                        Log.d("Coffee", "DocSnap = " + docSnap);
+                        listener.onCompleteReview(docSnap);
                     }
                 });
     }

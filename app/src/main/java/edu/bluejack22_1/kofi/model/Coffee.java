@@ -9,11 +9,6 @@ public class Coffee {
 
     public Coffee() {}
 
-    public Coffee(String name, Long price) {
-        this.name = name;
-        this.price = price;
-    }
-
     public Coffee(String name, Long price, String id) {
         this.name = name;
         this.price = price;

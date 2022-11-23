@@ -13,6 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
@@ -20,16 +25,24 @@ import edu.bluejack22_1.kofi.adapter.CoffeeAdapter;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.CoffeeController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.Coffee;
 import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ShopDetailCollectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShopDetailCollectionFragment extends Fragment implements RecyclerViewInterface {
+public class ShopDetailCollectionFragment extends Fragment implements
+        RecyclerViewInterface,
+        CoffeeListener,
+        ReviewListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,6 +59,8 @@ public class ShopDetailCollectionFragment extends Fragment implements RecyclerVi
     private CoffeeAdapter coffeeAdapter;
     private String id;
     private int key;
+    private ArrayList<Coffee> coffees;
+    private ArrayList<Review> reviews;
 
     public ShopDetailCollectionFragment() {
         // Required empty public constructor
@@ -95,23 +110,68 @@ public class ShopDetailCollectionFragment extends Fragment implements RecyclerVi
     }
 
     private void initReviews() {
-        ArrayList<Review> reviews = new ArrayList<>();
+        reviews = new ArrayList<>();
 
         reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
         rv.setAdapter(reviewAdapter);
-        Log.d("Coffee", "ID = " + id);
-        reviewController.populateReviews(id, reviews, reviewAdapter);
+        reviewController.getReviews(id, this);
     }
 
     private void initCoffees() {
-        ArrayList<Coffee> coffees = new ArrayList<>();
+        coffees = new ArrayList<>();
         coffeeAdapter = new CoffeeAdapter(this.getContext(), coffees, this);
         rv.setAdapter(coffeeAdapter);
-        coffeeController.populateCoffees(id, coffees, coffeeAdapter);
+        coffeeController.getCoffees(id, this);
     }
 
     @Override
     public void onItemClick(int position) {
 
     }
+
+    @Override
+    public void onCompleteCoffee(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
+    public void onCompleteCoffeeCollection(QuerySnapshot querySnap) {
+        for (QueryDocumentSnapshot documentSnapshot: querySnap) {
+            String name = (String) documentSnapshot.getData().get("name");
+            long price = (Long) documentSnapshot.getData().get("price");
+            coffees.add(new Coffee(name,price,documentSnapshot.getId()));
+        }
+    }
+
+    @Override
+    public void onSuccessCoffee() {
+
+    }
+
+    @Override
+    public void onCompleteReview(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
+    public void onCompleteReviewCollection(QuerySnapshot querySnap) {
+        for (QueryDocumentSnapshot document : querySnap) {
+            String content = (String) document.getData().get("content");
+
+            String rating = (String) document.getData().get("rating");
+            Double ratingD = Double.parseDouble(rating);
+
+            DocumentReference userRef = (DocumentReference) document.getData().get("user");
+            String reviewId = document.getId();
+            Review rev = new Review(content, ratingD, reviewId);
+            reviewController.addUserByRef(userRef, rev, reviewAdapter);
+            reviews.add(rev);
+        }
+    }
+
+    @Override
+    public void onSuccessReview() {
+
+    }
+
 }

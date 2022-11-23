@@ -7,13 +7,10 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-
-import edu.bluejack22_1.kofi.adapter.CoffeeAdapter;
-import edu.bluejack22_1.kofi.model.Coffee;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 
 public class CoffeeController {
 
@@ -23,19 +20,14 @@ public class CoffeeController {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void populateCoffees(String shopId, ArrayList<Coffee> coffees, CoffeeAdapter adapter) {
+    public void getCoffees(String shopId, CoffeeListener listener) {
         db.collection("coffeeshop/"+shopId+"/coffees")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot: task.getResult()) {
-                                String name = (String) documentSnapshot.getData().get("name");
-                                long price = (Long) documentSnapshot.getData().get("price");
-                                coffees.add(new Coffee(name,price,documentSnapshot.getId()));
-                            }
-                            adapter.notifyDataSetChanged();
+                            listener.onCompleteCoffeeCollection(task.getResult());
                         } else {
                             Log.d("Coffee", "Document read error");
                         }

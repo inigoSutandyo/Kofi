@@ -1,5 +1,7 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,15 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddCoffeeShopFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddCoffeeShopFragment extends Fragment {
+public class AddCoffeeShopFragment extends Fragment implements CoffeeShopListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -105,6 +112,24 @@ public class AddCoffeeShopFragment extends Fragment {
 
     private void addShop(){
         CoffeeShopController shopcontroller = new CoffeeShopController();
-        shopcontroller.addCoffeeShop(ShopName, ShopAddress, ShopDescription, getActivity());
+        shopcontroller.addCoffeeShop(ShopName, ShopAddress, ShopDescription, this);
+    }
+
+    @Override
+    public void onCompleteShop(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
+    public void onCompleteShopCollection(QuerySnapshot querySnap) {
+
+    }
+
+    @Override
+    public void onSuccessShop() {
+        Activity activity = this.getActivity();
+        activity.finish();
+        Intent mainIntent = new Intent(activity, MainActivity.class);
+        activity.startActivity(mainIntent);
     }
 }

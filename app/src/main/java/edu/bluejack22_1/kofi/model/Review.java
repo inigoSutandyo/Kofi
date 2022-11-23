@@ -4,27 +4,11 @@ public class Review {
     private String content, reviewId;
     private double rating;
     private User user;
-
-
     public Review() {}
-
-    public Review(String content, double rating, User user) {
-        this.content = content;
-        this.rating = rating;
-        this.user = user;
-    }
 
     public Review(String content, double rating, String reviewId) {
         this.content = content;
         this.rating = rating;
-        this.reviewId = reviewId;
-    }
-
-
-    public Review(String content, double rating, User user, String reviewId) {
-        this.content = content;
-        this.rating = rating;
-        this.user = user;
         this.reviewId = reviewId;
     }
 

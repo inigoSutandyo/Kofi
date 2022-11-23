@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,18 +13,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Document;
-
 import edu.bluejack22_1.kofi.MainActivity;
-import edu.bluejack22_1.kofi.R;
-import edu.bluejack22_1.kofi.fragments.ProfileFragment;
-import edu.bluejack22_1.kofi.fragments.UpdateProfileFragment;
-import edu.bluejack22_1.kofi.model.CoffeeShop;
+import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.User;
 
 public class UserController {
@@ -43,19 +33,19 @@ public class UserController {
 
     public void addUser(String fullName, String email, String password, String address, Uri imageUri, String uid){
 
-        User user = new User(fullName, email, password, address, "User");
+        User user = new User(fullName, email, password, address, "User", uid);
         db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 if(imageUri != null){
-                    UploadImage(imageUri, uid, user);
+                    uploadImage(imageUri, uid, user);
                 }
             }
         });
     }
 
     public void addGoogleUser(String uid, String fullname, String email, String imageUrl, Activity activity){
-        User user = new User(fullname, email, "", "", "User");
+        User user = new User(fullname, email, "", "", "User", uid);
         User.setCurrentUser(user);
         user.setImageUrl(imageUrl);
         db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -70,8 +60,7 @@ public class UserController {
         Intent mainIntent = new Intent(activity, MainActivity.class);
         activity.startActivity(mainIntent);
     }
-    private void UploadImage(Uri ImageUri, String uid, User user)
-    {
+    private void uploadImage(Uri ImageUri, String uid, User user) {
         storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);
         storageReference.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -87,12 +76,12 @@ public class UserController {
 
     }
 
-    public void UpdateUser(String uid, String fullname, String address, Uri imageUri, Fragment fragment){
+    public void updateUser(String uid, String fullName, String address, Uri imageUri, UserListener listener){
         DocumentReference ref = db.collection("users").document(uid);
         ref.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     User tempUser = task.getResult().toObject(User.class);
-                    tempUser.setFullName(fullname);
+                    tempUser.setFullName(fullName);
                     tempUser.setAddress(address);
                     ref.set(tempUser).addOnSuccessListener(v -> {
                             if(imageUri != null) {
@@ -106,7 +95,7 @@ public class UserController {
                                                 db.collection("users").document(uid).update("imageUrl", uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
-                                                        replaceFragment(new ProfileFragment(tempUser), fragment);
+                                                        listener.onSuccessUpdateUser(tempUser);
                                                     }
                                                 });
                                             }
@@ -115,7 +104,7 @@ public class UserController {
                                 });
 
                             } else{
-                                replaceFragment(new ProfileFragment(tempUser), fragment);
+                                listener.onSuccessUpdateUser(tempUser);
                             }
                         }
                     );
@@ -124,12 +113,6 @@ public class UserController {
                 }
             }
         );
-    }
-    private void replaceFragment(Fragment fragment, Fragment source){
-        FragmentManager fragmentManager = source.getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
     }
 
     public User getUserByRef(DocumentReference ref) {
@@ -141,7 +124,7 @@ public class UserController {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            String fullName = (String) document.getData().get("fullname");
+                            String fullName = (String) document.getData().get("fullName");
                             String email = (String) document.getData().get("email");
                             String address = (String) document.getData().get("address");
                             String password = (String) document.getData().get("password");

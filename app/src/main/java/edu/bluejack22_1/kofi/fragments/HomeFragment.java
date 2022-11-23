@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.SliderView;
@@ -28,6 +31,7 @@ import edu.bluejack22_1.kofi.adapter.SliderAdapter;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.SliderData;
 import edu.bluejack22_1.kofi.model.User;
@@ -37,7 +41,10 @@ import edu.bluejack22_1.kofi.model.User;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements RecyclerViewInterface, FragmentInterface {
+public class HomeFragment extends Fragment implements
+        RecyclerViewInterface,
+        FragmentInterface,
+        CoffeeShopListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -129,7 +136,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Fra
         coffeeAdapter = new CoffeeShopAdapter(this.getContext(), coffeeShops, this);
 
         recyclerView.setAdapter(coffeeAdapter);
-        coffeeShopController.populateCoffeeShopList(coffeeShops, coffeeAdapter);
+        coffeeShopController.getCoffeeShopList(this);
     }
 
     private String url1 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner.png?alt=media&token=11c7f754-eb9c-4d2f-9277-f9ddcb57c4a1";
@@ -172,5 +179,27 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Fra
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onCompleteShop(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
+    public void onCompleteShopCollection(QuerySnapshot querySnap) {
+        for (QueryDocumentSnapshot document : querySnap) {
+            String name = (String) document.getData().get("shopName");
+            String address = (String) document.getData().get("shopAddress");
+            String description = (String) document.getData().get("shopDescription");
+//                                Log.d("Coffee", document.getId() + " => " + name + " , " + address);
+            coffeeShops.add(new CoffeeShop(name,address,description, document.getId()));
+        }
+        coffeeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessShop() {
+
     }
 }
