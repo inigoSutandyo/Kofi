@@ -165,4 +165,9 @@ public class AddCoffeeShopFragment extends Fragment implements CoffeeShopListene
         Intent mainIntent = new Intent(activity, MainActivity.class);
         activity.startActivity(mainIntent);
     }
+
+    @Override
+    public void onDeleteShop() {
+
+    }
 }

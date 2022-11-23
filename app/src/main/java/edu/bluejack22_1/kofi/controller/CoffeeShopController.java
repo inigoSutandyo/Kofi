@@ -2,29 +2,30 @@ package edu.bluejack22_1.kofi.controller;
 
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
 
-import edu.bluejack22_1.kofi.MainActivity;
-import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
+import edu.bluejack22_1.kofi.R;
+
+import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
-import edu.bluejack22_1.kofi.model.User;
 
 public class CoffeeShopController {
     FirebaseFirestore db;
@@ -84,4 +85,11 @@ public class CoffeeShopController {
                 });
     }
 
+    public void deleteCoffeeShop(String uid, FragmentActivity activity){
+        db.collection("coffeeshop").document(uid).delete().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
+            }
+        });
+    }
 }

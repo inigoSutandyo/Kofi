@@ -207,4 +207,9 @@ public class HomeFragment extends Fragment implements
     public void onSuccessShop() {
 
     }
+
+    @Override
+    public void onDeleteShop() {
+
+    }
 }

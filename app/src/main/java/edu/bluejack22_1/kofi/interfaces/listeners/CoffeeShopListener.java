@@ -10,4 +10,5 @@ public interface CoffeeShopListener {
     void onCompleteShopCollection(QuerySnapshot querySnap);
     void onSuccessUpdateShop(CoffeeShop coffeeShop);
     void onSuccessShop();
+    void onDeleteShop();
 }
