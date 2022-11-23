@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -51,7 +53,7 @@ public class CoffeeShopFragment extends Fragment {
 
     private CoffeeShop coffeeShop;
     private TextView nameView, addressView, descriptionView;
-
+    private ImageView shopImageView;
 
     private CoffeeShopPagerAdapter coffeeShopPagerAdapter;
     private ViewPager2 viewPager2;
@@ -87,6 +89,7 @@ public class CoffeeShopFragment extends Fragment {
         nameView = view.findViewById(R.id.detail_shop_name);
         addressView = view.findViewById(R.id.detail_shop_address);
         descriptionView = view.findViewById(R.id.detail_shop_description);
+        shopImageView = view.findViewById(R.id.shopimage);
         return view;
     }
 
@@ -119,8 +122,8 @@ public class CoffeeShopFragment extends Fragment {
                         String shopName = (String) docSnap.getData().get("shopName");
                         String shopAddress = (String) docSnap.getData().get("shopAddress");
                         String shopDescription = (String) docSnap.getData().get("shopDescription");
-
-                        coffeeShop = new CoffeeShop(shopName,shopAddress,shopDescription,shopId);
+                        String shopPicture = (String) docSnap.getData().get("imageUrl");
+                        coffeeShop = new CoffeeShop(shopName,shopAddress,shopDescription,shopId, shopPicture);
                         populateView(view);
                     }
                 } else {
@@ -134,6 +137,7 @@ public class CoffeeShopFragment extends Fragment {
         nameView.setText(coffeeShop.getShopName());
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
+        Glide.with(view).load(coffeeShop.getImageUrl()).placeholder(R.drawable.itemplaceholder).into(shopImageView);
     }
 
 }

@@ -192,8 +192,8 @@ public class HomeFragment extends Fragment implements
             String name = (String) document.getData().get("shopName");
             String address = (String) document.getData().get("shopAddress");
             String description = (String) document.getData().get("shopDescription");
-//                                Log.d("Coffee", document.getId() + " => " + name + " , " + address);
-            coffeeShops.add(new CoffeeShop(name,address,description, document.getId()));
+            String picture = (String) document.getData().get("imageUrl");
+            coffeeShops.add(new CoffeeShop(name,address,description, document.getId(), picture));
         }
         coffeeAdapter.notifyDataSetChanged();
     }

@@ -9,14 +9,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="24dp"
     android:paddingVertical="70dp"
-    tools:context=".AddShopActivity">
-
-    <ImageView
-        android:layout_width="400px"
-        android:layout_height="400px"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/kofi" />
+    tools:context=".fragments.AddCoffeeShopFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,6 +22,14 @@
         android:textColor="@color/brown"
         android:textFontWeight="700"
         android:textSize="30dp" />
+    <ImageView
+        android:id="@+id/insertshopimage"
+        android:background="@drawable/border"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/itemplaceholder" />
 
     <TextView
         android:layout_width="wrap_content"

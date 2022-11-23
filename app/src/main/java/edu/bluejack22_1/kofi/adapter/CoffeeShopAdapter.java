@@ -4,10 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -40,6 +43,7 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
         CoffeeShop cf = coffeeShops.get(position);
         holder.name.setText(cf.getShopName());
         holder.address.setText(cf.getShopAddress());
+        Glide.with(holder.itemView).load(cf.getImageUrl()).placeholder(R.drawable.itemplaceholder).into(holder.shopImage);
     }
 
     @Override
@@ -49,11 +53,12 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
 
     public static class CoffeeViewHolder extends RecyclerView.ViewHolder {
         TextView name, address;
+        ImageView shopImage;
         public CoffeeViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             name = itemView.findViewById(R.id.card_shop_name);
             address = itemView.findViewById(R.id.card_shop_address);
-
+            shopImage = itemView.findViewById(R.id.card_shop_image);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
