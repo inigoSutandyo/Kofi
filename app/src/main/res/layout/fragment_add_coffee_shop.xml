@@ -73,6 +73,6 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
         android:text="Add Shop"
-        android:textColor="@color/brown" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

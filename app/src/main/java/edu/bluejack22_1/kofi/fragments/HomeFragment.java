@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.SliderView;
@@ -28,6 +30,7 @@ import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.SliderData;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +49,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Fra
     private String mParam2;
     private CoffeeShopController coffeeShopController;
     private RecyclerView recyclerView;
+    public User tempUser;
     private ArrayList<CoffeeShop> coffeeShops;
     private CoffeeShopAdapter coffeeAdapter;
     FirebaseStorage storage;
@@ -93,6 +97,17 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Fra
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Log.d("TEST", User.getCurrentUser().getRole());
+        if(User.getCurrentUser().getRole().equals("Admin")){
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    replaceFragment(new AddCoffeeShopFragment());
+                }
+            });
+        }
         initSlider(view);
         // Inflate the layout for this fragment
         return view;
@@ -117,8 +132,8 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Fra
         coffeeShopController.populateCoffeeShopList(coffeeShops, coffeeAdapter);
     }
 
-    private String url1 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner.png?alt=media&token=1592c856-328a-4e3c-b4c7-368f2ae7a6b1";
-    private String url2 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner2.png?alt=media&token=0e57aa5b-693f-4309-a0fd-f1ce3b8302c9";
+    private String url1 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner.png?alt=media&token=11c7f754-eb9c-4d2f-9277-f9ddcb57c4a1";
+    private String url2 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner2.png?alt=media&token=8a53c293-fd48-4c23-b5b9-b1bcb3cd2164";
     private String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
 
     private void initSlider(View view) {

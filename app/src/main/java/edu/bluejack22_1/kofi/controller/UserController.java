@@ -56,6 +56,7 @@ public class UserController {
 
     public void addGoogleUser(String uid, String fullname, String email, String imageUrl, Activity activity){
         User user = new User(fullname, email, "", "", "User");
+        User.setCurrentUser(user);
         user.setImageUrl(imageUrl);
         db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -88,16 +89,12 @@ public class UserController {
 
     public void UpdateUser(String uid, String fullname, String address, Uri imageUri, Fragment fragment){
         DocumentReference ref = db.collection("users").document(uid);
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        ref.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     User tempUser = task.getResult().toObject(User.class);
                     tempUser.setFullName(fullname);
                     tempUser.setAddress(address);
-                    ref.set(tempUser).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
+                    ref.set(tempUser).addOnSuccessListener(v -> {
                             if(imageUri != null) {
                                 storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);
                                 storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -121,12 +118,12 @@ public class UserController {
                                 replaceFragment(new ProfileFragment(tempUser), fragment);
                             }
                         }
-                    });
+                    );
                 } else {
                     Log.d("User", "Error getting User");
                 }
             }
-        });
+        );
     }
     private void replaceFragment(Fragment fragment, Fragment source){
         FragmentManager fragmentManager = source.getParentFragmentManager();
@@ -153,10 +150,10 @@ public class UserController {
 
                             user[0] = new User(fullName, email, password, address, role, userId);
                         } else {
-                            Log.d("Coffee", "No such document");
+                            Log.d("User", "No such document");
                         }
                     } else {
-                        Log.d("Coffee", "get failed with ", task.getException());
+                        Log.d("User", "get failed with ", task.getException());
                     }
                 }
             });
