@@ -20,6 +20,7 @@ import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,6 +123,11 @@ public class AddCoffeeShopFragment extends Fragment implements CoffeeShopListene
 
     @Override
     public void onCompleteShopCollection(QuerySnapshot querySnap) {
+
+    }
+
+    @Override
+    public void onSuccessUpdateShop(CoffeeShop coffeeShop) {
 
     }
 

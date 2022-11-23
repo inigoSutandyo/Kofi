@@ -149,6 +149,11 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     @Override
+    public void onSuccessUpdateCoffee(Coffee coffee) {
+
+    }
+
+    @Override
     public void onCompleteReview(DocumentSnapshot docSnap) {
 
     }
@@ -167,6 +172,11 @@ public class ShopDetailCollectionFragment extends Fragment implements
             reviewController.addUserByRef(userRef, rev, reviewAdapter);
             reviews.add(rev);
         }
+    }
+
+    @Override
+    public void onSuccessUpdateReview(Review review) {
+
     }
 
     @Override

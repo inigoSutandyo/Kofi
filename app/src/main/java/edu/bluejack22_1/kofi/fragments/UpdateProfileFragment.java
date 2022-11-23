@@ -155,14 +155,10 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
     }
 
     @Override
-    public void onCompleteUser(DocumentSnapshot docSnap) {
-
-    }
+    public void onCompleteUser(DocumentSnapshot docSnap) {}
 
     @Override
-    public void onCompleteUserCollection(QuerySnapshot querySnap) {
-
-    }
+    public void onCompleteUserCollection(QuerySnapshot querySnap) {}
 
     @Override
     public void onSuccessUpdateUser(User user) {
@@ -170,7 +166,5 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
     }
 
     @Override
-    public void onSuccessUser() {
-
-    }
+    public void onSuccessUser() {}
 }

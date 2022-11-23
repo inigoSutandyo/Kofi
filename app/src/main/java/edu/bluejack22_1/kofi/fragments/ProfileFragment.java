@@ -205,6 +205,11 @@ public class ProfileFragment extends Fragment implements
     }
 
     @Override
+    public void onSuccessUpdateReview(Review review) {
+
+    }
+
+    @Override
     public void onSuccessReview() {
 
     }

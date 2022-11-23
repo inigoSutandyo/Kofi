@@ -199,6 +199,11 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
+    public void onSuccessUpdateShop(CoffeeShop coffeeShop) {
+
+    }
+
+    @Override
     public void onSuccessShop() {
 
     }
