@@ -12,6 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -61,7 +65,9 @@ public class ShopDetailCollectionFragment extends Fragment implements
     private int key;
     private ArrayList<Coffee> coffees;
     private ArrayList<Review> reviews;
-
+    private TextView eReviewText;
+    private RatingBar ratingBar;
+    private Button addReviewBtn;
     public ShopDetailCollectionFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
@@ -95,6 +101,9 @@ public class ShopDetailCollectionFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        eReviewText = view.findViewById(R.id.text_review);
+        ratingBar = view.findViewById(R.id.rating);
+        addReviewBtn = view.findViewById(R.id.btn_review);
         Bundle args = getArguments();
         key = args.getInt("KEY");
         id = args.getString("DATA");
@@ -103,6 +112,9 @@ public class ShopDetailCollectionFragment extends Fragment implements
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         if (key == 1) {
+            eReviewText.setVisibility(View.INVISIBLE);
+            ratingBar.setVisibility(View.INVISIBLE);
+            addReviewBtn.setVisibility(View.INVISIBLE);
             initCoffees();
         } else {
             initReviews();
@@ -111,7 +123,6 @@ public class ShopDetailCollectionFragment extends Fragment implements
 
     private void initReviews() {
         reviews = new ArrayList<>();
-
         reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
         rv.setAdapter(reviewAdapter);
         reviewController.getReviews(id, this);
