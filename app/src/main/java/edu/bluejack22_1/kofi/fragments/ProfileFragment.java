@@ -1,7 +1,6 @@
 package edu.bluejack22_1.kofi.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import edu.bluejack22_1.kofi.LoginActivity;
-import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.ReviewController;
@@ -32,7 +30,6 @@ import edu.bluejack22_1.kofi.model.User;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -3,6 +3,7 @@ package edu.bluejack22_1.kofi.model;
 public class CoffeeShop {
     private String shopName, shopAddress, shopDescription, shopId, imageUrl;
 
+
     public CoffeeShop(String shopName, String shopAddress, String shopDescription, String shopId, String imageUrl) {
         this.shopName = shopName;
         this.shopAddress = shopAddress;

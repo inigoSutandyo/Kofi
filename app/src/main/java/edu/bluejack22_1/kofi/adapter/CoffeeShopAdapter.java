@@ -1,7 +1,6 @@
 package edu.bluejack22_1.kofi.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

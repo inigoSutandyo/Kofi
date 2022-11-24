@@ -16,18 +16,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.databinding.FragmentAddCoffeeShopBinding;
-import edu.bluejack22_1.kofi.databinding.FragmentUpdateProfileBinding;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 

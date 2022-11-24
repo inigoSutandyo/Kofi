@@ -5,17 +5,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,14 +27,12 @@ import edu.bluejack22_1.kofi.adapter.CoffeeAdapter;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.CoffeeController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeListener;
-import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.Coffee;
 import edu.bluejack22_1.kofi.model.Review;
-import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +42,8 @@ import edu.bluejack22_1.kofi.model.User;
 public class ShopDetailCollectionFragment extends Fragment implements
         RecyclerViewInterface,
         CoffeeListener,
-        ReviewListener {
+        ReviewListener,
+        FragmentInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,9 +62,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
     private int key;
     private ArrayList<Coffee> coffees;
     private ArrayList<Review> reviews;
-    private TextView eReviewText;
     private RatingBar ratingBar;
-    private Button addReviewBtn;
     public ShopDetailCollectionFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
@@ -101,24 +96,33 @@ public class ShopDetailCollectionFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        eReviewText = view.findViewById(R.id.text_review);
-        ratingBar = view.findViewById(R.id.rating);
-        addReviewBtn = view.findViewById(R.id.btn_review);
         Bundle args = getArguments();
         key = args.getInt("KEY");
         id = args.getString("DATA");
-
+        ratingBar = view.findViewById(R.id.rating);
         rv = view.findViewById(R.id.detail_shop_list);
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         if (key == 1) {
-            eReviewText.setVisibility(View.INVISIBLE);
-            ratingBar.setVisibility(View.INVISIBLE);
-            addReviewBtn.setVisibility(View.INVISIBLE);
+            ratingBar.setVisibility(View.GONE);
             initCoffees();
         } else {
+            ratingBar.setVisibility(View.VISIBLE);
             initReviews();
         }
+
+        ratingBar = view.findViewById(R.id.rating);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                Fragment addReviewFragment = new AddReviewFragment();
+                Bundle args = new Bundle();
+                args.putString("SHOP_ID", id);
+                args.putFloat("RATING", ratingBar.getRating());
+                addReviewFragment.setArguments(args);
+                replaceFragment(addReviewFragment);
+            }
+        });
     }
 
     private void initReviews() {
@@ -136,14 +140,10 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     @Override
-    public void onItemClick(int position) {
-
-    }
+    public void onItemClick(int position) {}
 
     @Override
-    public void onCompleteCoffee(DocumentSnapshot docSnap) {
-
-    }
+    public void onCompleteCoffee(DocumentSnapshot docSnap) {}
 
     @Override
     public void onCompleteCoffeeCollection(QuerySnapshot querySnap) {
@@ -155,19 +155,13 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     @Override
-    public void onSuccessCoffee() {
-
-    }
+    public void onSuccessCoffee() {}
 
     @Override
-    public void onSuccessUpdateCoffee(Coffee coffee) {
-
-    }
+    public void onSuccessUpdateCoffee(Coffee coffee) {}
 
     @Override
-    public void onCompleteReview(DocumentSnapshot docSnap) {
-
-    }
+    public void onCompleteReview(DocumentSnapshot docSnap) {}
 
     @Override
     public void onCompleteReviewCollection(QuerySnapshot querySnap) {
@@ -186,13 +180,16 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     @Override
-    public void onSuccessUpdateReview(Review review) {
-
-    }
+    public void onSuccessUpdateReview(Review review) {}
 
     @Override
-    public void onSuccessReview() {
+    public void onSuccessReview() {}
 
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
-
 }
