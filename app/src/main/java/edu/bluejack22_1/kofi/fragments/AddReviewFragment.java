@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 
 /**
@@ -90,12 +91,7 @@ public class AddReviewFragment extends Fragment implements FragmentInterface {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("REVIEW", "back ");
-                Fragment coffeeShopFragment = new CoffeeShopFragment();
-                Bundle args = new Bundle();
-                args.putString("SHOP_ID", shopID);
-                coffeeShopFragment.setArguments(args);
-                replaceFragment(coffeeShopFragment);
+                returnFragment();
             }
         });
         return  view;
@@ -107,6 +103,8 @@ public class AddReviewFragment extends Fragment implements FragmentInterface {
         if (content.trim().isEmpty()) {
             Log.d("REVIEW", "cannot be empty");
         } else {
+            ReviewController controller = new ReviewController();
+            controller.addReview(content.trim(), ratingD, shopID, this);
             Log.d("REVIEW", "success");
         }
     }
@@ -117,5 +115,14 @@ public class AddReviewFragment extends Fragment implements FragmentInterface {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void returnFragment() {
+        Fragment coffeeShopFragment = new CoffeeShopFragment();
+        Bundle args = new Bundle();
+        args.putString("SHOP_ID", shopID);
+        coffeeShopFragment.setArguments(args);
+        replaceFragment(coffeeShopFragment);
     }
 }

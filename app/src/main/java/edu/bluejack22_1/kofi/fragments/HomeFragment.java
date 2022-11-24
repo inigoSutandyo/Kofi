@@ -181,6 +181,11 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
+    public void returnFragment() {
+
+    }
+
+    @Override
     public void onCompleteShop(DocumentSnapshot docSnap) {
 
     }

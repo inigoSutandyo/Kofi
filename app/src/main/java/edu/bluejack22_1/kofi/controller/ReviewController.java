@@ -1,8 +1,10 @@
 package edu.bluejack22_1.kofi.controller;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -13,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
+import edu.bluejack22_1.kofi.fragments.CoffeeShopFragment;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
@@ -25,10 +29,22 @@ public class ReviewController {
         userController = new UserController();
     }
 
-//    public void addReview(String content, User user, int rating) {
-//        Review review = new Review(content, rating, user);
-//        db.collection("reviews").add(review);
-//    }
+    public void addReview(String content, double rating, String shopId, FragmentInterface listener) {
+        DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
+
+        Review review = new Review(content, rating, "", ref);
+        Log.d("Reference", ref.toString());
+        Log.d("ShopID", shopId);
+        db.collection("coffeeshop").document(shopId).collection("reviews").add(review).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                db.collection("coffeeshop").document(shopId).collection("reviews")
+                        .document(task.getResult().getId())
+                        .update("reviewId", task.getResult().getId()).addOnCompleteListener(task1 ->{
+                            listener.returnFragment();
+                        });
+            }
+        });
+    }
 
     public void getReviews(String shopId, ReviewListener listener) {
         CollectionReference shopRef = db.collection("coffeeshop/"+shopId+"/reviews");

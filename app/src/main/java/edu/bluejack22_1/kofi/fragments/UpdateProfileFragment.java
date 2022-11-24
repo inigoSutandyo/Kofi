@@ -155,6 +155,11 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
     }
 
     @Override
+    public void returnFragment() {
+
+    }
+
+    @Override
     public void onCompleteUser(DocumentSnapshot docSnap) {}
 
     @Override

@@ -168,10 +168,10 @@ public class ShopDetailCollectionFragment extends Fragment implements
         for (QueryDocumentSnapshot document : querySnap) {
             String content = (String) document.getData().get("content");
 
-            String rating = (String) document.getData().get("rating");
+            String rating = String.valueOf(document.getData().get("rating"));
             Double ratingD = Double.parseDouble(rating);
 
-            DocumentReference userRef = (DocumentReference) document.getData().get("user");
+            DocumentReference userRef = (DocumentReference) document.getData().get("userRef");
             String reviewId = document.getId();
             Review rev = new Review(content, ratingD, reviewId);
             reviewController.addUserByRef(userRef, rev, reviewAdapter);
@@ -191,5 +191,10 @@ public class ShopDetailCollectionFragment extends Fragment implements
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void returnFragment() {
+
     }
 }

@@ -4,4 +4,5 @@ import androidx.fragment.app.Fragment;
 
 public interface FragmentInterface {
     public void replaceFragment(Fragment fragment);
+    public void returnFragment();
 }

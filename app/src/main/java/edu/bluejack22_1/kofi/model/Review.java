@@ -1,10 +1,21 @@
 package edu.bluejack22_1.kofi.model;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class Review {
     private String content, reviewId;
     private double rating;
     private User user;
+    private DocumentReference userRef;
     public Review() {}
+
+    public Review(String content, double rating, String reviewId, DocumentReference ref) {
+        this.content = content;
+        this.rating = rating;
+        this.reviewId = reviewId;
+        this.userRef = ref;
+        this.user = User.getCurrentUser();
+    }
 
     public Review(String content, double rating, String reviewId) {
         this.content = content;
@@ -42,5 +53,13 @@ public class Review {
 
     public void setReviewId(String reviewId) {
         this.reviewId = reviewId;
+    }
+
+    public DocumentReference getUserRef() {
+        return userRef;
+    }
+
+    public void setUserRef(DocumentReference userRef) {
+        this.userRef = userRef;
     }
 }

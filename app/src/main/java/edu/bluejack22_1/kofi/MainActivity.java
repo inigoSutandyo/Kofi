@@ -80,4 +80,9 @@ public class MainActivity extends AppCompatActivity implements FragmentInterface
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void returnFragment() {
+
+    }
 }

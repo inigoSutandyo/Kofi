@@ -177,6 +177,11 @@ public class ProfileFragment extends Fragment implements
     }
 
     @Override
+    public void returnFragment() {
+
+    }
+
+    @Override
     public void onItemClick(int position) {
 
     }
