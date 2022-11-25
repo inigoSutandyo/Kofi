@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,6 +59,8 @@ public class ReviewFragment extends Fragment implements
     private ReviewController reviewController;
     private TextView userName, ratingTxt, reviewTxt;
     private ImageView userImg, backImg;
+    private EditText commentTxt;
+    private Button commentBtn;
     private String shopID, reviewID;
     private RecyclerView recyclerView;
     private ReplyAdapter replyAdapter;
@@ -99,15 +103,30 @@ public class ReviewFragment extends Fragment implements
         reviewTxt = view.findViewById(R.id.content_review_detail);
         ratingTxt = view.findViewById(R.id.rating_review_detail);
         backImg = view.findViewById(R.id.back_review_detail);
+        commentTxt = view.findViewById(R.id.text_comment);
+        commentBtn = view.findViewById(R.id.comment_btn);
         reviewController.getReview(shopID, reviewID, this);
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                returnFragment();
+                Fragment coffeeShopFragment = new CoffeeShopFragment();
+                Bundle args = new Bundle();
+                args.putString("SHOP_ID", shopID);
+                coffeeShopFragment.setArguments(args);
+                replaceFragment(coffeeShopFragment);
             }
         });
-
+        commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addComment();
+            }
+        });
         return view;
+    }
+
+    private void addComment(){
+        replyController.addComment(shopID, reviewID, commentTxt.getText().toString(), this);
     }
 
     @Override
@@ -156,11 +175,13 @@ public class ReviewFragment extends Fragment implements
 
     @Override
     public void returnFragment() {
-        Fragment coffeeShopFragment = new CoffeeShopFragment();
+
+        Fragment reviewFragment = new ReviewFragment();
         Bundle args = new Bundle();
         args.putString("SHOP_ID", shopID);
-        coffeeShopFragment.setArguments(args);
-        replaceFragment(coffeeShopFragment);
+        args.putString("REVIEW_ID", reviewID);
+        reviewFragment.setArguments(args);
+        replaceFragment(reviewFragment);
     }
 
     @Override
