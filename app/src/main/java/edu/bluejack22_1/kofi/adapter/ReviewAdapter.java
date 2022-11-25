@@ -17,6 +17,7 @@ import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
     private ArrayList<Review> reviews;
@@ -47,6 +48,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.name.setText(review.getUser().getFullName());
         holder.rating.setText(Double.toString(review.getRating()));
         holder.content.setText(review.getContent());
+        if(!review.getUser().getUserId().equals(User.getCurrentUser().getUserId())){
+            holder.deleteBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -63,6 +67,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             rating = itemView.findViewById(R.id.card_review_rating);
             content = itemView.findViewById(R.id.card_review_content);
             deleteBtn = itemView.findViewById(R.id.card_review_delete);
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onClickDelete(pos);
+                    }
+                }
+            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

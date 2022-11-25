@@ -187,6 +187,11 @@ public class ProfileFragment extends Fragment implements
     }
 
     @Override
+    public void onClickDelete(int position) {
+
+    }
+
+    @Override
     public void onCompleteReview(DocumentSnapshot docSnap) {
         if (docSnap.exists()) {
             String content = (String) docSnap.getData().get("content");

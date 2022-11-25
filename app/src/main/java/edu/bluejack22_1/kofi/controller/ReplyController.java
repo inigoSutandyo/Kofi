@@ -21,15 +21,28 @@ public class ReplyController {
 
     public void addComment(String shopId, String reviewId, String content, FragmentInterface listener){
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
-        Reply reply = new Reply(content, User.getCurrentUser(), ref);
+        Reply reply = new Reply(content, User.getCurrentUser(), ref, "");
         db.collection("coffeeshop").document(shopId).
                 collection("reviews").document(reviewId).collection("replies").add(reply).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                        listener.returnFragment();
+                        db.collection("coffeeshop").document(shopId).
+                                collection("reviews").document(reviewId).collection("replies").
+                                document(task.getResult().getId()).update("replyId", task.getResult().getId()).addOnCompleteListener(task1 -> {
+                                    listener.returnFragment();
+                                });
                     }
                 });
     }
+
+   public void deleteCommment(String shopId, String reviewId, String replyId, FragmentInterface listener){
+       db.collection("coffeeshop").document(shopId).collection("reviews").document(reviewId).collection("replies").document(replyId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+           @Override
+           public void onComplete(@NonNull Task<Void> task) {
+               listener.returnFragment();
+           }
+       });
+   }
 
     public void getReplies(String shopId, String reviewId, ReplyListener listener) {
         db.collection("coffeeshop")

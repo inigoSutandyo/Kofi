@@ -173,6 +173,11 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
+    public void onClickDelete(int position) {
+
+    }
+
+    @Override
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

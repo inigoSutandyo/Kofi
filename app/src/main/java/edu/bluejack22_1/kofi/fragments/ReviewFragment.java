@@ -197,4 +197,10 @@ public class ReviewFragment extends Fragment implements
     public void onItemClick(int position) {
 
     }
+
+    @Override
+    public void onClickDelete(int position) {
+        ReplyController controller = new ReplyController();
+        controller.deleteCommment(shopID, reviewID, replies.get(position).getReplyId(), this);
+    }
 }
