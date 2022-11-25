@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,7 +142,11 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     @Override
-    public void onItemClick(int position) {}
+    public void onItemClick(int position) {
+        ReviewController controller = new ReviewController();
+        controller.deleteReview(id, reviews.get(position).getReviewId(), this);
+
+    }
 
     @Override
     public void onCompleteCoffee(DocumentSnapshot docSnap) {}
@@ -196,6 +201,10 @@ public class ShopDetailCollectionFragment extends Fragment implements
 
     @Override
     public void returnFragment() {
-
+        Fragment coffeeShopFragment = new CoffeeShopFragment();
+        Bundle args = new Bundle();
+        args.putString("SHOP_ID", id);
+        coffeeShopFragment.setArguments(args);
+        replaceFragment(coffeeShopFragment);
     }
 }
