@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.Review;
@@ -20,7 +22,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     private ArrayList<Review> reviews;
     private Context context;
     private RecyclerViewInterface recyclerViewInterface;
-
+    private ReviewController controller;
     public ReviewAdapter() {
 
     }
@@ -45,6 +47,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.name.setText(review.getUser().getFullName());
         holder.rating.setText(Double.toString(review.getRating()));
         holder.content.setText(review.getContent());
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -54,11 +62,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView name, rating, content;
+        ImageView deleteBtn;
         public ReviewViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             name = itemView.findViewById(R.id.card_review_name);
             rating = itemView.findViewById(R.id.card_review_rating);
             content = itemView.findViewById(R.id.card_review_content);
+            deleteBtn = itemView.findViewById(R.id.card_review_delete);
         }
     }
 }

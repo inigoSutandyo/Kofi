@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -40,8 +41,21 @@ public class ReviewController {
                 db.collection("coffeeshop").document(shopId).collection("reviews")
                         .document(task.getResult().getId())
                         .update("reviewId", task.getResult().getId()).addOnCompleteListener(task1 ->{
+                            DocumentReference reference = db.collection("users").document(task.getResult().getId());
+                            db.collection("users").document(User.getCurrentUser().getUserId()).update("reviews", FieldValue.arrayUnion(reference));
                             listener.returnFragment();
                         });
+            }
+        });
+    }
+
+    public void deleteReview(String shopId, String reviewId, FragmentInterface listener){
+        db.collection("coffeeshop").document(shopId).collection("reviews").document(reviewId).delete().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentReference reference = db.collection("users").document(reviewId);
+                db.collection("users").document(User.getCurrentUser().getUserId()).update("reviews", FieldValue.arrayRemove(reference)).addOnCompleteListener(task1 -> {
+                    listener.returnFragment();
+                });
             }
         });
     }
