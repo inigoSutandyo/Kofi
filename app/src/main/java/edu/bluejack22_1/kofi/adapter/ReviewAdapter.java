@@ -63,7 +63,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             rating = itemView.findViewById(R.id.card_review_rating);
             content = itemView.findViewById(R.id.card_review_content);
             deleteBtn = itemView.findViewById(R.id.card_review_delete);
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int pos = getAdapterPosition();

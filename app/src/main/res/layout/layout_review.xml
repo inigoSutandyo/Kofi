@@ -37,17 +37,16 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rating: "
-                android:textSize="22dp"
-                android:textStyle="bold"/>
+                android:src="@drawable/ic_baseline_star_24_yellow"/>
 
             <TextView
                 android:id="@+id/card_review_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:textSize="22dp"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -71,7 +70,6 @@
         android:layout_height="20dp"
         android:src="@drawable/ic_baseline_delete_24"
         android:layout_gravity="top|end"
-        android:layout_margin="10dp"
-        />
+        android:layout_margin="10dp" />
 
 </com.google.android.material.card.MaterialCardView>

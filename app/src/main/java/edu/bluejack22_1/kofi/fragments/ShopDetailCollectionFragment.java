@@ -143,9 +143,14 @@ public class ShopDetailCollectionFragment extends Fragment implements
 
     @Override
     public void onItemClick(int position) {
-        ReviewController controller = new ReviewController();
-        controller.deleteReview(id, reviews.get(position).getReviewId(), this);
-
+//        ReviewController controller = new ReviewController();
+//        controller.deleteReview(id, reviews.get(position).getReviewId(), this);
+        Fragment reviewFragment = new ReviewFragment();
+        Bundle args = new Bundle();
+        args.putString("SHOP_ID", id);
+        args.putString("REVIEW_ID",reviews.get(position).getReviewId());
+        reviewFragment.setArguments(args);
+        replaceFragment(reviewFragment);
     }
 
     @Override

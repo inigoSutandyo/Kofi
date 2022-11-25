@@ -119,5 +119,17 @@ public class ReviewController {
                 });
     }
 
+    public void getReview(String shopID, String reviewID, ReviewListener listener) {
+        db.collection("coffeeshop")
+                .document(shopID)
+                .collection("reviews")
+                .document(reviewID)
+                .get()
+                .addOnCompleteListener(task -> {
+                   if (task.isSuccessful())  {
+                       listener.onCompleteReview(task.getResult());
+                   }
+                });
+    }
 
 }

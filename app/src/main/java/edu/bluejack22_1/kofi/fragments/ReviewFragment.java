@@ -1,54 +1,54 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.media.Image;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
+import edu.bluejack22_1.kofi.model.Review;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddReviewFragment#newInstance} factory method to
+ * Use the {@link ReviewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddReviewFragment extends Fragment implements FragmentInterface {
+public class ReviewFragment extends Fragment implements ReviewListener, FragmentInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private RatingBar ratingBar;
-    private EditText editReview;
-    private Button button;
-    private ImageView back;
-    private String shopID;
-
-    public AddReviewFragment() {
+    private ReviewController reviewController;
+    private TextView userName, ratingTxt, reviewTxt;
+    private ImageView userImg, backImg;
+    private String shopID, reviewID;
+    View view;
+    public ReviewFragment() {
         // Required empty public constructor
+        reviewController = new ReviewController();
     }
 
-    public static AddReviewFragment newInstance(String param1, String param2) {
-        AddReviewFragment fragment = new AddReviewFragment();
+    public static ReviewFragment newInstance(String param1, String param2) {
+        ReviewFragment fragment = new ReviewFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,46 +68,50 @@ public class AddReviewFragment extends Fragment implements FragmentInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_review, container, false);
+        view = inflater.inflate(R.layout.fragment_review, container, false);
+        Bundle bundle = getArguments();
+        shopID = bundle.getString("SHOP_ID");
+        reviewID = bundle.getString("REVIEW_ID");
+        userName = view.findViewById(R.id.user_name_review_detail);
+        userImg = view.findViewById(R.id.user_image_review_detail);
+        reviewTxt = view.findViewById(R.id.content_review_detail);
+        ratingTxt = view.findViewById(R.id.rating_review_detail);
+        backImg = view.findViewById(R.id.back_review_detail);
 
-        Bundle args = getArguments();
-        Float rating = args.getFloat("RATING");
-        shopID = args.getString("SHOP_ID");
+        reviewController.getReview(shopID, reviewID, this);
 
-        ratingBar = view.findViewById(R.id.rating_review);
-        editReview = view.findViewById(R.id.text_review);
-        button = view.findViewById(R.id.btn_review);
-        back = view.findViewById(R.id.back_add_review);
-        ratingBar.setRating(rating);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addReview();
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
+        backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 returnFragment();
             }
         });
-        return  view;
+        return view;
     }
 
-    private void addReview() {
-        Double ratingD = Double.valueOf(ratingBar.getRating());
-        String content = editReview.getText().toString();
-        if (content.trim().isEmpty()) {
-            Log.d("REVIEW", "cannot be empty");
-        } else {
-            ReviewController controller = new ReviewController();
-            controller.addReview(content.trim(), ratingD, shopID, this);
-            Log.d("REVIEW", "success");
+
+    @Override
+    public void onCompleteReview(DocumentSnapshot docSnap) {
+        if (docSnap.exists()) {
+            Review review = docSnap.toObject(Review.class);
+            userName.setText(review.getUser().getFullName());
+            Glide.with(view)
+                    .load(review.getUser().getImageUrl())
+                    .placeholder(R.drawable.itemplaceholder)
+                    .into(userImg);
+            reviewTxt.setText(review.getContent());
+            ratingTxt.setText(review.getRating() + " / 5");
         }
     }
+
+    @Override
+    public void onCompleteReviewCollection(QuerySnapshot querySnap) {}
+
+    @Override
+    public void onSuccessUpdateReview(Review review) {}
+
+    @Override
+    public void onSuccessReview() {}
 
     @Override
     public void replaceFragment(Fragment fragment) {

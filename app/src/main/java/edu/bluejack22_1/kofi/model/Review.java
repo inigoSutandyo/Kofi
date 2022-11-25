@@ -9,11 +9,11 @@ public class Review {
     private DocumentReference userRef;
     public Review() {}
 
-    public Review(String content, double rating, String reviewId, DocumentReference ref) {
+    public Review(String content, double rating, String reviewId, DocumentReference userRef) {
         this.content = content;
         this.rating = rating;
         this.reviewId = reviewId;
-        this.userRef = ref;
+        this.userRef = userRef;
         this.user = User.getCurrentUser();
     }
 

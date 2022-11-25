@@ -144,6 +144,13 @@ public class LoginActivity extends AppCompatActivity {
                                 usercontroller.addGoogleUser(currentuser.getUid(), currentuser.getDisplayName(),
                                         currentuser.getEmail(), currentuser.getPhotoUrl().toString(),currActivity);
                             } else{
+                                User user = new User((String) doc.getData().get("fullName"),
+                                        (String) doc.getData().get("email"),
+                                        "",
+                                        (String) doc.getData().get("password"),
+                                        "User",
+                                        doc.getId());
+                                User.setCurrentUser(user);
                                 moveMainPage();
                             }
                         }
