@@ -79,11 +79,12 @@
                 android:textSize="18dp"
                 android:scrollbars="vertical"
                 android:maxHeight="180dp"/>
-
-
-
         </LinearLayout>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reply_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"/>
     </LinearLayout>
-
 </FrameLayout>
