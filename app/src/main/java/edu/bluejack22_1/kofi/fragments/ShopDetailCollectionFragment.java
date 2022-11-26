@@ -69,6 +69,8 @@ public class ShopDetailCollectionFragment extends Fragment implements
         // Required empty public constructor
         reviewController = new ReviewController();
         coffeeController = new CoffeeController();
+        reviews = new ArrayList<>();
+        coffees = new ArrayList<>();
     }
 
     public static ShopDetailCollectionFragment newInstance(String param1, String param2) {
@@ -105,12 +107,12 @@ public class ShopDetailCollectionFragment extends Fragment implements
         rv = view.findViewById(R.id.detail_shop_list);
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        initCollections();
+
         if (key == 1) {
-            ratingBar.setVisibility(View.GONE);
-            initCoffees();
+            showCoffees();
         } else {
-            ratingBar.setVisibility(View.VISIBLE);
-            initReviews();
+            showReviews();
         }
 
         ratingBar = view.findViewById(R.id.rating);
@@ -127,18 +129,22 @@ public class ShopDetailCollectionFragment extends Fragment implements
         });
     }
 
-    private void initReviews() {
-        reviews = new ArrayList<>();
-        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
-        rv.setAdapter(reviewAdapter);
+    private void initCollections() {
         reviewController.getReviews(id, this);
+        coffeeController.getCoffees(id, this);
+        coffeeAdapter = new CoffeeAdapter(this.getContext(), coffees, this);
+        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
     }
 
-    private void initCoffees() {
-        coffees = new ArrayList<>();
-        coffeeAdapter = new CoffeeAdapter(this.getContext(), coffees, this);
+    private void showReviews() {
+        ratingBar.setVisibility(View.VISIBLE);
+        rv.setAdapter(reviewAdapter);
+
+    }
+
+    private void showCoffees() {
+        ratingBar.setVisibility(View.GONE);
         rv.setAdapter(coffeeAdapter);
-        coffeeController.getCoffees(id, this);
     }
 
     @Override
@@ -167,6 +173,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
             long price = (Long) documentSnapshot.getData().get("price");
             coffees.add(new Coffee(name,price,documentSnapshot.getId()));
         }
+        coffeeAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -181,17 +188,10 @@ public class ShopDetailCollectionFragment extends Fragment implements
     @Override
     public void onCompleteReviewCollection(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot document : querySnap) {
-            String content = (String) document.getData().get("content");
-
-            String rating = String.valueOf(document.getData().get("rating"));
-            Double ratingD = Double.parseDouble(rating);
-
-            DocumentReference userRef = (DocumentReference) document.getData().get("userRef");
-            String reviewId = document.getId();
-            Review rev = new Review(content, ratingD, reviewId);
-            reviewController.addUserByRef(userRef, rev, reviewAdapter);
+            Review rev = document.toObject(Review.class);
             reviews.add(rev);
         }
+        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -76,28 +76,23 @@ public class ReviewController {
                 });
     }
 
-    public void addUserByRef(DocumentReference ref, Review review, ReviewAdapter adapter) {
-        ref.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            String fullName = (String) document.getData().get("fullName");
-                            String email = (String) document.getData().get("email");
-                            String address = (String) document.getData().get("address");
-                            String password = (String) document.getData().get("password");
-                            String role = (String) document.getData().get("role");
-                            String userId = document.getId();
-                            review.setUser(new User(fullName, email, password, address, role, userId));
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Log.d("Coffee", "No such document");
-                        }
-                    } else {
-                        Log.d("Coffee", "get failed with ", task.getException());
-                    }
-                });
-    }
+//    public void addUserByRef(DocumentReference ref, Review review, ReviewAdapter adapter) {
+//        ref.get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            Review review =
+//                            review.setUser(new User(fullName, email, password, address, role, userId));
+//                            adapter.notifyDataSetChanged();
+//                        } else {
+//                            Log.d("Coffee", "No such document");
+//                        }
+//                    } else {
+//                        Log.d("Coffee", "get failed with ", task.getException());
+//                    }
+//                });
+//    }
 
     public void getMyReviews(User user, ReviewListener listener) {
         if (user.getReviews().size() < 1) {

@@ -2,18 +2,18 @@ package edu.bluejack22_1.kofi.model;
 
 import com.google.firebase.firestore.DocumentReference;
 
-public class Reply {
-    private String content, replyId;
+public class Comment {
+    private String content, commentId;
     private User user;
     private DocumentReference userRef;
 
-    public Reply() {}
+    public Comment() {}
 
-    public Reply(String content, User user, DocumentReference userRef, String replyId) {
+    public Comment(String content, User user, DocumentReference userRef, String commentId) {
         this.content = content;
         this.user = user;
         this.userRef = userRef;
-        this.replyId = replyId;
+        this.commentId = commentId;
     }
 
     public String getContent() {
@@ -40,11 +40,11 @@ public class Reply {
         this.userRef = userRef;
     }
 
-    public String getReplyId() {
-        return replyId;
+    public String getCommentId() {
+        return commentId;
     }
 
-    public void setReplyId(String replyId) {
-        this.replyId = replyId;
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 }

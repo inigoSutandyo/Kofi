@@ -14,17 +14,16 @@ import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.model.Reply;
-import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.User;
 
-public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHolder>{
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ReplyViewHolder>{
 
     private Context context;
-    private ArrayList<Reply> replies;
+    private ArrayList<Comment> replies;
     private RecyclerViewInterface recyclerViewInterface;
 
-    public ReplyAdapter(Context context, ArrayList<Reply> replies, RecyclerViewInterface recyclerViewInterface) {
+    public CommentAdapter(Context context, ArrayList<Comment> replies, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.replies = replies;
         this.recyclerViewInterface = recyclerViewInterface;
@@ -40,10 +39,10 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ReplyViewHolder holder, int position) {
-        Reply reply = replies.get(position);
-        holder.contentTxt.setText(reply.getContent());
-        holder.nameTxt.setText(reply.getUser().getFullName());
-        if(!reply.getUser().getUserId().equals(User.getCurrentUser().getUserId())){
+        Comment comment = replies.get(position);
+        holder.contentTxt.setText(comment.getContent());
+        holder.nameTxt.setText(comment.getUser().getFullName());
+        if(!comment.getUser().getUserId().equals(User.getCurrentUser().getUserId())){
             holder.deleteBtn.setVisibility(View.INVISIBLE);
         }
     }

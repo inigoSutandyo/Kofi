@@ -1,6 +1,5 @@
 package edu.bluejack22_1.kofi.fragments;
 
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,14 +25,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
-import edu.bluejack22_1.kofi.adapter.ReplyAdapter;
-import edu.bluejack22_1.kofi.controller.ReplyController;
+import edu.bluejack22_1.kofi.adapter.CommentAdapter;
+import edu.bluejack22_1.kofi.controller.CommentController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.model.Reply;
+import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Review;
 
 /**
@@ -46,7 +43,7 @@ import edu.bluejack22_1.kofi.model.Review;
 public class ReviewFragment extends Fragment implements
         ReviewListener,
         FragmentInterface,
-        ReplyListener,
+        CommentListener,
         RecyclerViewInterface {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -63,14 +60,14 @@ public class ReviewFragment extends Fragment implements
     private Button commentBtn;
     private String shopID, reviewID;
     private RecyclerView recyclerView;
-    private ReplyAdapter replyAdapter;
-    private ArrayList<Reply> replies;
-    private ReplyController replyController;
+    private CommentAdapter commentAdapter;
+    private ArrayList<Comment> replies;
+    private CommentController commentController;
     View view;
     public ReviewFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
-        replyController = new ReplyController();
+        commentController = new CommentController();
     }
 
     public static ReviewFragment newInstance(String param1, String param2) {
@@ -126,7 +123,7 @@ public class ReviewFragment extends Fragment implements
     }
 
     private void addComment(){
-        replyController.addComment(shopID, reviewID, commentTxt.getText().toString(), this);
+        commentController.addComment(shopID, reviewID, commentTxt.getText().toString(), this);
     }
 
     @Override
@@ -134,10 +131,10 @@ public class ReviewFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         recyclerView  = view.findViewById(R.id.reply_recycler);
         replies = new ArrayList<>();
-        replyAdapter = new ReplyAdapter(this.getContext(), replies, this);
-        recyclerView.setAdapter(replyAdapter);
+        commentAdapter = new CommentAdapter(this.getContext(), replies, this);
+        recyclerView.setAdapter(commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        replyController.getReplies(shopID, reviewID, this);
+        commentController.getReplies(shopID, reviewID, this);
     }
 
     @Override
@@ -185,12 +182,17 @@ public class ReviewFragment extends Fragment implements
     }
 
     @Override
-    public void onCompleteReplyCollection(QuerySnapshot querySnap) {
+    public void onCompleteCommentCollection(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot document : querySnap) {
-            Reply reply = document.toObject(Reply.class);
-            replies.add(reply);
+            Comment comment = document.toObject(Comment.class);
+            replies.add(comment);
         }
-        replyAdapter.notifyDataSetChanged();
+        commentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessComment() {
+        returnFragment();
     }
 
     @Override
@@ -200,7 +202,7 @@ public class ReviewFragment extends Fragment implements
 
     @Override
     public void onClickDelete(int position) {
-        ReplyController controller = new ReplyController();
-        controller.deleteCommment(shopID, reviewID, replies.get(position).getReplyId(), this);
+        CommentController controller = new CommentController();
+        controller.deleteCommment(shopID, reviewID, replies.get(position).getCommentId(), this);
     }
 }

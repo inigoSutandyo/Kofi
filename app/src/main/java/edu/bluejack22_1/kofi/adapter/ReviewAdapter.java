@@ -45,8 +45,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = reviews.get(position);
-        holder.name.setText(review.getUser().getFullName());
+        if (review == null) return;
         holder.rating.setText(Double.toString(review.getRating()));
+        holder.name.setText(review.getUser().getFullName());
         holder.content.setText(review.getContent());
         if(!review.getUser().getUserId().equals(User.getCurrentUser().getUserId())){
             holder.deleteBtn.setVisibility(View.INVISIBLE);
