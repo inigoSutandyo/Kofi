@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 public class Review {
@@ -7,20 +8,25 @@ public class Review {
     private double rating;
     private User user;
     private DocumentReference userRef;
+    private Timestamp dateCreated;
+
     public Review() {}
 
-    public Review(String content, double rating, String reviewId, DocumentReference userRef) {
+    public Review(String content, double rating, String reviewId, DocumentReference userRef, Timestamp dateCreated) {
         this.content = content;
         this.rating = rating;
         this.reviewId = reviewId;
         this.userRef = userRef;
         this.user = User.getCurrentUser();
+        this.dateCreated = dateCreated;
     }
 
-    public Review(String content, double rating, String reviewId) {
-        this.content = content;
-        this.rating = rating;
-        this.reviewId = reviewId;
+    public Timestamp getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public String getContent() {

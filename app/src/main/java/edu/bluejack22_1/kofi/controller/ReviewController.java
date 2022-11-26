@@ -8,12 +8,16 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Date;
 
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.fragments.CoffeeShopFragment;
@@ -33,7 +37,7 @@ public class ReviewController {
     public void addReview(String content, double rating, String shopId, ReviewListener listener) {
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
 
-        Review review = new Review(content, rating, "", ref);
+        Review review = new Review(content, rating, "", ref,new Timestamp(new Date()));
         Log.d("Reference", ref.toString());
         Log.d("ShopID", shopId);
         db.collection("coffeeshop").document(shopId).collection("reviews").add(review)
@@ -66,9 +70,9 @@ public class ReviewController {
     }
 
     public void getReviews(String shopId, ReviewListener listener) {
-        CollectionReference shopRef = db.collection("coffeeshop/"+shopId+"/reviews");
-        Log.d("COFFEE", "ID = " + shopId);
-        shopRef.get()
+        CollectionReference reviewCollection = db.collection("coffeeshop/"+shopId+"/reviews");
+//        Log.d("COFFEE", "ID = " + shopId);
+        reviewCollection.orderBy("dateCreated", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
