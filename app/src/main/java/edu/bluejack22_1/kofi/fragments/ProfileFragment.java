@@ -194,13 +194,7 @@ public class ProfileFragment extends Fragment implements
     @Override
     public void onCompleteReview(DocumentSnapshot docSnap) {
         if (docSnap.exists()) {
-            String content = (String) docSnap.getData().get("content");
-            String rating = (String) docSnap.getData().get("rating");
-            double ratingD = Double.parseDouble(rating);
-
-            String reviewId = docSnap.getId();
-            Review rev = new Review(content, ratingD, reviewId);
-            rev.setUser(tempUser);
+            Review rev = docSnap.toObject(Review.class);
             reviews.add(rev);
         }
         reviewAdapter.notifyDataSetChanged();

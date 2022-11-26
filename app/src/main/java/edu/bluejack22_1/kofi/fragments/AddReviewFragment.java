@@ -17,16 +17,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
+import edu.bluejack22_1.kofi.model.Review;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddReviewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddReviewFragment extends Fragment implements FragmentInterface {
+public class AddReviewFragment extends Fragment implements FragmentInterface, ReviewListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -124,5 +129,23 @@ public class AddReviewFragment extends Fragment implements FragmentInterface {
         args.putString("SHOP_ID", shopID);
         coffeeShopFragment.setArguments(args);
         replaceFragment(coffeeShopFragment);
+    }
+
+    @Override
+    public void onCompleteReview(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
+    public void onCompleteReviewCollection(QuerySnapshot querySnap) {
+
+    }
+
+    @Override
+    public void onSuccessUpdateReview(Review review) {}
+
+    @Override
+    public void onSuccessReview() {
+        returnFragment();
     }
 }

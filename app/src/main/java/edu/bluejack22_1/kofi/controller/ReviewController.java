@@ -30,31 +30,36 @@ public class ReviewController {
         userController = new UserController();
     }
 
-    public void addReview(String content, double rating, String shopId, FragmentInterface listener) {
+    public void addReview(String content, double rating, String shopId, ReviewListener listener) {
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
 
         Review review = new Review(content, rating, "", ref);
         Log.d("Reference", ref.toString());
         Log.d("ShopID", shopId);
-        db.collection("coffeeshop").document(shopId).collection("reviews").add(review).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                db.collection("coffeeshop").document(shopId).collection("reviews")
-                        .document(task.getResult().getId())
-                        .update("reviewId", task.getResult().getId()).addOnCompleteListener(task1 ->{
-                            DocumentReference reference = db.collection("users").document(task.getResult().getId());
-                            db.collection("users").document(User.getCurrentUser().getUserId()).update("reviews", FieldValue.arrayUnion(reference));
-                            listener.returnFragment();
-                        });
-            }
-        });
+        db.collection("coffeeshop").document(shopId).collection("reviews").add(review)
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        task.getResult()
+                                .update("reviewId", task.getResult().getId())
+                                .addOnCompleteListener(t -> {
+                                    db.collection("users")
+                                            .document(User.getCurrentUser().getUserId())
+                                            .update("reviews", FieldValue.arrayUnion(task.getResult()));
+                                    listener.onSuccessReview();
+
+                                });
+                    }
+                });
     }
 
-    public void deleteReview(String shopId, String reviewId, FragmentInterface listener){
+    public void deleteReview(String shopId, String reviewId, ReviewListener listener){
         db.collection("coffeeshop").document(shopId).collection("reviews").document(reviewId).delete().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 DocumentReference reference = db.collection("users").document(reviewId);
-                db.collection("users").document(User.getCurrentUser().getUserId()).update("reviews", FieldValue.arrayRemove(reference)).addOnCompleteListener(task1 -> {
-                    listener.returnFragment();
+                db.collection("users")
+                        .document(User.getCurrentUser().getUserId())
+                        .update("reviews", FieldValue.arrayRemove(reference)).addOnCompleteListener(task1 -> {
+                    listener.onSuccessReview();
                 });
             }
         });
