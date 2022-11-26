@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,11 +56,10 @@ public class HomeFragment extends Fragment implements
     private String mParam2;
     private CoffeeShopController coffeeShopController;
     private RecyclerView recyclerView;
-    public User tempUser;
     private ArrayList<CoffeeShop> coffeeShops;
     private CoffeeShopAdapter coffeeAdapter;
-    FirebaseStorage storage;
-    StorageReference storageReference;
+    private SearchView searchView;
+
 //    private ProgressBar tempBar;
     public HomeFragment() {
         // Required empty public constructor
@@ -103,7 +103,9 @@ public class HomeFragment extends Fragment implements
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Log.d("TEST", User.getCurrentUser().getRole());
+
+        searchView = view.findViewById(R.id.home_search);
+
         if(User.getCurrentUser().getRole().equals("Admin")){
             FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
@@ -115,7 +117,24 @@ public class HomeFragment extends Fragment implements
             });
         }
         initSlider(view);
-        // Inflate the layout for this fragment
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Fragment searchFragment = new SearchFragment();
+                Bundle args = new Bundle();
+                args.putString("SEARCH", s);
+                searchFragment.setArguments(args);
+                replaceFragment(searchFragment);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         return view;
     }
 
@@ -140,7 +159,7 @@ public class HomeFragment extends Fragment implements
 
     private String url1 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner.png?alt=media&token=11c7f754-eb9c-4d2f-9277-f9ddcb57c4a1";
     private String url2 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner2.png?alt=media&token=8a53c293-fd48-4c23-b5b9-b1bcb3cd2164";
-    private String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
+    private String url3 = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fcoffeebanner3.png?alt=media&token=516aa633-ea15-46af-95df-b4d47feadc12";
 
     private void initSlider(View view) {
         ArrayList<SliderData> sliderList = new ArrayList<>();

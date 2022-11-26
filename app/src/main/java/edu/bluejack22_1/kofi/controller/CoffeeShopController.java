@@ -31,6 +31,7 @@ public class CoffeeShopController {
     FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageReference;
+
     public CoffeeShopController(){
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -84,7 +85,7 @@ public class CoffeeShopController {
                     }
                 });
     }
-
+    
     public void deleteCoffeeShop(String uid, FragmentActivity activity){
         db.collection("coffeeshop").document(uid).delete().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
