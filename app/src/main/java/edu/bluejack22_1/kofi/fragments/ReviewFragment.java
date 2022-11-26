@@ -61,7 +61,7 @@ public class ReviewFragment extends Fragment implements
     private String shopID, reviewID;
     private RecyclerView recyclerView;
     private CommentAdapter commentAdapter;
-    private ArrayList<Comment> replies;
+    private ArrayList<Comment> comments;
     private CommentController commentController;
     View view;
     public ReviewFragment() {
@@ -129,9 +129,9 @@ public class ReviewFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView  = view.findViewById(R.id.reply_recycler);
-        replies = new ArrayList<>();
-        commentAdapter = new CommentAdapter(this.getContext(), replies, this);
+        recyclerView  = view.findViewById(R.id.comment_recycler);
+        comments = new ArrayList<>();
+        commentAdapter = new CommentAdapter(this.getContext(), comments, this);
         recyclerView.setAdapter(commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         commentController.getReplies(shopID, reviewID, this);
@@ -185,7 +185,7 @@ public class ReviewFragment extends Fragment implements
     public void onCompleteCommentCollection(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot document : querySnap) {
             Comment comment = document.toObject(Comment.class);
-            replies.add(comment);
+            comments.add(comment);
         }
         commentAdapter.notifyDataSetChanged();
     }
@@ -197,12 +197,18 @@ public class ReviewFragment extends Fragment implements
 
     @Override
     public void onItemClick(int position) {
-
+        Comment comment = comments.get(position);
+        Fragment commentFragment = new CommentFragment();
+        Bundle args = new Bundle();
+        String path = shopID+"/reviews/"+reviewID+"/comments/"+comment.getCommentId();
+        args.putString("PATH", path);
+        commentFragment.setArguments(args);
+        replaceFragment(commentFragment);
     }
 
     @Override
     public void onClickDelete(int position) {
         CommentController controller = new CommentController();
-        controller.deleteCommment(shopID, reviewID, replies.get(position).getCommentId(), this);
+        controller.deleteCommment(shopID, reviewID, comments.get(position).getCommentId(), this);
     }
 }
