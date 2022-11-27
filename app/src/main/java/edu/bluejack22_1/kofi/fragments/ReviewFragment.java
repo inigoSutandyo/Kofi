@@ -202,6 +202,11 @@ public class ReviewFragment extends Fragment implements
         Bundle args = new Bundle();
         String path = shopID+"/reviews/"+reviewID+"/comments/"+comment.getCommentId();
         args.putString("PATH", path);
+        args.putString("COMMENT", comment.getContent());
+        args.putString("NAME", comment.getUser().getFullName());
+        args.putString("IMAGE", comment.getUser().getImageUrl());
+        args.putString("SHOP_ID", shopID);
+        args.putString("REVIEW_ID", reviewID);
         commentFragment.setArguments(args);
         replaceFragment(commentFragment);
     }

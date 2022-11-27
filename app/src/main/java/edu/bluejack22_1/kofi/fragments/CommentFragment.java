@@ -2,43 +2,70 @@ package edu.bluejack22_1.kofi.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.ReplyAdapter;
+import edu.bluejack22_1.kofi.controller.ReplyController;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
+import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
+import edu.bluejack22_1.kofi.model.Reply;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CommentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CommentFragment extends Fragment {
+public class CommentFragment extends Fragment implements
+        ReplyListener,
+        RecyclerViewInterface,
+        FragmentInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private RecyclerView recyclerView;
+    private ReplyAdapter replyAdapter;
+    private ArrayList<Reply> replies;
+    private ReplyController replyController;
+
+    private String path;
+    private TextView userName, commentTxt;
+    private ImageView userImg, backImg;
+    private EditText replyTxt;
+    private Button replyBtn;
+    private String shopId, reviewId;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public CommentFragment() {
         // Required empty public constructor
+        replies = new ArrayList<>();
+        replyController = new ReplyController();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CommentFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CommentFragment newInstance(String param1, String param2) {
         CommentFragment fragment = new CommentFragment();
         Bundle args = new Bundle();
@@ -60,7 +87,78 @@ public class CommentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comment, container, false);
+        View view = inflater.inflate(R.layout.fragment_comment, container, false);
+
+        userImg = view.findViewById(R.id.user_image_comment_detail);
+        userName = view.findViewById(R.id.user_name_comment_detail);
+        commentTxt = view.findViewById(R.id.comment_content_detail);
+        replyTxt = view.findViewById(R.id.reply_text);
+        replyBtn = view.findViewById(R.id.reply_btn);
+        backImg = view.findViewById(R.id.back_comment_detail);
+
+        Bundle args = getArguments();
+        path = args.getString("PATH");
+        String comment = args.getString("COMMENT");
+        String name = args.getString("NAME");
+        String image = args.getString("IMAGE");
+        shopId = args.getString("SHOP_ID");
+        reviewId = args.getString("REVIEW_ID");
+        userName.setText(name);
+        commentTxt.setText(comment);
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                returnFragment();
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        replyController.getReplies(path, this);
+        replyAdapter = new ReplyAdapter(this.getContext(), replies, this);
+        recyclerView = view.findViewById(R.id.reply_recycler);
+
+    }
+
+    @Override
+    public void onCompleteReplyCollection(QuerySnapshot querySnapshot) {
+        for (QueryDocumentSnapshot documentSnapshot: querySnapshot) {
+            Reply reply = documentSnapshot.toObject(Reply.class);
+            replies.add(reply);
+        }
+        replyAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onClickDelete(int position) {
+
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void returnFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString("REVIEW_ID",reviewId);
+        bundle.putString("SHOP_ID", shopId);
+        Fragment reviewFragment = new ReviewFragment();
+        reviewFragment.setArguments(bundle);
+        replaceFragment(reviewFragment);
     }
 }
