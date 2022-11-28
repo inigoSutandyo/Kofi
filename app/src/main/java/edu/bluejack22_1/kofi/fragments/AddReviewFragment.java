@@ -145,6 +145,11 @@ public class AddReviewFragment extends Fragment implements FragmentInterface, Re
     public void onSuccessUpdateReview(Review review) {}
 
     @Override
+    public void onLikedReview(int position) {
+
+    }
+
+    @Override
     public void onSuccessReview() {
         returnFragment();
     }

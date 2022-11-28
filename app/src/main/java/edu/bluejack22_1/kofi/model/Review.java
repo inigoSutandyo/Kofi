@@ -3,14 +3,27 @@ package edu.bluejack22_1.kofi.model;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.ArrayList;
+
 public class Review {
     private String content, reviewId;
     private double rating;
     private User user;
     private DocumentReference userRef;
     private Timestamp dateCreated;
+    private ArrayList<String> likers;
 
-    public Review() {}
+    public ArrayList<String> getLikers() {
+        return likers;
+    }
+
+    public void setLikers(ArrayList<String> likers) {
+        this.likers = likers;
+    }
+
+    public Review() {
+        this.likers = new ArrayList<>();
+    }
 
     public Review(String content, double rating, String reviewId, DocumentReference userRef, Timestamp dateCreated) {
         this.content = content;
@@ -19,6 +32,7 @@ public class Review {
         this.userRef = userRef;
         this.user = User.getCurrentUser();
         this.dateCreated = dateCreated;
+        this.likers = new ArrayList<>();
     }
 
     public Timestamp getDateCreated() {
@@ -68,4 +82,5 @@ public class Review {
     public void setUserRef(DocumentReference userRef) {
         this.userRef = userRef;
     }
+
 }

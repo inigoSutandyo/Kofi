@@ -9,5 +9,6 @@ public interface ReviewListener {
     void onCompleteReview(DocumentSnapshot docSnap);
     void onCompleteReviewCollection(QuerySnapshot querySnap);
     void onSuccessUpdateReview(Review review);
+    void onLikedReview(int position);
     void onSuccessReview();
 }

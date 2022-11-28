@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CommentAdapter;
 import edu.bluejack22_1.kofi.controller.CommentController;
+import edu.bluejack22_1.kofi.controller.LikeController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
@@ -35,6 +36,7 @@ import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -161,7 +163,15 @@ public class ReviewFragment extends Fragment implements
     public void onSuccessUpdateReview(Review review) {}
 
     @Override
-    public void onSuccessReview() {}
+    public void onLikedReview(int position) {
+
+    }
+
+    @Override
+    public void onSuccessReview() {
+        returnFragment();
+    }
+
 
     @Override
     public void replaceFragment(Fragment fragment) {
@@ -193,7 +203,7 @@ public class ReviewFragment extends Fragment implements
 
     @Override
     public void onSuccessComment() {
-        returnFragment();
+
     }
 
     @Override

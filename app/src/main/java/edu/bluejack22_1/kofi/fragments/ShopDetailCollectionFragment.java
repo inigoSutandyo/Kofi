@@ -28,6 +28,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeAdapter;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.CoffeeController;
+import edu.bluejack22_1.kofi.controller.LikeController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeListener;
@@ -35,6 +36,7 @@ import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Coffee;
 import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,7 +135,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
         reviewController.getReviews(id, this);
         coffeeController.getCoffees(id, this);
         coffeeAdapter = new CoffeeAdapter(this.getContext(), coffees, this);
-        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
+        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this, this);
     }
 
     private void showReviews() {
@@ -198,7 +200,20 @@ public class ShopDetailCollectionFragment extends Fragment implements
     public void onSuccessUpdateReview(Review review) {}
 
     @Override
-    public void onSuccessReview() {}
+    public void onLikedReview(int position) {
+        LikeController likeController = new LikeController();
+        String userid = User.getCurrentUser().getUserId();
+        if(!reviews.get(position).getLikers().contains(userid)){
+            likeController.LikeReview(id, User.getCurrentUser().getUserId(), reviews.get(position).getReviewId(), this);
+        } else{
+            likeController.DislikeReview(id, User.getCurrentUser().getUserId(), reviews.get(position).getReviewId(), this);
+        }
+    }
+
+    @Override
+    public void onSuccessReview() {
+        returnFragment();
+    }
 
     @Override
     public void replaceFragment(Fragment fragment) {

@@ -96,8 +96,8 @@ public class CoffeeShopFragment extends Fragment {
         coffeeShopPagerAdapter = new CoffeeShopPagerAdapter(this.getActivity(), shopId);
         viewPager2 = view.findViewById(R.id.detail_shop_pager);
         viewPager2.setAdapter(coffeeShopPagerAdapter);
-
         TabLayout tabLayout = view.findViewById(R.id.detail_shop_tab);
+
         new TabLayoutMediator(tabLayout, viewPager2, (tab,position) -> tab.setText(position == 1 ? "Review" : "Menu")).attach();
 
     }

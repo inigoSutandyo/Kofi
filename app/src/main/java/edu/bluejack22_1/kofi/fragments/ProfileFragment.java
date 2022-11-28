@@ -160,7 +160,7 @@ public class ProfileFragment extends Fragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         reviews = new ArrayList<>();
-        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this);
+        reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this, this);
         reviewController = new ReviewController();
         recyclerView = view.findViewById(R.id.profile_review_list);
         recyclerView.setAdapter(reviewAdapter);
@@ -207,6 +207,11 @@ public class ProfileFragment extends Fragment implements
 
     @Override
     public void onSuccessUpdateReview(Review review) {
+
+    }
+
+    @Override
+    public void onLikedReview(int position) {
 
     }
 
