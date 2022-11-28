@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -106,6 +107,10 @@ public class CommentFragment extends Fragment implements
         reviewId = args.getString("REVIEW_ID");
         userName.setText(name);
         commentTxt.setText(comment);
+        Glide.with(view)
+                .load(image)
+                .placeholder(R.drawable.itemplaceholder)
+                .into(userImg);
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,6 +161,7 @@ public class CommentFragment extends Fragment implements
         bundle.putString("NAME", name);
         bundle.putString("IMAGE", image);
         Fragment commentFragment = new CommentFragment();
+
         commentFragment.setArguments(bundle);
         replaceFragment(commentFragment);
     }
@@ -167,7 +173,8 @@ public class CommentFragment extends Fragment implements
 
     @Override
     public void onClickDelete(int position) {
-
+        ReplyController replycontroller = new ReplyController();
+        replycontroller.deleteReply(path, replies.get(position).getReplyId(), this);
     }
 
     @Override

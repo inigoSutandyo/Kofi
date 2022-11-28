@@ -32,6 +32,14 @@ public class ReplyController {
                 });
     }
 
+    public void deleteReply(String path, String replyId, ReplyListener listener){
+        db.collection("coffeeshop")
+                .document(path)
+                .collection("replies").document(replyId).delete().addOnCompleteListener(task -> {
+                    listener.onSuccessReply();
+                });
+    }
+
     public void getReplies(String path, ReplyListener listener) {
         db.collection("coffeeshop")
                 .document(path)

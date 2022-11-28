@@ -28,6 +28,17 @@ public class User {
         this.imageUrl = "https://firebasestorage.googleapis.com/v0/b/tpaandroid-8e254.appspot.com/o/images%2Fdefaultprofile.png?alt=media&token=059d3e03-7c52-414f-a673-f50deb428122";
     }
 
+    public User(String fullName, String email, String password, String address, String role, String userId, String imageUrl) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.role = role;
+        this.userId = userId;
+        this.reviews = new ArrayList<>();
+        this.imageUrl = imageUrl;
+    }
+
     public String getUserId() {
         return userId;
     }

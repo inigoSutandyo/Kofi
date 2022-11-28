@@ -78,9 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                             String address = (String) document.getData().get("address");
                             String password = (String) document.getData().get("password");
                             String role = (String) document.getData().get("role");
-
-                            User.setCurrentUser(new User(fullName, email, password, address, role, document.getId()));
-                            Log.d("Login", User.getCurrentUser()+"");
+                            String image = (String) document.getData().get("imageUrl");
+                            User.setCurrentUser(new User(fullName, email, password, address, role, document.getId(), image));
                             moveMainPage();
                         }
                     }
@@ -149,7 +148,8 @@ public class LoginActivity extends AppCompatActivity {
                                         "",
                                         (String) doc.getData().get("password"),
                                         "User",
-                                        doc.getId());
+                                        doc.getId(),
+                                        (String)doc.getData().get("imageUrl"));
                                 User.setCurrentUser(user);
                                 moveMainPage();
                             }

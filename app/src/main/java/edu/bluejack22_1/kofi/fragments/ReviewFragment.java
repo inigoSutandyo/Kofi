@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -116,7 +117,9 @@ public class ReviewFragment extends Fragment implements
         commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addComment();
+                if(!commentTxt.getText().toString().isEmpty()){
+                    addComment();
+                }
             }
         });
         return view;
@@ -142,12 +145,10 @@ public class ReviewFragment extends Fragment implements
         if (docSnap.exists()) {
             Review review = docSnap.toObject(Review.class);
             userName.setText(review.getUser().getFullName());
-            // URL load failed
-//            Log.d("IMAGE", review.getUser().getImageUrl());
-//            Glide.with(view)
-//                    .load(review.getUser().getImageUrl())
-//                    .placeholder(R.drawable.itemplaceholder)
-//                    .into(userImg);
+            Glide.with(view)
+                    .load(review.getUser().getImageUrl())
+                    .placeholder(R.drawable.itemplaceholder)
+                    .into(userImg);
             reviewTxt.setText(review.getContent());
             ratingTxt.setText(review.getRating() + " / 5");
         }
