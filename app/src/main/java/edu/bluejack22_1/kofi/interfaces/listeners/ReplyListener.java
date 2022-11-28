@@ -4,4 +4,5 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public interface ReplyListener {
     public void onCompleteReplyCollection(QuerySnapshot querySnapshot);
+    public void onSuccessReply();
 }

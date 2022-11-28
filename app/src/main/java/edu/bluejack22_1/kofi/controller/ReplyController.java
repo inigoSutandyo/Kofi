@@ -1,8 +1,11 @@
 package edu.bluejack22_1.kofi.controller;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
+import edu.bluejack22_1.kofi.model.Reply;
+import edu.bluejack22_1.kofi.model.User;
 
 public class ReplyController {
 
@@ -10,6 +13,23 @@ public class ReplyController {
 
     public ReplyController(){
         db = FirebaseFirestore.getInstance();
+    }
+
+    public void addReply(String path, String content, ReplyListener listener){
+        DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
+        Reply reply = new Reply(content, "", ref);
+        db.collection("coffeeshop")
+                .document(path)
+                .collection("replies")
+                .add(reply)
+                .addOnCompleteListener(task -> {
+                    db.collection("coffeeshop")
+                            .document(path)
+                            .collection("replies")
+                            .document(task.getResult().getId()).update("replyId", task.getResult().getId()).addOnCompleteListener(task1 -> {
+                                listener.onSuccessReply();
+                            });
+                });
     }
 
     public void getReplies(String path, ReplyListener listener) {

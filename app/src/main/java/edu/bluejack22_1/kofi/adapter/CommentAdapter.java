@@ -32,7 +32,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_reply,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_comment,parent,false);
 
         return new CommentViewHolder(view, recyclerViewInterface);
     }
@@ -54,13 +54,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameTxt, contentTxt;
+        TextView nameTxt, contentTxt, replyBtn;
         ImageView deleteBtn;
         public CommentViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
-            nameTxt = itemView.findViewById(R.id.card_reply_name);
-            contentTxt = itemView.findViewById(R.id.card_reply_content);
-            deleteBtn = itemView.findViewById(R.id.card_reply_delete);
+            nameTxt = itemView.findViewById(R.id.card_comment_name);
+            contentTxt = itemView.findViewById(R.id.card_comment_content);
+            deleteBtn = itemView.findViewById(R.id.card_comment_delete);
+            replyBtn = itemView.findViewById(R.id.card_reply);
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -72,7 +73,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 }
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            replyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int pos = getAdapterPosition();

@@ -9,10 +9,10 @@ public class Reply {
 
     public Reply(){}
 
-    public Reply(String content, String replyId, User user, DocumentReference userRef) {
+    public Reply(String content, String replyId, DocumentReference userRef) {
         this.content = content;
         this.replyId = replyId;
-        this.user = user;
+        this.user = User.getCurrentUser();
         this.userRef = userRef;
     }
 

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class CommentFragment extends Fragment implements
     private ArrayList<Reply> replies;
     private ReplyController replyController;
 
-    private String path;
+    private String path, name, comment, image;
     private TextView userName, commentTxt;
     private ImageView userImg, backImg;
     private EditText replyTxt;
@@ -98,9 +99,9 @@ public class CommentFragment extends Fragment implements
 
         Bundle args = getArguments();
         path = args.getString("PATH");
-        String comment = args.getString("COMMENT");
-        String name = args.getString("NAME");
-        String image = args.getString("IMAGE");
+        comment = args.getString("COMMENT");
+        name = args.getString("NAME");
+        image = args.getString("IMAGE");
         shopId = args.getString("SHOP_ID");
         reviewId = args.getString("REVIEW_ID");
         userName.setText(name);
@@ -111,7 +112,12 @@ public class CommentFragment extends Fragment implements
                 returnFragment();
             }
         });
-
+        replyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createReply();
+            }
+        });
         return view;
     }
 
@@ -122,7 +128,13 @@ public class CommentFragment extends Fragment implements
         replyController.getReplies(path, this);
         replyAdapter = new ReplyAdapter(this.getContext(), replies, this);
         recyclerView = view.findViewById(R.id.reply_recycler);
+        recyclerView.setAdapter(replyAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+    }
 
+    private void createReply(){
+        ReplyController replycontroller = new ReplyController();
+        replycontroller.addReply(path, replyTxt.getText().toString(), this);
     }
 
     @Override
@@ -132,6 +144,20 @@ public class CommentFragment extends Fragment implements
             replies.add(reply);
         }
         replyAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessReply() {
+        Bundle bundle = new Bundle();
+        bundle.putString("REVIEW_ID",reviewId);
+        bundle.putString("SHOP_ID", shopId);
+        bundle.putString("PATH", path);
+        bundle.putString("COMMENT", comment);
+        bundle.putString("NAME", name);
+        bundle.putString("IMAGE", image);
+        Fragment commentFragment = new CommentFragment();
+        commentFragment.setArguments(bundle);
+        replaceFragment(commentFragment);
     }
 
     @Override
