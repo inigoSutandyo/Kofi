@@ -10,13 +10,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.model.Comment;
+import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
 public class CommentController {
     private FirebaseFirestore db;
+    private NotificationController notifcontroller;
 
     public CommentController() {
         db = FirebaseFirestore.getInstance();
+        notifcontroller = new NotificationController();
     }
 
     public void addComment(String shopId, String reviewId, String content, CommentListener listener){
@@ -25,17 +28,22 @@ public class CommentController {
         db.collection("coffeeshop").document(shopId).
                 collection("reviews").document(reviewId).collection("comments").
                 add(comment)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
                         db.collection("coffeeshop").document(shopId).
-                                collection("reviews")
-                                .document(reviewId)
-                                .collection("comments")
-                                .document(task.getResult().getId())
-                                .update("commentId", task.getResult().getId())
-                                .addOnCompleteListener(task1 -> {
-                                    listener.onSuccessComment();
+                                collection("reviews").document(reviewId).collection("comments").document(task.getResult().getId()).get().addOnCompleteListener(task1 -> {
+                                    Comment temp = task1.getResult().toObject(Comment.class);
+                                    notifcontroller.addNotification(temp.getUser().getUserId(), "has commented on your review");
+                                }).addOnCompleteListener(task1 -> {
+                                    db.collection("coffeeshop").document(shopId).
+                                            collection("reviews")
+                                            .document(reviewId)
+                                            .collection("comments")
+                                            .document(task.getResult().getId())
+                                            .update("commentId", task.getResult().getId())
+                                            .addOnCompleteListener(task2 -> {
+                                                listener.onSuccessComment();
+                                            });
                                 });
                     }
                 });

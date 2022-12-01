@@ -203,7 +203,7 @@ public class ReviewFragment extends Fragment implements
 
     @Override
     public void onSuccessComment() {
-
+        returnFragment();
     }
 
     @Override

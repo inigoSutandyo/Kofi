@@ -10,9 +10,11 @@ import edu.bluejack22_1.kofi.model.User;
 public class ReplyController {
 
     private FirebaseFirestore db;
+    private NotificationController notifcontroller;
 
     public ReplyController(){
         db = FirebaseFirestore.getInstance();
+        notifcontroller = new NotificationController();
     }
 
     public void addReply(String path, String content, ReplyListener listener){
@@ -23,12 +25,18 @@ public class ReplyController {
                 .collection("replies")
                 .add(reply)
                 .addOnCompleteListener(task -> {
-                    db.collection("coffeeshop")
-                            .document(path)
-                            .collection("replies")
-                            .document(task.getResult().getId()).update("replyId", task.getResult().getId()).addOnCompleteListener(task1 -> {
-                                listener.onSuccessReply();
-                            });
+                    db.collection("coffeeshop").document(path).collection("replies").document(task.getResult().getId()).get().addOnCompleteListener(task1 -> {
+                        Reply rep = task1.getResult().toObject(Reply.class);
+                        String uid = rep.getUser().getUserId();
+                        notifcontroller.addNotification(uid, "has replied on your comment");
+                    }).addOnCompleteListener(task2 -> {
+                        db.collection("coffeeshop")
+                                .document(path)
+                                .collection("replies")
+                                .document(task.getResult().getId()).update("replyId", task.getResult().getId()).addOnCompleteListener(task1 -> {
+                                    listener.onSuccessReply();
+                                });
+                    });
                 });
     }
 
