@@ -2,6 +2,7 @@ package edu.bluejack22_1.kofi.controller;
 
 import android.util.Log;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.NotificationListener;
@@ -17,7 +18,7 @@ public class NotificationController {
         if (User.getCurrentUser().getUserId().equals(userId)) {
             return;
         }
-        Notification notification = new Notification(content, User.getCurrentUser(), "");
+        Notification notification = new Notification(content, User.getCurrentUser(), "", Timestamp.now());
         db.collection("users")
                 .document(userId)
                 .collection("notifications")

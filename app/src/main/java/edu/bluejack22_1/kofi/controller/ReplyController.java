@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.controller;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -19,7 +20,7 @@ public class ReplyController {
 
     public void addReply(String path, String content, ReplyListener listener){
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
-        Reply reply = new Reply(content, "", ref);
+        Reply reply = new Reply(content, "", ref, Timestamp.now());
         db.collection("coffeeshop")
                 .document(path)
                 .collection("replies")

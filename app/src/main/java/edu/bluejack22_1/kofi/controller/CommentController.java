@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -23,7 +24,7 @@ public class CommentController {
 
     public void addComment(String shopId, Review review, String content, CommentListener listener){
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
-        Comment comment = new Comment(content, User.getCurrentUser(), ref, "");
+        Comment comment = new Comment(content, "", User.getCurrentUser(), ref, Timestamp.now());
         db.collection("coffeeshop").document(shopId).
                 collection("reviews").document(review.getReviewId()).collection("comments").
                 add(comment)

@@ -1,19 +1,30 @@
 package edu.bluejack22_1.kofi.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 public class Comment {
     private String content, commentId;
     private User user;
     private DocumentReference userRef;
+    private Timestamp dateCreated;
 
     public Comment() {}
 
-    public Comment(String content, User user, DocumentReference userRef, String commentId) {
+    public Comment(String content, String commentId, User user, DocumentReference userRef, Timestamp dateCreated) {
         this.content = content;
+        this.commentId = commentId;
         this.user = user;
         this.userRef = userRef;
-        this.commentId = commentId;
+        this.dateCreated = dateCreated;
+    }
+
+    public Timestamp getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public String getContent() {
