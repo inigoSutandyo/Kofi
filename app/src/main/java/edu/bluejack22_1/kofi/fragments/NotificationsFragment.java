@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,16 +23,18 @@ import java.util.ArrayList;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.NotificationAdapter;
 import edu.bluejack22_1.kofi.controller.NotificationController;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.NotificationListener;
 import edu.bluejack22_1.kofi.model.Notification;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificationsFragment extends Fragment implements NotificationListener, RecyclerViewInterface {
+public class NotificationsFragment extends Fragment implements NotificationListener, RecyclerViewInterface, FragmentInterface {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -88,10 +93,15 @@ public class NotificationsFragment extends Fragment implements NotificationListe
     public void onCompleteNotification(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot document: querySnap) {
             Notification notification = document.toObject(Notification.class);
-            Log.d("NOTIFICATION", notification.getContent());
+//            Log.d("NOTIFICATION", notification.getContent());
             notifications.add(notification);
         };
         notificationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessNotification() {
+        replaceFragment(new NotificationsFragment());
     }
 
     @Override
@@ -101,6 +111,21 @@ public class NotificationsFragment extends Fragment implements NotificationListe
 
     @Override
     public void onClickDelete(int position) {
+        Notification notification = notifications.get(position);
+        notificationController.deleteNotification(User.getCurrentUser().getUserId(), notification.getNotificationId(), this);
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.detach(this);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void returnFragment() {
 
     }
 }

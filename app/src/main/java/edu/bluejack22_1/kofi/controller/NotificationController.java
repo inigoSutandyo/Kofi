@@ -14,12 +14,20 @@ public class NotificationController {
     public NotificationController(){ db = FirebaseFirestore.getInstance();}
 
     public void addNotification(String userId, String content){
-        Log.d("NOTIFICATION", User.getCurrentUser().getUserId() + " | " + userId);
         if (User.getCurrentUser().getUserId().equals(userId)) {
             return;
         }
-        Notification notification = new Notification(content, User.getCurrentUser());
-        db.collection("users").document(userId).collection("notifications").add(notification);
+        Notification notification = new Notification(content, User.getCurrentUser(), "");
+        db.collection("users")
+                .document(userId)
+                .collection("notifications")
+                .add(notification)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        task.getResult()
+                                .update("notificationId", task.getResult().getId());
+                    }
+                });
     }
 
     public void getMyNotifications(NotificationListener listener){
@@ -30,6 +38,18 @@ public class NotificationController {
                     if (task.isSuccessful()) {
                         listener.onCompleteNotification(task.getResult());
                     }
+                });
+    }
+
+    public void deleteNotification(String userId, String notificationId, NotificationListener listener) {
+        db.collection("users")
+                .document(userId)
+                .collection("notifications")
+                .document(notificationId)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    Log.d("NOTIFICATIONS", "Successfully deleted");
+                    listener.onSuccessNotification();
                 });
     }
 }

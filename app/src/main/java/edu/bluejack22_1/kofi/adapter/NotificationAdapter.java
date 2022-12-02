@@ -1,9 +1,11 @@
 package edu.bluejack22_1.kofi.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,10 +50,25 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class NotificationViewHolder extends RecyclerView.ViewHolder {
         private TextView nameView, contentView;
+        private ImageView delete;
         public NotificationViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             nameView = itemView.findViewById(R.id.card_notification_name);
             contentView = itemView.findViewById(R.id.card_notification_text);
+
+            delete = itemView.findViewById(R.id.card_notification_delete);
+
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Log.d("NOTIFICATIONS", position + "");
+                        recyclerViewInterface.onClickDelete(position);
+                    }
+                }
+            });
         }
     }
 }
