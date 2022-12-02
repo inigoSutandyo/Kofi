@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="120dp"
         android:src="@drawable/itemplaceholder"
         android:id="@+id/shopimage"/>
 
@@ -25,23 +25,24 @@
             android:layout_height="wrap_content"
             android:text="Hello World"
             android:textStyle="bold"
-            android:textSize="32dp"
+            android:textSize="24dp"
             android:layout_gravity="center_vertical"/>
         <TextView
             android:id="@+id/detail_shop_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello World"
-            android:textStyle="bold"
-            android:textSize="24dp"
+            android:textStyle="normal"
+            android:textSize="20dp"
             android:layout_gravity="center_vertical"/>
         <TextView
             android:id="@+id/detail_shop_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello World"
-            android:textStyle="bold"
-            android:textSize="24dp"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:textSize="18dp"
             android:layout_gravity="center_vertical" />
     </LinearLayout>
 
@@ -60,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="370dp"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="8dp"/>
 
 
     </LinearLayout>

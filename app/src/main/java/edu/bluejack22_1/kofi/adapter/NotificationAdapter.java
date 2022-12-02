@@ -41,6 +41,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Notification notification = notifications.get(position);
         holder.nameView.setText(notification.getUser().getFullName());
         holder.contentView.setText(notification.getContent());
+        holder.timeView.setText(notification.getDateCreated().toDate().toString());
     }
 
     @Override
@@ -49,13 +50,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public class NotificationViewHolder extends RecyclerView.ViewHolder {
-        private TextView nameView, contentView;
+        private TextView nameView, contentView, timeView;
         private ImageView delete;
         public NotificationViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             nameView = itemView.findViewById(R.id.card_notification_name);
             contentView = itemView.findViewById(R.id.card_notification_text);
-
+            timeView = itemView.findViewById(R.id.card_notification_time);
             delete = itemView.findViewById(R.id.card_notification_delete);
 
 

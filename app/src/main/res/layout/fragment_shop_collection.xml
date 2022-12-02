@@ -17,7 +17,7 @@
             android:progressTint="#ffff8800"
             android:backgroundTint="@color/white"
             android:layout_gravity="center"
-            android:layout_marginVertical="8dp"/>
+            android:layout_marginVertical="4dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/detail_shop_list"
