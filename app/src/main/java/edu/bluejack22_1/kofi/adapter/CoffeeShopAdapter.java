@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.model.CoffeeShop;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.CoffeeViewHolder>{
 

@@ -3,7 +3,6 @@ package edu.bluejack22_1.kofi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.controller.UserController;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 
 public class LoginActivity extends AppCompatActivity {

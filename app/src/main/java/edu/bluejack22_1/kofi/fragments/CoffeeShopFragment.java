@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopPagerAdapter;
-import edu.bluejack22_1.kofi.model.CoffeeShop;
+import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -4,10 +4,11 @@ import android.util.Log;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.NotificationListener;
-import edu.bluejack22_1.kofi.model.Notification;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.Notification;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class NotificationController {
 
@@ -35,7 +36,7 @@ public class NotificationController {
         db.collection("users")
                 .document(User.getCurrentUser().getUserId())
                 .collection("notifications")
-                .orderBy("dateCreated")
+                .orderBy("dateCreated", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -1,13 +1,11 @@
 package edu.bluejack22_1.kofi.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,13 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
-import edu.bluejack22_1.kofi.controller.LikeController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.model.CoffeeShop;
-import edu.bluejack22_1.kofi.model.Review;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.Review;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
     private ArrayList<Review> reviews;

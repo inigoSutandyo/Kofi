@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.model.Comment;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.Comment;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder>{
 

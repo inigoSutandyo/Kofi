@@ -12,7 +12,7 @@ import com.smarteist.autoimageslider.SliderViewAdapter;
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
-import edu.bluejack22_1.kofi.model.SliderData;
+import edu.bluejack22_1.kofi.controller.model.SliderData;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterViewHolder> {
 

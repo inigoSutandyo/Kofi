@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.model.Notification;
+import edu.bluejack22_1.kofi.controller.model.Notification;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 

@@ -30,7 +30,7 @@ import edu.bluejack22_1.kofi.controller.ReplyController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
-import edu.bluejack22_1.kofi.model.Reply;
+import edu.bluejack22_1.kofi.controller.model.Reply;
 
 /**
  * A simple {@link Fragment} subclass.

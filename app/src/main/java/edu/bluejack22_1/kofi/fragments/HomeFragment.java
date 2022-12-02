@@ -19,8 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
@@ -32,9 +30,9 @@ import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
-import edu.bluejack22_1.kofi.model.CoffeeShop;
-import edu.bluejack22_1.kofi.model.SliderData;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
+import edu.bluejack22_1.kofi.controller.model.SliderData;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 /**
  * A simple {@link Fragment} subclass.

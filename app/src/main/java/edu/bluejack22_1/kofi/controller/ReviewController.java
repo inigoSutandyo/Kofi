@@ -1,10 +1,8 @@
 package edu.bluejack22_1.kofi.controller;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,12 +17,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 
-import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
-import edu.bluejack22_1.kofi.fragments.CoffeeShopFragment;
-import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.model.Review;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.Review;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class ReviewController {
     FirebaseFirestore db;
@@ -57,21 +52,23 @@ public class ReviewController {
     }
 
     public void deleteReview(String shopId, String reviewId, ReviewListener listener){
-        db.collection("coffeeshop").document(shopId).collection("reviews").document(reviewId).delete().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                DocumentReference reference = db.collection("users").document(reviewId);
-                db.collection("users")
-                        .document(User.getCurrentUser().getUserId())
-                        .update("reviews", FieldValue.arrayRemove(reference)).addOnCompleteListener(task1 -> {
-                    listener.onSuccessReview();
+        db.collection("coffeeshop")
+                .document(shopId).collection("reviews")
+                .document(reviewId).delete()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        DocumentReference reference = db.collection("users").document(reviewId);
+                        db.collection("users")
+                                .document(User.getCurrentUser().getUserId())
+                                .update("reviews", FieldValue.arrayRemove(reference)).addOnCompleteListener(task1 -> {
+                                    listener.onSuccessReview();
+                                });
+                    }
                 });
-            }
-        });
     }
 
     public void getReviews(String shopId, ReviewListener listener) {
         CollectionReference reviewCollection = db.collection("coffeeshop/"+shopId+"/reviews");
-//        Log.d("COFFEE", "ID = " + shopId);
         reviewCollection.orderBy("dateCreated", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -84,24 +81,6 @@ public class ReviewController {
                      }
                 });
     }
-
-//    public void addUserByRef(DocumentReference ref, Review review, ReviewAdapter adapter) {
-//        ref.get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            Review review =
-//                            review.setUser(new User(fullName, email, password, address, role, userId));
-//                            adapter.notifyDataSetChanged();
-//                        } else {
-//                            Log.d("Coffee", "No such document");
-//                        }
-//                    } else {
-//                        Log.d("Coffee", "get failed with ", task.getException());
-//                    }
-//                });
-//    }
 
     public void getMyReviews(User user, ReviewListener listener) {
         if (user.getReviews().size() < 1) {

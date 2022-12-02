@@ -2,8 +2,6 @@ package edu.bluejack22_1.kofi.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,7 +22,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.controller.model.Review;
 
 /**
  * A simple {@link Fragment} subclass.

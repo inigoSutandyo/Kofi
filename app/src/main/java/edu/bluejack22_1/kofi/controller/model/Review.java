@@ -1,4 +1,4 @@
-package edu.bluejack22_1.kofi.model;
+package edu.bluejack22_1.kofi.controller.model;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;

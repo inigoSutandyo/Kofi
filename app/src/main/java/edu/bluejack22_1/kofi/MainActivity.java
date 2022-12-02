@@ -16,16 +16,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
-import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.databinding.ActivityMainBinding;
 import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.fragments.NotificationsFragment;
 import edu.bluejack22_1.kofi.fragments.ProfileFragment;
-import edu.bluejack22_1.kofi.fragments.UpdateProfileFragment;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class MainActivity extends AppCompatActivity implements FragmentInterface {
     private FirebaseAuth mAuth;

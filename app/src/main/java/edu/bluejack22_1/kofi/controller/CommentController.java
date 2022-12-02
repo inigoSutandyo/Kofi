@@ -7,12 +7,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
-import edu.bluejack22_1.kofi.model.Comment;
-import edu.bluejack22_1.kofi.model.Review;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.Comment;
+import edu.bluejack22_1.kofi.controller.model.Review;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 public class CommentController {
     private FirebaseFirestore db;
@@ -65,7 +66,7 @@ public class CommentController {
                 .collection("reviews")
                 .document(reviewId)
                 .collection("comments")
-                .orderBy("dateCreated")
+                .orderBy("dateCreated", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                    if (task.isSuccessful())  {

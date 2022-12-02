@@ -10,14 +10,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,9 +31,9 @@ import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeListener;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.model.Coffee;
-import edu.bluejack22_1.kofi.model.Review;
-import edu.bluejack22_1.kofi.model.User;
+import edu.bluejack22_1.kofi.controller.model.Coffee;
+import edu.bluejack22_1.kofi.controller.model.Review;
+import edu.bluejack22_1.kofi.controller.model.User;
 
 /**
  * A simple {@link Fragment} subclass.

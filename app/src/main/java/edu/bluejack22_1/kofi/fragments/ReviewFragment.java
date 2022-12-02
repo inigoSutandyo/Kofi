@@ -35,8 +35,8 @@ import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.model.Comment;
-import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.controller.model.Comment;
+import edu.bluejack22_1.kofi.controller.model.Review;
 
 /**
  * A simple {@link Fragment} subclass.

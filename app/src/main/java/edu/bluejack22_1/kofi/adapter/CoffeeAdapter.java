@@ -1,7 +1,6 @@
 package edu.bluejack22_1.kofi.adapter;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.model.Coffee;
+import edu.bluejack22_1.kofi.controller.model.Coffee;
 
 public class CoffeeAdapter extends RecyclerView.Adapter<CoffeeAdapter.CoffeeViewHolder>{
 

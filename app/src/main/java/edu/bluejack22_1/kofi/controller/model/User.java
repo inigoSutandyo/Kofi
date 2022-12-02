@@ -1,10 +1,7 @@
-package edu.bluejack22_1.kofi.model;
-
-import android.net.Uri;
+package edu.bluejack22_1.kofi.controller.model;
 
 import com.google.firebase.firestore.DocumentReference;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class User {

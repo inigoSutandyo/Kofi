@@ -1,4 +1,4 @@
-package edu.bluejack22_1.kofi.model;
+package edu.bluejack22_1.kofi.controller.model;
 
 public class CoffeeShop {
     private String shopName, shopAddress, shopDescription, shopId, imageUrl;

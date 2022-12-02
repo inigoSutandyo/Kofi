@@ -1,14 +1,10 @@
 package edu.bluejack22_1.kofi.controller;
 
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +21,7 @@ import edu.bluejack22_1.kofi.R;
 
 import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
-import edu.bluejack22_1.kofi.model.CoffeeShop;
+import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
 
 public class CoffeeShopController {
     FirebaseFirestore db;
