@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CommentAdapter;
 import edu.bluejack22_1.kofi.controller.CommentController;
-import edu.bluejack22_1.kofi.controller.LikeController;
 import edu.bluejack22_1.kofi.controller.NotificationController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
@@ -38,7 +37,6 @@ import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Review;
-import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -145,7 +143,7 @@ public class ReviewFragment extends Fragment implements
         commentAdapter = new CommentAdapter(this.getContext(), comments, this);
         recyclerView.setAdapter(commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        commentController.getReplies(shopID, reviewID, this);
+        commentController.getComments(shopID, reviewID, this);
     }
 
     @Override
@@ -233,6 +231,6 @@ public class ReviewFragment extends Fragment implements
     @Override
     public void onClickDelete(int position) {
         CommentController controller = new CommentController();
-        controller.deleteCommment(shopID, reviewID, comments.get(position).getCommentId(), this);
+        controller.deleteComment(shopID, reviewID, comments.get(position).getCommentId(), this);
     }
 }

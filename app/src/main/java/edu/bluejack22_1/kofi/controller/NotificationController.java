@@ -32,8 +32,10 @@ public class NotificationController {
     }
 
     public void getMyNotifications(NotificationListener listener){
-        db.collection("users").document(User.getCurrentUser().getUserId())
+        db.collection("users")
+                .document(User.getCurrentUser().getUserId())
                 .collection("notifications")
+                .orderBy("dateCreated")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

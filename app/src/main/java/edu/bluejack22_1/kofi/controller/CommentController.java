@@ -44,7 +44,7 @@ public class CommentController {
                 });
     }
 
-   public void deleteCommment(String shopId, String reviewId, String replyId, FragmentInterface listener){
+   public void deleteComment(String shopId, String reviewId, String replyId, FragmentInterface listener){
        db.collection("coffeeshop")
                .document(shopId)
                .collection("reviews")
@@ -59,12 +59,13 @@ public class CommentController {
                });
    }
 
-    public void getReplies(String shopId, String reviewId, CommentListener listener) {
+    public void getComments(String shopId, String reviewId, CommentListener listener) {
         db.collection("coffeeshop")
                 .document(shopId)
                 .collection("reviews")
                 .document(reviewId)
                 .collection("comments")
+                .orderBy("dateCreated")
                 .get()
                 .addOnCompleteListener(task -> {
                    if (task.isSuccessful())  {

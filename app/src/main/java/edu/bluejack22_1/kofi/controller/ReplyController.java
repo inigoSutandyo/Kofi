@@ -53,6 +53,7 @@ public class ReplyController {
         db.collection("coffeeshop")
                 .document(path)
                 .collection("replies")
+                .orderBy("dateCreated")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
