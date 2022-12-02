@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CommentAdapter;
 import edu.bluejack22_1.kofi.controller.CommentController;
 import edu.bluejack22_1.kofi.controller.LikeController;
+import edu.bluejack22_1.kofi.controller.NotificationController;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
@@ -66,11 +68,15 @@ public class ReviewFragment extends Fragment implements
     private CommentAdapter commentAdapter;
     private ArrayList<Comment> comments;
     private CommentController commentController;
+    private NotificationController notificationController;
+    private Review review;
+
     View view;
     public ReviewFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
         commentController = new CommentController();
+        notificationController = new NotificationController();
     }
 
     public static ReviewFragment newInstance(String param1, String param2) {
@@ -128,7 +134,7 @@ public class ReviewFragment extends Fragment implements
     }
 
     private void addComment(){
-        commentController.addComment(shopID, reviewID, commentTxt.getText().toString(), this);
+        commentController.addComment(shopID, review, commentTxt.getText().toString(), this);
     }
 
     @Override
@@ -145,7 +151,7 @@ public class ReviewFragment extends Fragment implements
     @Override
     public void onCompleteReview(DocumentSnapshot docSnap) {
         if (docSnap.exists()) {
-            Review review = docSnap.toObject(Review.class);
+            review = docSnap.toObject(Review.class);
             userName.setText(review.getUser().getFullName());
             Glide.with(view)
                     .load(review.getUser().getImageUrl())
@@ -203,6 +209,8 @@ public class ReviewFragment extends Fragment implements
 
     @Override
     public void onSuccessComment() {
+        Log.d("NOTIFICATION", review.getContent() + " " + review.getUser().getFullName());
+        notificationController.addNotification(review.getUser().getUserId(), "has commented on your review");
         returnFragment();
     }
 

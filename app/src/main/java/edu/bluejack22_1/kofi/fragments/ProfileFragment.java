@@ -149,6 +149,7 @@ public class ProfileFragment extends Fragment implements
                 mAuth.signOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                User.setCurrentUser(null);
             }
         });
 
