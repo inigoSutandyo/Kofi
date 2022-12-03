@@ -1,20 +1,20 @@
-package edu.bluejack22_1.kofi.controller.model;
+package edu.bluejack22_1.kofi.model;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-public class Reply {
-    private String content, replyId;
+public class Comment {
+    private String content, commentId;
     private User user;
     private DocumentReference userRef;
     private Timestamp dateCreated;
 
-    public Reply(){}
+    public Comment() {}
 
-    public Reply(String content, String replyId, DocumentReference userRef, Timestamp dateCreated) {
+    public Comment(String content, String commentId, User user, DocumentReference userRef, Timestamp dateCreated) {
         this.content = content;
-        this.replyId = replyId;
-        this.user = User.getCurrentUser();
+        this.commentId = commentId;
+        this.user = user;
         this.userRef = userRef;
         this.dateCreated = dateCreated;
     }
@@ -35,14 +35,6 @@ public class Reply {
         this.content = content;
     }
 
-    public String getReplyId() {
-        return replyId;
-    }
-
-    public void setReplyId(String replyId) {
-        this.replyId = replyId;
-    }
-
     public User getUser() {
         return user;
     }
@@ -57,5 +49,13 @@ public class Reply {
 
     public void setUserRef(DocumentReference userRef) {
         this.userRef = userRef;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 }

@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
-import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
+import edu.bluejack22_1.kofi.model.User;
 
 public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.CoffeeViewHolder>{
 
@@ -52,7 +52,7 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
         }
         holder.name.setText(cf.getShopName());
         holder.address.setText(cf.getShopAddress());
-        Glide.with(holder.itemView).load(cf.getImageUrl()).placeholder(R.drawable.itemplaceholder).into(holder.shopImage);
+        Glide.with(holder.itemView).load(cf.getImageUrl()).placeholder(R.drawable.item_place_holder).into(holder.shopImage);
         Log.d("Delete Coffee", coffeeShops.get(position).getShopId());
         holder.shopdeleteImage.setOnClickListener(new View.OnClickListener() {
             @Override

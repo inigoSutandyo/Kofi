@@ -1,4 +1,4 @@
-package edu.bluejack22_1.kofi.controller.model;
+package edu.bluejack22_1.kofi.model;
 
 import com.google.firebase.firestore.DocumentReference;
 

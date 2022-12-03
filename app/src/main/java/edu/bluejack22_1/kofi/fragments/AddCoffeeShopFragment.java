@@ -25,7 +25,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.databinding.FragmentAddCoffeeShopBinding;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
-import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
 
 /**
  * A simple {@link Fragment} subclass.

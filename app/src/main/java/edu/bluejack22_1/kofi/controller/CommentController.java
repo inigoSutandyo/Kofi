@@ -11,9 +11,9 @@ import com.google.firebase.firestore.Query;
 
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
-import edu.bluejack22_1.kofi.controller.model.Comment;
-import edu.bluejack22_1.kofi.controller.model.Review;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.Comment;
+import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 public class CommentController {
     private FirebaseFirestore db;

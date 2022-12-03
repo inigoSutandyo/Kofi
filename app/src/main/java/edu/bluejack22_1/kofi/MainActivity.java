@@ -22,7 +22,7 @@ import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.fragments.NotificationsFragment;
 import edu.bluejack22_1.kofi.fragments.ProfileFragment;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.User;
 
 public class MainActivity extends AppCompatActivity implements FragmentInterface {
     private FirebaseAuth mAuth;

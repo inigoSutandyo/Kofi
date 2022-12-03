@@ -19,7 +19,7 @@ import com.google.firebase.storage.UploadTask;
 
 import edu.bluejack22_1.kofi.MainActivity;
 import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.User;
 
 public class UserController {
     FirebaseFirestore db;

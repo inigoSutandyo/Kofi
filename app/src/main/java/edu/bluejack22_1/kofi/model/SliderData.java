@@ -1,4 +1,4 @@
-package edu.bluejack22_1.kofi.controller.model;
+package edu.bluejack22_1.kofi.model;
 
 public class SliderData {
 

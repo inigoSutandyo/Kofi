@@ -35,8 +35,8 @@ import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.controller.model.Comment;
-import edu.bluejack22_1.kofi.controller.model.Review;
+import edu.bluejack22_1.kofi.model.Comment;
+import edu.bluejack22_1.kofi.model.Review;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -153,7 +153,7 @@ public class ReviewFragment extends Fragment implements
             userName.setText(review.getUser().getFullName());
             Glide.with(view)
                     .load(review.getUser().getImageUrl())
-                    .placeholder(R.drawable.itemplaceholder)
+                    .placeholder(R.drawable.item_place_holder)
                     .into(userImg);
             reviewTxt.setText(review.getContent());
             ratingTxt.setText(review.getRating() + " / 5");

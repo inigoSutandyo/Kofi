@@ -30,7 +30,7 @@ import edu.bluejack22_1.kofi.controller.UserController;
 import edu.bluejack22_1.kofi.databinding.FragmentUpdateProfileBinding;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.

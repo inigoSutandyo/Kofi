@@ -30,9 +30,9 @@ import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
-import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
-import edu.bluejack22_1.kofi.controller.model.SliderData;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
+import edu.bluejack22_1.kofi.model.SliderData;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.

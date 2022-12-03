@@ -22,7 +22,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.ReviewController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.controller.model.Review;
+import edu.bluejack22_1.kofi.model.Review;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -30,7 +30,7 @@ import edu.bluejack22_1.kofi.controller.ReplyController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
-import edu.bluejack22_1.kofi.controller.model.Reply;
+import edu.bluejack22_1.kofi.model.Reply;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -109,7 +109,7 @@ public class CommentFragment extends Fragment implements
         commentTxt.setText(comment);
         Glide.with(view)
                 .load(image)
-                .placeholder(R.drawable.itemplaceholder)
+                .placeholder(R.drawable.item_place_holder)
                 .into(userImg);
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override

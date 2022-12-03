@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopPagerAdapter;
-import edu.bluejack22_1.kofi.controller.model.CoffeeShop;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,7 +129,7 @@ public class CoffeeShopFragment extends Fragment {
         nameView.setText(coffeeShop.getShopName());
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
-        Glide.with(view).load(coffeeShop.getImageUrl()).placeholder(R.drawable.itemplaceholder).into(shopImageView);
+        Glide.with(view).load(coffeeShop.getImageUrl()).placeholder(R.drawable.item_place_holder).into(shopImageView);
     }
 
 }

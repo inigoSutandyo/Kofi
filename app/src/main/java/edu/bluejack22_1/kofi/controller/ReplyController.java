@@ -6,8 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
-import edu.bluejack22_1.kofi.controller.model.Reply;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.Reply;
+import edu.bluejack22_1.kofi.model.User;
 
 public class ReplyController {
 

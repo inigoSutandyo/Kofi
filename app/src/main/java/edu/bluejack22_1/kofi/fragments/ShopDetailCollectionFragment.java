@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,9 +32,9 @@ import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeListener;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.controller.model.Coffee;
-import edu.bluejack22_1.kofi.controller.model.Review;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.Coffee;
+import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,12 +47,9 @@ public class ShopDetailCollectionFragment extends Fragment implements
         ReviewListener,
         FragmentInterface {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private ReviewController reviewController;
@@ -64,6 +62,8 @@ public class ShopDetailCollectionFragment extends Fragment implements
     private ArrayList<Coffee> coffees;
     private ArrayList<Review> reviews;
     private RatingBar ratingBar;
+    private FloatingActionButton fab;
+
     public ShopDetailCollectionFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
@@ -93,7 +93,21 @@ public class ShopDetailCollectionFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shop_collection, container, false);
+        View view = inflater.inflate(R.layout.fragment_shop_collection, container, false);
+        fab = view.findViewById(R.id.fab_shop);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putString("SHOP_ID", id);
+                Fragment fragment = new AddCoffeeFragment();
+                fragment.setArguments(args);
+                replaceFragment(fragment);
+            }
+        });
+
+        return view;
     }
 
     @Override
@@ -136,12 +150,18 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     private void showReviews() {
+        fab.setVisibility(View.GONE);
         ratingBar.setVisibility(View.VISIBLE);
         rv.setAdapter(reviewAdapter);
 
     }
 
     private void showCoffees() {
+        if (!User.getCurrentUser().getRole().equals("Admin")) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
         ratingBar.setVisibility(View.GONE);
         rv.setAdapter(coffeeAdapter);
     }
@@ -168,9 +188,8 @@ public class ShopDetailCollectionFragment extends Fragment implements
     @Override
     public void onCompleteCoffeeCollection(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot documentSnapshot: querySnap) {
-            String name = (String) documentSnapshot.getData().get("name");
-            long price = (Long) documentSnapshot.getData().get("price");
-            coffees.add(new Coffee(name,price,documentSnapshot.getId()));
+            Coffee coffee = documentSnapshot.toObject(Coffee.class);
+            coffees.add(coffee);
         }
         coffeeAdapter.notifyDataSetChanged();
     }

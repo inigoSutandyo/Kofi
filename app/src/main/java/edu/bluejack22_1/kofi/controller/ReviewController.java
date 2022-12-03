@@ -18,8 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Date;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
-import edu.bluejack22_1.kofi.controller.model.Review;
-import edu.bluejack22_1.kofi.controller.model.User;
+import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 public class ReviewController {
     FirebaseFirestore db;
