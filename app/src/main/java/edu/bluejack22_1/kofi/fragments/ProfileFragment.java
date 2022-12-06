@@ -77,11 +77,7 @@ public class ProfileFragment extends Fragment implements
 
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    public ProfileFragment(User user) {
-        // Required empty public constructor
-        tempUser = user;
+        tempUser = User.getCurrentUser();
     }
 
     public static ProfileFragment newInstance(String param1, String param2) {

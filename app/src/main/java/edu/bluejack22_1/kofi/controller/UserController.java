@@ -83,6 +83,7 @@ public class UserController {
                     User tempUser = task.getResult().toObject(User.class);
                     tempUser.setFullName(fullName);
                     tempUser.setAddress(address);
+                    tempUser.setUserId(task.getResult().getId());
                     ref.set(tempUser).addOnSuccessListener(v -> {
                             if(imageUri != null) {
                                 storageReference = FirebaseStorage.getInstance().getReference("images/"+uid);

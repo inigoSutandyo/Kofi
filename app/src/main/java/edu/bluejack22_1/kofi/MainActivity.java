@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInterface
                 if (task.isSuccessful()) {
                     User tempUser = task.getResult().toObject(User.class);
                     tempUser.setUserId(currentuser.getUid());
-                    replaceFragment(new ProfileFragment(tempUser));
+                    replaceFragment(new ProfileFragment());
                 } else {
                     Log.d("User", "Error getting documents: ", task.getException());
                 }

@@ -141,9 +141,9 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
         return binding.getRoot();
     }
 
-    public void updateProfile(String uid, String fullname, String address, Uri uri){
+    public void updateProfile(String uid, String fullName, String address, Uri uri){
         controller = new UserController();
-        controller.updateUser(uid, fullname, address, uri, this);
+        controller.updateUser(uid, fullName, address, uri, this);
     }
 
     @Override
@@ -167,7 +167,8 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
 
     @Override
     public void onSuccessUpdateUser(User user) {
-        replaceFragment(new ProfileFragment(user));
+        User.setCurrentUser(user);
+        replaceFragment(new ProfileFragment());
     }
 
     @Override

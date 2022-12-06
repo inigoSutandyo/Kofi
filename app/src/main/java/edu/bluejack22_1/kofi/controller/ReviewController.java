@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
@@ -83,12 +84,17 @@ public class ReviewController {
     }
 
     public void getMyReviews(User user, ReviewListener listener) {
-        if (user.getReviews().size() < 1) {
-            return;
-        }
-        for (DocumentReference docRef: user.getReviews()) {
-            addReviewFromRef(docRef, listener);
-        }
+        db.collection("users")
+                .document(user.getUserId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.setReviews((ArrayList<DocumentReference>) task.getResult().get("reviews"));
+                        for (DocumentReference docRef: user.getReviews()) {
+                            addReviewFromRef(docRef, listener);
+                        }
+                    }
+                });
     }
 
     private void addReviewFromRef(DocumentReference docRef, ReviewListener listener) {
@@ -96,7 +102,6 @@ public class ReviewController {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot docSnap = task.getResult();
-                        Log.d("Coffee", "DocSnap = " + docSnap);
                         listener.onCompleteReview(docSnap);
                     }
                 });
