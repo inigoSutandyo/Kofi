@@ -74,4 +74,15 @@ public class CommentController {
                    }
                 });
     }
+
+    public void getComment(String commentId, String path, CommentListener listener) {
+        db.collection(path)
+                .document(commentId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        listener.onCompleteComment(task.getResult());
+                    }
+                });
+    }
 }

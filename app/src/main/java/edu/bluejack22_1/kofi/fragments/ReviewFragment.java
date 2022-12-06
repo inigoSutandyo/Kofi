@@ -206,6 +206,11 @@ public class ReviewFragment extends Fragment implements
     }
 
     @Override
+    public void onCompleteComment(DocumentSnapshot docSnap) {
+
+    }
+
+    @Override
     public void onSuccessComment() {
         Log.d("NOTIFICATION", review.getContent() + " " + review.getUser().getFullName());
         notificationController.addNotification(review.getUser().getUserId(), "has commented on your review");
@@ -219,7 +224,7 @@ public class ReviewFragment extends Fragment implements
         Bundle args = new Bundle();
         String path = shopID+"/reviews/"+reviewID+"/comments/"+comment.getCommentId();
         args.putString("PATH", path);
-        args.putString("COMMENT", comment.getContent());
+        args.putString("COMMENT_ID", comment.getCommentId());
         args.putString("NAME", comment.getUser().getFullName());
         args.putString("IMAGE", comment.getUser().getImageUrl());
         args.putString("SHOP_ID", shopID);

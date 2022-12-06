@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -26,10 +27,13 @@ import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.ReplyAdapter;
+import edu.bluejack22_1.kofi.controller.CommentController;
 import edu.bluejack22_1.kofi.controller.ReplyController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
+import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
+import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Reply;
 
 /**
@@ -38,6 +42,7 @@ import edu.bluejack22_1.kofi.model.Reply;
  * create an instance of this fragment.
  */
 public class CommentFragment extends Fragment implements
+        CommentListener,
         ReplyListener,
         RecyclerViewInterface,
         FragmentInterface {
@@ -51,13 +56,16 @@ public class CommentFragment extends Fragment implements
     private ReplyAdapter replyAdapter;
     private ArrayList<Reply> replies;
     private ReplyController replyController;
+    private CommentController commentController;
 
-    private String path, name, comment, image;
+    private String path, name, comment_id, image;
+    private Comment comment;
     private TextView userName, commentTxt;
     private ImageView userImg, backImg;
     private EditText replyTxt;
     private Button replyBtn;
     private String shopId, reviewId;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -66,6 +74,7 @@ public class CommentFragment extends Fragment implements
         // Required empty public constructor
         replies = new ArrayList<>();
         replyController = new ReplyController();
+        commentController = new CommentController();
     }
 
     public static CommentFragment newInstance(String param1, String param2) {
@@ -100,13 +109,15 @@ public class CommentFragment extends Fragment implements
 
         Bundle args = getArguments();
         path = args.getString("PATH");
-        comment = args.getString("COMMENT");
+        comment_id = args.getString("COMMENT_ID");
         name = args.getString("NAME");
         image = args.getString("IMAGE");
         shopId = args.getString("SHOP_ID");
         reviewId = args.getString("REVIEW_ID");
         userName.setText(name);
-        commentTxt.setText(comment);
+
+
+        commentController.getComment(comment_id, "coffeeshop/"+shopId+"/reviews/"+reviewId+"/comments", this);
         Glide.with(view)
                 .load(image)
                 .placeholder(R.drawable.item_place_holder)
@@ -139,7 +150,7 @@ public class CommentFragment extends Fragment implements
 
     private void createReply(){
         ReplyController replycontroller = new ReplyController();
-        replycontroller.addReply(path, replyTxt.getText().toString(), this);
+        replycontroller.addReply(path, comment.getUser().getUserId(), replyTxt.getText().toString(), this);
     }
 
     @Override
@@ -157,7 +168,7 @@ public class CommentFragment extends Fragment implements
         bundle.putString("REVIEW_ID",reviewId);
         bundle.putString("SHOP_ID", shopId);
         bundle.putString("PATH", path);
-        bundle.putString("COMMENT", comment);
+        bundle.putString("COMMENT_ID", comment_id);
         bundle.putString("NAME", name);
         bundle.putString("IMAGE", image);
         Fragment commentFragment = new CommentFragment();
@@ -193,5 +204,26 @@ public class CommentFragment extends Fragment implements
         Fragment reviewFragment = new ReviewFragment();
         reviewFragment.setArguments(bundle);
         replaceFragment(reviewFragment);
+    }
+
+    @Override
+    public void onCompleteCommentCollection(QuerySnapshot querySnap) {
+
+    }
+
+    @Override
+    public void onCompleteComment(DocumentSnapshot docSnap) {
+        if (docSnap.exists()) {
+            comment = docSnap.toObject(Comment.class);
+            commentTxt.setText(comment.getContent());
+        } else {
+            commentTxt.setText("-- Not Found --");
+        }
+
+    }
+
+    @Override
+    public void onSuccessComment() {
+
     }
 }

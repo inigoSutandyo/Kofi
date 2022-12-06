@@ -5,5 +5,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public interface CommentListener {
     void onCompleteCommentCollection(QuerySnapshot querySnap);
+    void onCompleteComment(DocumentSnapshot docSnap);
     void onSuccessComment();
 }

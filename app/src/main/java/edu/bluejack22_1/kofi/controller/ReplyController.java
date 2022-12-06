@@ -19,7 +19,7 @@ public class ReplyController {
         notifcontroller = new NotificationController();
     }
 
-    public void addReply(String path, String content, ReplyListener listener){
+    public void addReply(String path, String userId, String content, ReplyListener listener){
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
         Reply reply = new Reply(content, "", ref, Timestamp.now());
         db.collection("coffeeshop")
@@ -27,18 +27,22 @@ public class ReplyController {
                 .collection("replies")
                 .add(reply)
                 .addOnCompleteListener(task -> {
-                    db.collection("coffeeshop").document(path).collection("replies").document(task.getResult().getId()).get().addOnCompleteListener(task1 -> {
-                        Reply rep = task1.getResult().toObject(Reply.class);
-                        String uid = rep.getUser().getUserId();
-                        notifcontroller.addNotification(uid, "has replied on your comment");
-                    }).addOnCompleteListener(task2 -> {
-                        db.collection("coffeeshop")
-                                .document(path)
-                                .collection("replies")
-                                .document(task.getResult().getId()).update("replyId", task.getResult().getId()).addOnCompleteListener(task1 -> {
-                                    listener.onSuccessReply();
-                                });
-                    });
+                    db.collection("coffeeshop")
+                            .document(path)
+                            .collection("replies")
+                            .document(task.getResult().getId())
+                            .get()
+                            .addOnCompleteListener(t1 -> {
+                                notifcontroller.addNotification(userId, "has replied on your comment");
+                                db.collection("coffeeshop")
+                                        .document(path)
+                                        .collection("replies")
+                                        .document(task.getResult().getId())
+                                        .update("replyId", task.getResult().getId())
+                                        .addOnCompleteListener(t2 -> {
+                                            listener.onSuccessReply();
+                                        });
+                            });
                 });
     }
 
