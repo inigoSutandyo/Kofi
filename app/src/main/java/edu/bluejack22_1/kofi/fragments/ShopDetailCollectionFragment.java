@@ -220,9 +220,9 @@ public class ShopDetailCollectionFragment extends Fragment implements
         LikeController likeController = new LikeController();
         String userid = User.getCurrentUser().getUserId();
         if(!reviews.get(position).getLikers().contains(userid)){
-            likeController.LikeReview(id, User.getCurrentUser().getUserId(), reviews.get(position).getReviewId(), this);
+            likeController.likeReview(id, User.getCurrentUser().getUserId(), reviews.get(position), this);
         } else{
-            likeController.DislikeReview(id, User.getCurrentUser().getUserId(), reviews.get(position).getReviewId(), this);
+            likeController.dislikeReview(id, User.getCurrentUser().getUserId(), reviews.get(position), this);
         }
     }
 
