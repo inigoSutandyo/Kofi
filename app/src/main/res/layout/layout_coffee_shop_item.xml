@@ -24,7 +24,7 @@
 
             <ImageView
                 android:id="@+id/card_shop_image"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/kofi" />
 
@@ -47,6 +47,7 @@
                     android:id="@+id/card_shop_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="200dp"
                     android:textSize="20dp"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -59,6 +60,7 @@
 
                 <TextView
                     android:id="@+id/card_shop_address"
+                    android:maxWidth="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp" />
@@ -71,6 +73,14 @@
         android:layout_height="20dp"
         android:src="@drawable/ic_baseline_delete_24"
         android:layout_gravity="top|end"
+        android:layout_margin="10dp"
+        />
+    <ImageView
+        android:id="@+id/card_shop_favorite"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_baseline_favorite_border_24"
+        android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
         />
 

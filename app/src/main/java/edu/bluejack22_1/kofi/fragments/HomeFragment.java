@@ -215,11 +215,8 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onCompleteShopCollection(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot document : querySnap) {
-            String name = (String) document.getData().get("shopName");
-            String address = (String) document.getData().get("shopAddress");
-            String description = (String) document.getData().get("shopDescription");
-            String picture = (String) document.getData().get("imageUrl");
-            coffeeShops.add(new CoffeeShop(name,address,description, document.getId(), picture));
+            CoffeeShop coffeeShop = document.toObject(CoffeeShop.class);
+            coffeeShops.add(coffeeShop);
         }
         coffeeAdapter.notifyDataSetChanged();
     }

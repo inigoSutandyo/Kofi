@@ -58,7 +58,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             holder.deleteBtn.setVisibility(View.INVISIBLE);
         }
         if(review.getLikers().contains(userid)){
-            holder.likeBtn.setImageResource(R.drawable.ic_baseline_thumb_up_24);
+            holder.likeBtn.setImageResource(R.drawable.ic_baseline_thumb_up_alt_24);
         }
     }
 
