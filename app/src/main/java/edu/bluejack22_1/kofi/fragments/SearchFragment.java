@@ -94,6 +94,8 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
             @Override
             public boolean onQueryTextSubmit(String s) {
                 search = s;
+                coffeeShops.clear();
+                coffeeShopAdapter.notifyDataSetChanged();
                 coffeeShopController.getCoffeeShopList(listener);
                 return false;
             }
@@ -124,7 +126,7 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
     public void onCompleteShopCollection(QuerySnapshot querySnap) {
         for (QueryDocumentSnapshot document : querySnap) {
             String name = (String) document.getData().get("shopName");
-            if (name.contains(search)) {
+            if (name.toLowerCase().contains(search.toLowerCase())) {
                 String address = (String) document.getData().get("shopAddress");
                 String description = (String) document.getData().get("shopDescription");
                 String picture = (String) document.getData().get("imageUrl");
