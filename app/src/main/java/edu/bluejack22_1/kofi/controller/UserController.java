@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +20,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import edu.bluejack22_1.kofi.MainActivity;
+import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.User;
 
@@ -55,6 +58,19 @@ public class UserController {
             }
         });
     }
+
+    public void deleteUser(RecyclerViewInterface listener){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection("users").document(User.getCurrentUser().getUserId()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                user.delete().addOnCompleteListener(task -> {
+                    listener.onClickDelete(0);
+                });
+            }
+        });
+    }
+
     private void MoveMainPage(Activity activity){
         activity.finish();
         Intent mainIntent = new Intent(activity, MainActivity.class);

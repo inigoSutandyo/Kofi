@@ -76,6 +76,14 @@
         android:drawableRight="@drawable/ic_baseline_edit_24"
         android:drawablePadding="4dp"
         />
+    <Button
+        android:id="@+id/btn_delete_acc"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="38dp"
+        android:layout_marginTop="10dp"
+        android:text="Delete Account"
+        android:backgroundTint="@color/red"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profile_review_list"
         android:layout_width="match_parent"

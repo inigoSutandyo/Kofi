@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import edu.bluejack22_1.kofi.LoginActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.ReviewController;
+import edu.bluejack22_1.kofi.controller.UserController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
@@ -67,6 +69,7 @@ public class ProfileFragment extends Fragment implements
 
     private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
     private ImageView profileImage, logoutBtn;
+    private Button deleteAccBtn;
     public User tempUser;
     private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
@@ -116,6 +119,7 @@ public class ProfileFragment extends Fragment implements
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         currentuser = mAuth.getCurrentUser();
+        deleteAccBtn = view.findViewById(R.id.btn_delete_acc);
         storageReference = storage.getReference().child("images/"+currentuser.getUid());
         nameTxt.setText(tempUser.getFullName());
         emailTxt.setText(tempUser.getEmail());
@@ -146,15 +150,18 @@ public class ProfileFragment extends Fragment implements
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
-                mAuth.signOut();
-                gsc.signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                User.setCurrentUser(null);
+                onClickDelete(0);
             }
         });
 
+        RecyclerViewInterface listener = this;
+        deleteAccBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserController controller = new UserController();
+                controller.deleteUser(listener);
+            }
+        });
         return view;
     }
 
@@ -191,7 +198,12 @@ public class ProfileFragment extends Fragment implements
 
     @Override
     public void onClickDelete(int position) {
-
+        getActivity().finish();
+        mAuth.signOut();
+        gsc.signOut();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        User.setCurrentUser(null);
     }
 
     @Override
