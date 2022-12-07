@@ -29,6 +29,9 @@ import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,7 +68,8 @@ public class ProfileFragment extends Fragment implements
     private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
     private ImageView profileImage, logoutBtn;
     public User tempUser;
-
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
     private ReviewAdapter reviewAdapter;
     private ReviewController reviewController;
     private RecyclerView recyclerView;
@@ -116,7 +120,8 @@ public class ProfileFragment extends Fragment implements
         nameTxt.setText(tempUser.getFullName());
         emailTxt.setText(tempUser.getEmail());
         addressTxt.setText(tempUser.getAddress());
-
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this.getActivity(), gso);
         Glide.with(view).load(tempUser.getImageUrl()).placeholder(R.drawable.defaultprofile).into(profileImage);
 
         editProfileBtn = view.findViewById(R.id.edit_profile_btn);
@@ -143,6 +148,7 @@ public class ProfileFragment extends Fragment implements
             public void onClick(View view) {
                 getActivity().finish();
                 mAuth.signOut();
+                gsc.signOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 User.setCurrentUser(null);
