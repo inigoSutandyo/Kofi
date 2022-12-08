@@ -110,7 +110,7 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
         currentUser = mAuth.getCurrentUser();
         storageReference = storage.getReference().child("images/"+ currentUser.getUid());
 
-        Glide.with(binding.getRoot()).load(userData.getImageUrl()).placeholder(R.drawable.defaultprofile).into(binding.updateProfileImage);
+        Glide.with(binding.getRoot()).load(userData.getImageUrl()).placeholder(R.drawable.default_profile).into(binding.updateProfileImage);
 
         eFullname.setText(userData.getFullName());
         eAddress.setText(userData.getAddress());

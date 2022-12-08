@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText eEmail, ePassword;
     String email, password;
     private FirebaseAuth mAuth;
-    FirebaseUser currentuser;
+    FirebaseUser currentUser;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     ImageView googleBtn;
@@ -133,15 +133,15 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                currentuser = authResult.getUser();
-                db.collection("users").document(currentuser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                currentUser = authResult.getUser();
+                db.collection("users").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             DocumentSnapshot doc = task.getResult();
                             if(!doc.exists()){
-                                usercontroller.addGoogleUser(currentuser.getUid(), currentuser.getDisplayName(),
-                                        currentuser.getEmail(), currentuser.getPhotoUrl().toString(),currActivity);
+                                usercontroller.addGoogleUser(currentUser.getUid(), currentUser.getDisplayName(),
+                                        currentUser.getEmail(), currentUser.getPhotoUrl().toString(),currActivity);
                             } else{
                                 User user = new User((String) doc.getData().get("fullName"),
                                         (String) doc.getData().get("email"),
@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                                             String password = (String) document.getData().get("password");
                                             String role = (String) document.getData().get("role");
 
-                                            User.setCurrentUser(new User(fullName, email, password, address, role, document.getId()));
+                                            User.setCurrentUser(new User(fullName, email, password, address, role, document.getId(), ""));
                                             finish();
                                             moveMainPage();
                                         }

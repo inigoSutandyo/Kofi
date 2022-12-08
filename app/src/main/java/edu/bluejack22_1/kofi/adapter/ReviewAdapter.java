@@ -1,6 +1,7 @@
 package edu.bluejack22_1.kofi.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import edu.bluejack22_1.kofi.R;
@@ -51,9 +56,20 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         Review review = reviews.get(position);
         if (review == null) return;
         holder.rating.setText(Double.toString(review.getRating()));
+
         holder.name.setText(review.getUser().getFullName());
+        try {
+            Glide.with(holder.itemView)
+                    .load(review.getUser().getImageUrl())
+                    .placeholder(R.drawable.default_profile)
+                    .into(holder.userImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         holder.content.setText(review.getContent());
         String userid = User.getCurrentUser().getUserId();
+
         if(!review.getUser().getUserId().equals(userid)){
             holder.deleteBtn.setVisibility(View.INVISIBLE);
         }
@@ -69,15 +85,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView name, rating, content;
-        ImageView deleteBtn, likeBtn;
-
+        ImageView deleteBtn, likeBtn, userImage;
+        View itemView;
         public ReviewViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface, ReviewListener listener) {
             super(itemView);
+            this.itemView = itemView;
             name = itemView.findViewById(R.id.card_review_name);
             rating = itemView.findViewById(R.id.card_review_rating);
             content = itemView.findViewById(R.id.card_review_content);
             deleteBtn = itemView.findViewById(R.id.card_review_delete);
             likeBtn = itemView.findViewById(R.id.card_review_like);
+            userImage = itemView.findViewById(R.id.card_review_image);
 
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

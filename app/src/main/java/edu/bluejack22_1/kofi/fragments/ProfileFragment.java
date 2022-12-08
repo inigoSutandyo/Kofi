@@ -27,6 +27,7 @@ import edu.bluejack22_1.kofi.controller.UserController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.UserListener;
 import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
@@ -55,7 +56,8 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment implements
         FragmentInterface,
         RecyclerViewInterface,
-        ReviewListener {
+        ReviewListener,
+        UserListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -126,7 +128,7 @@ public class ProfileFragment extends Fragment implements
         addressTxt.setText(tempUser.getAddress());
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(this.getActivity(), gso);
-        Glide.with(view).load(tempUser.getImageUrl()).placeholder(R.drawable.defaultprofile).into(profileImage);
+        Glide.with(view).load(tempUser.getImageUrl()).placeholder(R.drawable.default_profile).into(profileImage);
 
         editProfileBtn = view.findViewById(R.id.edit_profile_btn);
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,22 +152,26 @@ public class ProfileFragment extends Fragment implements
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickDelete(0);
+                logout();
             }
         });
 
-        RecyclerViewInterface listener = this;
-        deleteAccBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserController controller = new UserController();
-                controller.deleteUser(listener);
-            }
+        deleteAccBtn.setOnClickListener(v -> {
+            UserController controller = new UserController();
+            controller.deleteUser(this);
         });
+
         return view;
     }
 
-
+    private void logout() {
+        getActivity().finish();
+        mAuth.signOut();
+        gsc.signOut();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        User.setCurrentUser(null);
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -187,24 +193,13 @@ public class ProfileFragment extends Fragment implements
     }
 
     @Override
-    public void returnFragment() {
-
-    }
+    public void returnFragment() {}
 
     @Override
-    public void onItemClick(int position) {
-
-    }
+    public void onItemClick(int position) {}
 
     @Override
-    public void onClickDelete(int position) {
-        getActivity().finish();
-        mAuth.signOut();
-        gsc.signOut();
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-        User.setCurrentUser(null);
-    }
+    public void onClickDelete(int position) {}
 
     @Override
     public void onCompleteReview(DocumentSnapshot docSnap) {
@@ -233,5 +228,19 @@ public class ProfileFragment extends Fragment implements
     @Override
     public void onSuccessReview() {
 
+    }
+
+    @Override
+    public void onCompleteUser(DocumentSnapshot docSnap) {}
+
+    @Override
+    public void onCompleteUserCollection(QuerySnapshot querySnap) {}
+
+    @Override
+    public void onSuccessUpdateUser(User user) {}
+
+    @Override
+    public void onSuccessUser() {
+        logout();
     }
 }

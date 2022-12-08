@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,6 +29,7 @@ public class UserController {
     FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageReference;
+
     public UserController(){
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -36,7 +38,7 @@ public class UserController {
 
     public void addUser(String fullName, String email, String password, String address, Uri imageUri, String uid){
 
-        User user = new User(fullName, email, password, address, "User", uid);
+        User user = new User(fullName, email, password, address, "User", uid, "");
         db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -48,30 +50,33 @@ public class UserController {
     }
 
     public void addGoogleUser(String uid, String fullname, String email, String imageUrl, Activity activity){
-        User user = new User(fullname, email, "", "", "User", uid);
+        User user = new User(fullname, email, "", "", "User", uid, "");
         User.setCurrentUser(user);
         user.setImageUrl(imageUrl);
         db.collection("users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                MoveMainPage(activity);
+                moveMainPage(activity);
             }
         });
     }
 
-    public void deleteUser(RecyclerViewInterface listener){
+    public void deleteUser(UserListener listener){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        db.collection("users").document(User.getCurrentUser().getUserId()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                user.delete().addOnCompleteListener(task -> {
-                    listener.onClickDelete(0);
+        db.collection("users").document(User.getCurrentUser().getUserId())
+                .update("deletedOn", Timestamp.now())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        user.delete()
+                                .addOnCompleteListener(task -> {
+                                    listener.onSuccessUser();
+                                });
+                    }
                 });
-            }
-        });
     }
 
-    private void MoveMainPage(Activity activity){
+    private void moveMainPage(Activity activity){
         activity.finish();
         Intent mainIntent = new Intent(activity, MainActivity.class);
         activity.startActivity(mainIntent);
@@ -148,7 +153,7 @@ public class UserController {
                             String role = (String) document.getData().get("role");
                             String userId= document.getId();
 
-                            user[0] = new User(fullName, email, password, address, role, userId);
+                            user[0] = new User(fullName, email, password, address, role, userId, "");
                         } else {
                             Log.d("User", "No such document");
                         }

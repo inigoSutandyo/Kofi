@@ -23,7 +23,7 @@
         android:layout_height="400px"
         android:layout_marginBottom="24dp"
         android:layout_gravity="center"
-        android:src="@drawable/defaultprofile" />
+        android:src="@drawable/default_profile" />
     <TextView
         android:id="@+id/profile_username"
         android:layout_width="wrap_content"

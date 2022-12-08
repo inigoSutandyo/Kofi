@@ -167,9 +167,7 @@ public class ReviewFragment extends Fragment implements
     public void onSuccessUpdateReview(Review review) {}
 
     @Override
-    public void onLikedReview(int position) {
-
-    }
+    public void onLikedReview(int position) {}
 
     @Override
     public void onSuccessReview() {
@@ -206,9 +204,7 @@ public class ReviewFragment extends Fragment implements
     }
 
     @Override
-    public void onCompleteComment(DocumentSnapshot docSnap) {
-
-    }
+    public void onCompleteComment(DocumentSnapshot docSnap) {}
 
     @Override
     public void onSuccessComment() {
