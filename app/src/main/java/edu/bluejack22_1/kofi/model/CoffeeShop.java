@@ -1,10 +1,15 @@
 package edu.bluejack22_1.kofi.model;
 
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 
 public class CoffeeShop {
     private String shopName, shopAddress, shopDescription, shopId, imageUrl;
+    private Double totalRating;
+    private int reviewCount;
     private ArrayList<String> userFavorites;
+    private Timestamp createdAt;
 
     public CoffeeShop(String shopName, String shopAddress, String shopDescription, String shopId, String imageUrl) {
         this.shopName = shopName;
@@ -13,9 +18,44 @@ public class CoffeeShop {
         this.shopId = shopId;
         this.imageUrl = imageUrl;
         this.userFavorites = new ArrayList<>();
+        this.reviewCount = 0;
+        this.totalRating = 0.0;
+        this.createdAt = Timestamp.now();
     }
 
-    public CoffeeShop(){}
+    public CoffeeShop(){
+        this.userFavorites = new ArrayList<>();
+        this.reviewCount = 0;
+        this.totalRating = 0.0;
+        this.createdAt = Timestamp.now();
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Double getTotalRating() {
+        if (totalRating == null) {
+            totalRating = 0.0;
+        }
+        return totalRating;
+    }
+
+    public void setTotalRating(Double totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
 
     public ArrayList<String> getUserFavorites() {
         return userFavorites;
@@ -63,5 +103,14 @@ public class CoffeeShop {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Double getAverageRating() {
+        Double d = new Double(this.reviewCount);
+        if (d == null || totalRating == null) {
+            return 0.0;
+        } else {
+            return totalRating / d;
+        }
     }
 }

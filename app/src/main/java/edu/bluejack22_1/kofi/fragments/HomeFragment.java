@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment implements
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Fragment searchFragment = new SearchFragment();
+                Fragment searchFragment = new SearchShopFragment();
                 Bundle args = new Bundle();
                 args.putString("SEARCH", s);
                 searchFragment.setArguments(args);

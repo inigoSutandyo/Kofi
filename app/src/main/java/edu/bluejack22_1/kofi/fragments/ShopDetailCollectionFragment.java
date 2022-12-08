@@ -179,7 +179,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
     @Override
     public void onClickDelete(int position) {
         ReviewController controller = new ReviewController();
-        controller.deleteReview(id, reviews.get(position).getReviewId(), this);
+        controller.deleteReview(id, reviews.get(position), this);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class CoffeeShopFragment extends Fragment {
     private String mParam2;
 
     private CoffeeShop coffeeShop;
-    private TextView nameView, addressView, descriptionView;
+    private TextView nameView, addressView, descriptionView, ratingView;
     private ImageView shopImageView;
 
     private CoffeeShopPagerAdapter coffeeShopPagerAdapter;
@@ -82,6 +82,7 @@ public class CoffeeShopFragment extends Fragment {
         addressView = view.findViewById(R.id.detail_shop_address);
         descriptionView = view.findViewById(R.id.detail_shop_description);
         shopImageView = view.findViewById(R.id.shopimage);
+        ratingView = view.findViewById(R.id.detail_shop_rating);
         return view;
     }
 
@@ -111,11 +112,7 @@ public class CoffeeShopFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot docSnap = task.getResult();
                     if (docSnap.exists()) {
-                        String shopName = (String) docSnap.getData().get("shopName");
-                        String shopAddress = (String) docSnap.getData().get("shopAddress");
-                        String shopDescription = (String) docSnap.getData().get("shopDescription");
-                        String shopPicture = (String) docSnap.getData().get("imageUrl");
-                        coffeeShop = new CoffeeShop(shopName,shopAddress,shopDescription,shopId, shopPicture);
+                        coffeeShop = task.getResult().toObject(CoffeeShop.class);
                         populateView(view);
                     }
                 } else {
@@ -129,6 +126,8 @@ public class CoffeeShopFragment extends Fragment {
         nameView.setText(coffeeShop.getShopName());
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
+        ratingView.setText( String.format("%.2f", coffeeShop.getAverageRating()));
+
         Glide.with(view).load(coffeeShop.getImageUrl()).placeholder(R.drawable.item_place_holder).into(shopImageView);
     }
 

@@ -14,13 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SearchView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
@@ -32,10 +36,10 @@ import edu.bluejack22_1.kofi.model.CoffeeShop;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
+ * Use the {@link SearchShopFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment implements CoffeeShopListener, RecyclerViewInterface, FragmentInterface {
+public class SearchShopFragment extends Fragment implements CoffeeShopListener, RecyclerViewInterface, FragmentInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,16 +55,16 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
     private CoffeeShopAdapter coffeeShopAdapter;
     private ArrayList<CoffeeShop> coffeeShops;
     private RecyclerView recyclerView;
-
+    private Button popular, newest, rating;
     private String search;
-    public SearchFragment() {
+    public SearchShopFragment() {
         // Required empty public constructor
         coffeeShops = new ArrayList<>();
         coffeeShopController = new CoffeeShopController();
     }
 
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
+    public static SearchShopFragment newInstance(String param1, String param2) {
+        SearchShopFragment fragment = new SearchShopFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,7 +84,7 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_shop, container, false);
 
         searchView = view.findViewById(R.id.search_view);
         Bundle args = getArguments();
@@ -107,7 +111,57 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
         });
 
 
+        newest = view.findViewById(R.id.btn_newest);
+        popular = view.findViewById(R.id.btn_popular);
+        rating = view.findViewById(R.id.btn_rating);
+
+        selectButton(newest);
+
+        newest.setOnClickListener(v -> {
+            if (coffeeShops.size() < 1) return;
+            selectButton(newest);
+            sortByDate();
+        });
+
+        popular.setOnClickListener(v -> {
+            if (coffeeShops.size() < 1) return;
+            selectButton(popular);
+            sortByPopularity();
+        });
+
+        rating.setOnClickListener(v -> {
+            if (coffeeShops.size() < 1) return;
+            selectButton(rating);
+            sortByRating();
+        });
         return view;
+    }
+
+    private void sortByRating() {
+        Collections.sort(coffeeShops, ratingComparator);
+        coffeeShopAdapter.notifyDataSetChanged();
+    }
+
+    private void sortByPopularity() {
+        Collections.sort(coffeeShops, popularComparator);
+        coffeeShopAdapter.notifyDataSetChanged();
+    }
+
+    private void sortByDate() {
+        Collections.sort(coffeeShops, dateComparator);
+        coffeeShopAdapter.notifyDataSetChanged();
+    }
+
+    private void setAllButtonBackgroundWhite() {
+        newest.setBackgroundTintList(getContext().getColorStateList(R.color.white));
+        popular.setBackgroundTintList(getContext().getColorStateList(R.color.white));
+        rating.setBackgroundTintList(getContext().getColorStateList(R.color.white));
+
+    }
+
+    private void selectButton(Button b) {
+        setAllButtonBackgroundWhite();
+        b.setBackgroundTintList(getContext().getColorStateList(R.color.cream));
     }
 
     @Override
@@ -127,13 +181,11 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
         for (QueryDocumentSnapshot document : querySnap) {
             String name = (String) document.getData().get("shopName");
             if (name.toLowerCase().contains(search.toLowerCase())) {
-                String address = (String) document.getData().get("shopAddress");
-                String description = (String) document.getData().get("shopDescription");
-                String picture = (String) document.getData().get("imageUrl");
-                coffeeShops.add(new CoffeeShop(name,address,description, document.getId(), picture));
+                CoffeeShop coffeeShop = document.toObject(CoffeeShop.class);
+                coffeeShops.add(coffeeShop);
             }
         }
-        coffeeShopAdapter.notifyDataSetChanged();
+        sortByDate();
     }
 
     @Override
@@ -169,4 +221,39 @@ public class SearchFragment extends Fragment implements CoffeeShopListener, Recy
 
     @Override
     public void onClickDelete(int position) {}
+
+    /*--- COMPARATOR  --- */
+
+    Comparator<CoffeeShop> popularComparator = new Comparator<CoffeeShop>() {
+        @Override
+        public int compare(CoffeeShop c1, CoffeeShop c2) {
+            int r1 = c1.getReviewCount();
+            int r2 = c2.getReviewCount();
+
+            // DESC
+            return r2-r1;
+        }
+    };
+
+
+    Comparator<CoffeeShop> dateComparator = new Comparator<CoffeeShop>() {
+        @Override
+        public int compare(CoffeeShop c1, CoffeeShop c2) {
+            Timestamp t1 = c1.getCreatedAt();
+            Timestamp t2 = c2.getCreatedAt();
+
+            // DESC
+            return t2.toDate().compareTo(t1.toDate());
+        }
+    };
+
+    Comparator<CoffeeShop> ratingComparator = new Comparator<CoffeeShop>() {
+        @Override
+        public int compare(CoffeeShop c1, CoffeeShop c2) {
+            Double rating1 = c1.getAverageRating();
+            Double rating2 = c2.getAverageRating();
+            // DESC
+            return Double.compare(rating2, rating1);
+        }
+    };
 }

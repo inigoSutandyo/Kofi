@@ -45,6 +45,10 @@ public class ReviewController {
                                     db.collection("users")
                                             .document(User.getCurrentUser().getUserId())
                                             .update("reviews", FieldValue.arrayUnion(task.getResult()));
+                                    db.collection("coffeeshop")
+                                            .document(shopId)
+                                            .update("totalRating", FieldValue.increment(rating)
+                                                    , "reviewCount", FieldValue.increment(1));
                                     listener.onSuccessReview();
 
                                 });
@@ -52,7 +56,9 @@ public class ReviewController {
                 });
     }
 
-    public void deleteReview(String shopId, String reviewId, ReviewListener listener){
+    public void deleteReview(String shopId, Review review, ReviewListener listener){
+        String reviewId = review.getReviewId();
+        Double rating = review.getRating();
         db.collection("coffeeshop")
                 .document(shopId).collection("reviews")
                 .document(reviewId).delete()
@@ -62,6 +68,10 @@ public class ReviewController {
                         db.collection("users")
                                 .document(User.getCurrentUser().getUserId())
                                 .update("reviews", FieldValue.arrayRemove(reference)).addOnCompleteListener(task1 -> {
+                                    db.collection("coffeeshop")
+                                            .document(shopId)
+                                            .update("totalRating", FieldValue.increment(-rating)
+                                                    , "reviewCount", FieldValue.increment(-1));
                                     listener.onSuccessReview();
                                 });
                     }
