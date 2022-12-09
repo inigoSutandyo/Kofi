@@ -58,6 +58,7 @@ public class ReviewFragment extends Fragment implements
     private String mParam2;
     private ReviewController reviewController;
     private TextView userName, ratingTxt, reviewTxt;
+    private EditText updateReview;
     private ImageView userImg, backImg;
     private EditText commentTxt;
     private Button commentBtn;
@@ -109,6 +110,7 @@ public class ReviewFragment extends Fragment implements
         backImg = view.findViewById(R.id.back_review_detail);
         commentTxt = view.findViewById(R.id.text_comment);
         commentBtn = view.findViewById(R.id.comment_btn);
+        updateReview = view.findViewById(R.id.update_review_detail);
         reviewController.getReview(shopID, reviewID, this);
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +128,14 @@ public class ReviewFragment extends Fragment implements
                 if(!commentTxt.getText().toString().isEmpty()){
                     addComment();
                 }
+            }
+        });
+        reviewTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reviewTxt.setVisibility(View.INVISIBLE);
+                updateReview.setVisibility(View.VISIBLE);
+                updateReview.setText(reviewTxt.getText());
             }
         });
         return view;
