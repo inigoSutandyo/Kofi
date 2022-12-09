@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -37,6 +38,7 @@ import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Review;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,10 +61,11 @@ public class ReviewFragment extends Fragment implements
     private ReviewController reviewController;
     private TextView userName, ratingTxt, reviewTxt;
     private EditText updateReview;
-    private ImageView userImg, backImg;
+    private RatingBar ratingBar;
+    private ImageView userImg, backImg, ratingStar;
     private EditText commentTxt;
-    private Button commentBtn;
-    private String shopID, reviewID;
+    private Button commentBtn, editBtn;
+    private String shopID, reviewID, userID;
     private RecyclerView recyclerView;
     private CommentAdapter commentAdapter;
     private ArrayList<Comment> comments;
@@ -103,13 +106,17 @@ public class ReviewFragment extends Fragment implements
         Bundle bundle = getArguments();
         shopID = bundle.getString("SHOP_ID");
         reviewID = bundle.getString("REVIEW_ID");
+        userID = bundle.getString("USER_ID");
         userName = view.findViewById(R.id.user_name_review_detail);
         userImg = view.findViewById(R.id.user_image_review_detail);
+        ratingBar = view.findViewById(R.id.edit_rating);
+        ratingStar = view.findViewById(R.id.rating_star);
         reviewTxt = view.findViewById(R.id.content_review_detail);
         ratingTxt = view.findViewById(R.id.rating_review_detail);
         backImg = view.findViewById(R.id.back_review_detail);
         commentTxt = view.findViewById(R.id.text_comment);
         commentBtn = view.findViewById(R.id.comment_btn);
+        editBtn = view.findViewById(R.id.edit_btn);
         updateReview = view.findViewById(R.id.update_review_detail);
         reviewController.getReview(shopID, reviewID, this);
         backImg.setOnClickListener(new View.OnClickListener() {
@@ -133,9 +140,22 @@ public class ReviewFragment extends Fragment implements
         reviewTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reviewTxt.setVisibility(View.INVISIBLE);
-                updateReview.setVisibility(View.VISIBLE);
-                updateReview.setText(reviewTxt.getText());
+                if(userID.equals(User.getCurrentUser().getUserId())){
+                    ratingStar.setVisibility(View.INVISIBLE);
+                    ratingTxt.setVisibility(View.INVISIBLE);
+                    ratingBar.setVisibility(View.VISIBLE);
+                    reviewTxt.setVisibility(View.INVISIBLE);
+                    updateReview.setVisibility(View.VISIBLE);
+                    editBtn.setVisibility(View.VISIBLE);
+                    updateReview.setText(reviewTxt.getText());
+                }
+            }
+        });
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateReview(updateReview.getText().toString());
             }
         });
         return view;
@@ -143,6 +163,9 @@ public class ReviewFragment extends Fragment implements
 
     private void addComment(){
         commentController.addComment(shopID, review, commentTxt.getText().toString(), this);
+    }
+    private void updateReview(String content){
+        reviewController.updateReview(content, ratingBar.getRating(), shopID, reviewID, this);
     }
 
     @Override

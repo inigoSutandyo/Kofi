@@ -172,6 +172,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
         Bundle args = new Bundle();
         args.putString("SHOP_ID", id);
         args.putString("REVIEW_ID",reviews.get(position).getReviewId());
+        args.putString("USER_ID", reviews.get(position).getUser().getUserId());
         reviewFragment.setArguments(args);
         replaceFragment(reviewFragment);
     }

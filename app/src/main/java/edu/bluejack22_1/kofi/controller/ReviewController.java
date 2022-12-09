@@ -56,6 +56,13 @@ public class ReviewController {
                 });
     }
 
+    public void updateReview(String content, double rating, String shopId, String reviewId, ReviewListener listener){
+        DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
+        db.collection("coffeeshop").document(shopId).collection("reviews").document(reviewId).update("content", content, "rating", rating).addOnCompleteListener(task -> {
+            listener.onSuccessReview();
+        });
+    }
+
     public void deleteReview(String shopId, Review review, ReviewListener listener){
         String reviewId = review.getReviewId();
         Double rating = review.getRating();
