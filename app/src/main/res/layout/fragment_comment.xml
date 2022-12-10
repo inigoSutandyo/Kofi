@@ -71,7 +71,24 @@
                 android:textSize="18dp"
                 android:scrollbars="vertical"
                 android:maxHeight="180dp"/>
-
+            <EditText
+                android:id="@+id/edit_comment_content"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:scrollbars="vertical"
+                android:maxHeight="180dp"/>
+            <Button
+                android:id="@+id/edit_comment_btn"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:layout_gravity="top|end"
+                android:visibility="gone"
+                android:textSize="8dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

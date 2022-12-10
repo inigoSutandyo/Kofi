@@ -35,6 +35,7 @@ import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
 import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Reply;
+import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,9 +63,9 @@ public class CommentFragment extends Fragment implements
     private Comment comment;
     private TextView userName, commentTxt;
     private ImageView userImg, backImg;
-    private EditText replyTxt;
-    private Button replyBtn;
-    private String shopId, reviewId;
+    private EditText replyTxt, commentEdit;
+    private Button replyBtn, editBtn;
+    private String shopId, reviewId, userId;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -106,10 +107,12 @@ public class CommentFragment extends Fragment implements
         replyTxt = view.findViewById(R.id.reply_text);
         replyBtn = view.findViewById(R.id.reply_btn);
         backImg = view.findViewById(R.id.back_comment_detail);
-
+        commentEdit = view.findViewById(R.id.edit_comment_content);
+        editBtn = view.findViewById(R.id.edit_comment_btn);
         Bundle args = getArguments();
         path = args.getString("PATH");
         comment_id = args.getString("COMMENT_ID");
+        userId = args.getString("USER_ID");
         name = args.getString("NAME");
         image = args.getString("IMAGE");
         shopId = args.getString("SHOP_ID");
@@ -122,6 +125,25 @@ public class CommentFragment extends Fragment implements
                 .load(image)
                 .placeholder(R.drawable.item_place_holder)
                 .into(userImg);
+        commentTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(User.getCurrentUser().getUserId().equals(userId)){
+                    commentTxt.setVisibility(View.INVISIBLE);
+                    commentEdit.setText(commentTxt.getText());
+                    commentEdit.setVisibility(View.VISIBLE);
+                    editBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(User.getCurrentUser().getUserId().equals(userId)){
+                    editComment(commentEdit.getText().toString());
+                }
+            }
+        });
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,7 +158,9 @@ public class CommentFragment extends Fragment implements
         });
         return view;
     }
-
+    private void editComment(String content){
+        commentController.editComment(shopId, reviewId, content, comment_id, this);
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

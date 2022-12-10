@@ -116,7 +116,7 @@ public class ReviewFragment extends Fragment implements
         backImg = view.findViewById(R.id.back_review_detail);
         commentTxt = view.findViewById(R.id.text_comment);
         commentBtn = view.findViewById(R.id.comment_btn);
-        editBtn = view.findViewById(R.id.edit_btn);
+        editBtn = view.findViewById(R.id.edit_review_btn);
         updateReview = view.findViewById(R.id.update_review_detail);
         reviewController.getReview(shopID, reviewID, this);
         backImg.setOnClickListener(new View.OnClickListener() {
@@ -258,6 +258,7 @@ public class ReviewFragment extends Fragment implements
         args.putString("IMAGE", comment.getUser().getImageUrl());
         args.putString("SHOP_ID", shopID);
         args.putString("REVIEW_ID", reviewID);
+        args.putString("USER_ID", userID);
         commentFragment.setArguments(args);
         replaceFragment(commentFragment);
     }

@@ -119,7 +119,7 @@
                 android:scrollbars="vertical"
                 android:maxHeight="180dp"/>
             <Button
-                android:id="@+id/edit_btn"
+                android:id="@+id/edit_review_btn"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:text="Edit"

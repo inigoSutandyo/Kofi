@@ -12,6 +12,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CommentListener;
+import edu.bluejack22_1.kofi.interfaces.listeners.ReplyListener;
 import edu.bluejack22_1.kofi.model.Comment;
 import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
@@ -43,6 +44,14 @@ public class CommentController {
                                     listener.onSuccessComment();
                                 });
                     }
+                });
+    }
+
+    public void editComment(String shopId, String reviewId, String content, String commentId, ReplyListener listener){
+        db.collection("coffeeshop").document(shopId).
+                collection("reviews").document(reviewId).collection("comments").
+                document(commentId).update("content", content).addOnCompleteListener(task -> {
+                    listener.onSuccessReply();
                 });
     }
 
