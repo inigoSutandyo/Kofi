@@ -46,6 +46,15 @@ public class ReplyController {
                 });
     }
 
+    public void editReply(String path, String replyId, String content, ReplyListener listener){
+        db.collection("coffeeshop")
+                .document(path)
+                .collection("replies")
+                .document(replyId).update("content", content).addOnCompleteListener(task -> {
+                    listener.onSuccessReply();
+                });
+    }
+
     public void deleteReply(String path, String replyId, ReplyListener listener){
         db.collection("coffeeshop")
                 .document(path)

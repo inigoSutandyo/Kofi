@@ -46,7 +46,26 @@
                 android:text="Reply"
                 android:textColor="@color/black"
                 android:textStyle="normal"/>
+
         </LinearLayout>
+        <EditText
+            android:id="@+id/card_edit_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:visibility="gone"
+            android:scrollbars="vertical"
+            android:maxHeight="100dp"/>
+        <Button
+            android:id="@+id/edit_reply_btn"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_gravity="top|end"
+            android:visibility="gone"
+            android:textSize="8dp" />
     </LinearLayout>
     <ImageView
         android:id="@+id/card_reply_delete"

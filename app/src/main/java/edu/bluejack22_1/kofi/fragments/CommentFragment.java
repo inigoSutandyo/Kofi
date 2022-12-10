@@ -166,7 +166,7 @@ public class CommentFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
 
         replyController.getReplies(path, this);
-        replyAdapter = new ReplyAdapter(this.getContext(), replies, this);
+        replyAdapter = new ReplyAdapter(this.getContext(), replies, this, this, path);
         recyclerView = view.findViewById(R.id.reply_recycler);
         recyclerView.setAdapter(replyAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
