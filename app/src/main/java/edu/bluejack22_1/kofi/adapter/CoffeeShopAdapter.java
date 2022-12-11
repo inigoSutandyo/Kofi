@@ -67,6 +67,8 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
         String userId = User.getCurrentUser().getUserId();
         if (cf.getUserFavorites().contains(userId)) {
             holder.favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_24);
+        } else {
+            holder.favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_border_24);
         }
 
         holder.favoriteImage.setOnClickListener(view -> {

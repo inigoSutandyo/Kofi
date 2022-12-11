@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
 import edu.bluejack22_1.kofi.adapter.SliderAdapter;
+import edu.bluejack22_1.kofi.comparator.PopularityComparator;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
@@ -57,11 +58,13 @@ public class HomeFragment extends Fragment implements
     private ArrayList<CoffeeShop> coffeeShops;
     private CoffeeShopAdapter coffeeAdapter;
     private SearchView searchView;
+    private PopularityComparator popularityComparator;
 
 //    private ProgressBar tempBar;
     public HomeFragment() {
         // Required empty public constructor
         coffeeShopController = new CoffeeShopController();
+        popularityComparator = new PopularityComparator();
     }
 
     /**
@@ -218,6 +221,7 @@ public class HomeFragment extends Fragment implements
             CoffeeShop coffeeShop = document.toObject(CoffeeShop.class);
             coffeeShops.add(coffeeShop);
         }
+        popularityComparator.sortCoffeeShop(coffeeShops);
         coffeeAdapter.notifyDataSetChanged();
     }
 

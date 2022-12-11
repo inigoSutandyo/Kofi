@@ -28,6 +28,9 @@ import java.util.Comparator;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopAdapter;
+import edu.bluejack22_1.kofi.comparator.DateComparator;
+import edu.bluejack22_1.kofi.comparator.PopularityComparator;
+import edu.bluejack22_1.kofi.comparator.RatingComparator;
 import edu.bluejack22_1.kofi.controller.CoffeeShopController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
@@ -57,10 +60,19 @@ public class SearchShopFragment extends Fragment implements CoffeeShopListener, 
     private RecyclerView recyclerView;
     private Button popular, newest, rating;
     private String search;
+
+    private DateComparator dateComparator;
+    private PopularityComparator popularityComparator;
+    private RatingComparator ratingComparator;
+
     public SearchShopFragment() {
         // Required empty public constructor
         coffeeShops = new ArrayList<>();
         coffeeShopController = new CoffeeShopController();
+
+        dateComparator = new DateComparator();
+        popularityComparator = new PopularityComparator();
+        ratingComparator = new RatingComparator();
     }
 
     public static SearchShopFragment newInstance(String param1, String param2) {
@@ -138,17 +150,17 @@ public class SearchShopFragment extends Fragment implements CoffeeShopListener, 
     }
 
     private void sortByRating() {
-        Collections.sort(coffeeShops, ratingComparator);
+        ratingComparator.sortCoffeeShop(coffeeShops);
         coffeeShopAdapter.notifyDataSetChanged();
     }
 
     private void sortByPopularity() {
-        Collections.sort(coffeeShops, popularComparator);
+        popularityComparator.sortCoffeeShop(coffeeShops);
         coffeeShopAdapter.notifyDataSetChanged();
     }
 
     private void sortByDate() {
-        Collections.sort(coffeeShops, dateComparator);
+        dateComparator.sortCoffeeShop(coffeeShops);
         coffeeShopAdapter.notifyDataSetChanged();
     }
 
@@ -221,39 +233,4 @@ public class SearchShopFragment extends Fragment implements CoffeeShopListener, 
 
     @Override
     public void onClickDelete(int position) {}
-
-    /*--- COMPARATOR  --- */
-
-    Comparator<CoffeeShop> popularComparator = new Comparator<CoffeeShop>() {
-        @Override
-        public int compare(CoffeeShop c1, CoffeeShop c2) {
-            int r1 = c1.getReviewCount();
-            int r2 = c2.getReviewCount();
-
-            // DESC
-            return r2-r1;
-        }
-    };
-
-
-    Comparator<CoffeeShop> dateComparator = new Comparator<CoffeeShop>() {
-        @Override
-        public int compare(CoffeeShop c1, CoffeeShop c2) {
-            Timestamp t1 = c1.getCreatedAt();
-            Timestamp t2 = c2.getCreatedAt();
-
-            // DESC
-            return t2.toDate().compareTo(t1.toDate());
-        }
-    };
-
-    Comparator<CoffeeShop> ratingComparator = new Comparator<CoffeeShop>() {
-        @Override
-        public int compare(CoffeeShop c1, CoffeeShop c2) {
-            Double rating1 = c1.getAverageRating();
-            Double rating2 = c2.getAverageRating();
-            // DESC
-            return Double.compare(rating2, rating1);
-        }
-    };
 }
