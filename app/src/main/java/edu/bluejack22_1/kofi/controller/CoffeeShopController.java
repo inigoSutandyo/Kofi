@@ -22,6 +22,7 @@ import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.fragments.HomeFragment;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
+import edu.bluejack22_1.kofi.model.User;
 
 public class CoffeeShopController {
     FirebaseFirestore db;
@@ -88,5 +89,24 @@ public class CoffeeShopController {
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
             }
         });
+    }
+
+    public void getFavoriteShops(User user, CoffeeShopListener listener) {
+        if (user.getFavoriteShops().size() < 1) return;
+
+        for (String shopId: user.getFavoriteShops()) {
+            getShopFromId(shopId, listener);
+        }
+    }
+
+    public void getShopFromId(String shopId, CoffeeShopListener listener) {
+        db.collection("coffeeshop")
+                .document(shopId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        listener.onCompleteShop(task.getResult());
+                    }
+                });
     }
 }

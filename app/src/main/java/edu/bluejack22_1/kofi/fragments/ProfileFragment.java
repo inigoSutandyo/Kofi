@@ -17,13 +17,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 
 import edu.bluejack22_1.kofi.LoginActivity;
 import edu.bluejack22_1.kofi.R;
+import edu.bluejack22_1.kofi.adapter.CoffeeShopPagerAdapter;
+import edu.bluejack22_1.kofi.adapter.ProfilePagerAdapter;
 import edu.bluejack22_1.kofi.adapter.ReviewAdapter;
 import edu.bluejack22_1.kofi.controller.ReviewController;
-import edu.bluejack22_1.kofi.controller.UserController;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.RecyclerViewInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
@@ -37,6 +39,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -65,13 +69,12 @@ public class ProfileFragment extends Fragment implements
     private static final String ARG_PARAM2 = "param2";
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
-    FirebaseUser currentuser;
+    FirebaseUser currentUser;
     FirebaseStorage storage;
     StorageReference storageReference;
 
     private TextView nameTxt, emailTxt, addressTxt, editProfileBtn;
     private ImageView profileImage, logoutBtn;
-    private Button deleteAccBtn;
     public User tempUser;
     private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
@@ -80,6 +83,8 @@ public class ProfileFragment extends Fragment implements
     private RecyclerView recyclerView;
     private ArrayList<Review> reviews;
 
+    private ProfilePagerAdapter profilePagerAdapter;
+    private ViewPager2 viewPager2;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -120,9 +125,8 @@ public class ProfileFragment extends Fragment implements
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        currentuser = mAuth.getCurrentUser();
-        deleteAccBtn = view.findViewById(R.id.btn_delete_acc);
-        storageReference = storage.getReference().child("images/"+currentuser.getUid());
+        currentUser = mAuth.getCurrentUser();
+        storageReference = storage.getReference().child("images/"+ currentUser.getUid());
         nameTxt.setText(tempUser.getFullName());
         emailTxt.setText(tempUser.getEmail());
         addressTxt.setText(tempUser.getAddress());
@@ -134,7 +138,7 @@ public class ProfileFragment extends Fragment implements
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DocumentReference ref = db.collection("users").document(currentuser.getUid());
+                DocumentReference ref = db.collection("users").document(currentUser.getUid());
                 ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -156,10 +160,7 @@ public class ProfileFragment extends Fragment implements
             }
         });
 
-        deleteAccBtn.setOnClickListener(v -> {
-            UserController controller = new UserController();
-            controller.deleteUser(this);
-        });
+
 
         return view;
     }
@@ -182,6 +183,12 @@ public class ProfileFragment extends Fragment implements
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         reviewController.getMyReviews(tempUser, this);
+
+        profilePagerAdapter = new ProfilePagerAdapter(this, currentUser.getUid());
+        viewPager2 = view.findViewById(R.id.profile_pager);
+        viewPager2.setAdapter(profilePagerAdapter);
+        TabLayout tabLayout = view.findViewById(R.id.profile_tab);
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(position == 1 ? "Reviews" : "Favorites")).attach();
     }
 
     @Override

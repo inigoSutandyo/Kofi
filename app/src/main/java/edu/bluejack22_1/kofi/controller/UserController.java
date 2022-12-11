@@ -164,4 +164,15 @@ public class UserController {
             });
         return user[0];
     }
+
+    public void getUserById(String id, UserListener listener) {
+        db.collection("users")
+                .document(id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        listener.onCompleteUser(task.getResult());
+                    }
+                });
+    }
 }

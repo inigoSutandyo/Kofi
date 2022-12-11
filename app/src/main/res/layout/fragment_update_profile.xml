@@ -52,5 +52,13 @@
         android:background="@drawable/rounded_corner"
         android:text="Update Profile" />
 
+    <Button
+        android:id="@+id/btn_delete_acc"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:text="Delete Account"
+        android:backgroundTint="@color/red"/>
 
 </LinearLayout>

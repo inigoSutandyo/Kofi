@@ -55,6 +55,8 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
     FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageReference;
+    private Button deleteAccBtn;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -108,6 +110,7 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
         updateBtn = binding.btnUpdateProfile;
         storage = FirebaseStorage.getInstance();
         currentUser = mAuth.getCurrentUser();
+        deleteAccBtn = binding.btnDeleteAcc;
         storageReference = storage.getReference().child("images/"+ currentUser.getUid());
 
         Glide.with(binding.getRoot()).load(userData.getImageUrl()).placeholder(R.drawable.default_profile).into(binding.updateProfileImage);
@@ -138,6 +141,11 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
                 updateProfile(currentUser.getUid(), name, address, ImageUri);
             }
         });
+
+        deleteAccBtn.setOnClickListener(v -> {
+            controller.deleteUser(this);
+        });
+
         return binding.getRoot();
     }
 
