@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopPagerAdapter;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 
 /**
@@ -32,7 +35,7 @@ import edu.bluejack22_1.kofi.model.CoffeeShop;
  * Use the {@link CoffeeShopFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CoffeeShopFragment extends Fragment {
+public class CoffeeShopFragment extends Fragment implements FragmentInterface {
     FirebaseFirestore db;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +48,7 @@ public class CoffeeShopFragment extends Fragment {
 
     private CoffeeShop coffeeShop;
     private TextView nameView, addressView, descriptionView, ratingView;
-    private ImageView shopImageView;
+    private ImageView shopImageView, shopEditView;
 
     private CoffeeShopPagerAdapter coffeeShopPagerAdapter;
     private ViewPager2 viewPager2;
@@ -83,6 +86,7 @@ public class CoffeeShopFragment extends Fragment {
         descriptionView = view.findViewById(R.id.detail_shop_description);
         shopImageView = view.findViewById(R.id.shopimage);
         ratingView = view.findViewById(R.id.detail_shop_rating);
+        shopEditView = view.findViewById(R.id.detail_shop_edit);
         return view;
     }
 
@@ -127,8 +131,33 @@ public class CoffeeShopFragment extends Fragment {
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
         ratingView.setText( String.format("%.2f", coffeeShop.getAverageRating()));
-
+        shopEditView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("SHOP_ID", coffeeShop.getShopId());
+                bundle.putString("NAME", coffeeShop.getShopName());
+                bundle.putString("ADDRESS", coffeeShop.getShopAddress());
+                bundle.putString("DESCRIPTION", coffeeShop.getShopDescription());
+                bundle.putString("IMAGE", coffeeShop.getImageUrl());
+                UpdateCoffeeShopFragment updateshop = new UpdateCoffeeShopFragment();
+                updateshop.setArguments(bundle);
+                replaceFragment(updateshop);
+            }
+        });
         Glide.with(view).load(coffeeShop.getImageUrl()).placeholder(R.drawable.item_place_holder).into(shopImageView);
     }
 
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void returnFragment() {
+
+    }
 }

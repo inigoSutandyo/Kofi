@@ -20,6 +20,7 @@ import com.google.firebase.storage.UploadTask;
 import edu.bluejack22_1.kofi.R;
 
 import edu.bluejack22_1.kofi.fragments.HomeFragment;
+import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.CoffeeShopListener;
 import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.User;
@@ -67,7 +68,29 @@ public class CoffeeShopController {
                     });
         });
     }
-
+    public void updateCoffeeShop(String id, String shopName, String shopAddress, String shopDescription, Uri imageUrl, FragmentInterface listener){
+        db.collection("coffeeshop").document(id).update("shopName", shopName, "shopAddress", shopAddress,
+                "shopDescription", shopDescription).addOnCompleteListener(task -> {
+            if(imageUrl != null) {
+                storageReference = FirebaseStorage.getInstance().getReference("images/"+id);
+                storageReference.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                db.collection("coffeeshop").document(id).update("imageUrl", uri.toString()).addOnCompleteListener(task1 -> {
+                                    listener.returnFragment();
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                listener.returnFragment();
+            }
+        });
+    }
     public void getCoffeeShopList(CoffeeShopListener listener) {
         db.collection("coffeeshop")
                 .get()

@@ -35,6 +35,9 @@ public class User {
     }
 
     public ArrayList<String> getFavoriteShops() {
+        if(favoriteShops == null){
+            favoriteShops = new ArrayList<>();
+        }
         return favoriteShops;
     }
 
@@ -102,6 +105,9 @@ public class User {
     }
 
     public ArrayList<DocumentReference> getReviews() {
+        if(reviews == null){
+            reviews = new ArrayList<>();
+        }
         return reviews;
     }
 
