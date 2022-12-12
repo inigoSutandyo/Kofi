@@ -10,10 +10,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
+import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,10 +40,10 @@ import edu.bluejack22_1.kofi.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ShopDetailCollectionFragment#newInstance} factory method to
+ * Use the {@link ShopCollectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShopDetailCollectionFragment extends Fragment implements
+public class ShopCollectionFragment extends Fragment implements
         RecyclerViewInterface,
         CoffeeListener,
         ReviewListener,
@@ -61,19 +63,24 @@ public class ShopDetailCollectionFragment extends Fragment implements
     private int key;
     private ArrayList<Coffee> coffees;
     private ArrayList<Review> reviews;
+    private ArrayList<Review> fixedReviews;
+    private ArrayList<Review> tempRevs;
     private RatingBar ratingBar;
     private FloatingActionButton fab;
+    private SearchView searchView;
+    private String search;
 
-    public ShopDetailCollectionFragment() {
+    public ShopCollectionFragment() {
         // Required empty public constructor
         reviewController = new ReviewController();
         coffeeController = new CoffeeController();
+        fixedReviews = new ArrayList<>();
         reviews = new ArrayList<>();
         coffees = new ArrayList<>();
     }
 
-    public static ShopDetailCollectionFragment newInstance(String param1, String param2) {
-        ShopDetailCollectionFragment fragment = new ShopDetailCollectionFragment();
+    public static ShopCollectionFragment newInstance(String param1, String param2) {
+        ShopCollectionFragment fragment = new ShopCollectionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -122,6 +129,8 @@ public class ShopDetailCollectionFragment extends Fragment implements
 
         initCollections();
 
+        searchView = view.findViewById(R.id.detail_shop_search);
+
         if (key == 1) {
             showCoffees();
         } else {
@@ -140,6 +149,43 @@ public class ShopDetailCollectionFragment extends Fragment implements
                 replaceFragment(addReviewFragment);
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if (s.isEmpty()) {
+                    return false;
+                }
+                reviews.clear();
+                tempRevs = (ArrayList<Review>) fixedReviews.clone();
+                reviewSearchResult(s);
+                reviewAdapter.notifyDataSetChanged();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.isEmpty()) {
+//                    Log.d("SEARCH", "empty");
+                    reviews.clear();
+                    for (Review review:
+                         fixedReviews) {
+                        reviews.add(review);
+                    }
+                    reviewAdapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+    }
+
+    private void reviewSearchResult(String search) {
+        for (Review review:
+             tempRevs) {
+            if (review.getContent().toLowerCase().contains(search.toLowerCase())) {
+                reviews.add(review);
+            }
+        }
     }
 
     private void initCollections() {
@@ -150,6 +196,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     private void showReviews() {
+        searchView.setVisibility(View.VISIBLE);
         fab.setVisibility(View.GONE);
         ratingBar.setVisibility(View.VISIBLE);
         rv.setAdapter(reviewAdapter);
@@ -157,6 +204,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
     }
 
     private void showCoffees() {
+        searchView.setVisibility(View.GONE);
         if (!User.getCurrentUser().getRole().equals("Admin")) {
             fab.setVisibility(View.GONE);
         } else {
@@ -209,6 +257,7 @@ public class ShopDetailCollectionFragment extends Fragment implements
         for (QueryDocumentSnapshot document : querySnap) {
             Review rev = document.toObject(Review.class);
             reviews.add(rev);
+            fixedReviews.add(rev);
         }
         reviewAdapter.notifyDataSetChanged();
     }

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import edu.bluejack22_1.kofi.fragments.ShopDetailCollectionFragment;
+import edu.bluejack22_1.kofi.fragments.ShopCollectionFragment;
 
 public class CoffeeShopPagerAdapter extends FragmentStateAdapter {
     private String id;
@@ -19,7 +19,7 @@ public class CoffeeShopPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Fragment fragment = new ShopDetailCollectionFragment();
+        Fragment fragment = new ShopCollectionFragment();
         Bundle args = new Bundle();
         args.putInt("KEY", position+1);
         args.putString("DATA", id);

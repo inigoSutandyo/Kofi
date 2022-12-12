@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import edu.bluejack22_1.kofi.fragments.ProfileCollectionFragment;
-import edu.bluejack22_1.kofi.fragments.ShopDetailCollectionFragment;
 
 public class ProfilePagerAdapter extends FragmentStateAdapter {
     String id;
