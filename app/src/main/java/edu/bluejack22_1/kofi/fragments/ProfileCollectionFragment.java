@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,7 @@ public class ProfileCollectionFragment extends Fragment implements
         reviewAdapter = new ReviewAdapter(this.getContext(), reviews, this, this);
         coffeeShopAdapter = new CoffeeShopAdapter(this.getContext(), coffeeShops, this);
         recyclerView = view.findViewById(R.id.profile_collection_recycler);
-        userController.getUserById(id, this);
+        userController.getUserById(User.getCurrentUser().getUserId(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         if (key == 1) {
             showCoffees();
@@ -136,6 +137,7 @@ public class ProfileCollectionFragment extends Fragment implements
     @Override
     public void onCompleteUser(DocumentSnapshot docSnap) {
         this.user = docSnap.toObject(User.class);
+        user.setUserId(docSnap.getId());
         reviewController.getMyReviews(user, this);
         coffeeShopController.getFavoriteShops(user, this);
     }

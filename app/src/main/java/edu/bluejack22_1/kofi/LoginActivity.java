@@ -1,7 +1,11 @@
 package edu.bluejack22_1.kofi;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,21 +37,24 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.bluejack22_1.kofi.controller.UserController;
+import edu.bluejack22_1.kofi.model.Notification;
 import edu.bluejack22_1.kofi.model.User;
 
 
 public class LoginActivity extends AppCompatActivity {
-    Button loginBtn;
-    TextView registerTxt;
-    EditText eEmail, ePassword;
-    String email, password;
+    private Button loginBtn;
+    private TextView registerTxt;
+    private EditText eEmail, ePassword;
+    private String email, password;
     private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
-    ImageView googleBtn;
-    FirebaseFirestore db;
-    UserController usercontroller;
+    private FirebaseUser currentUser;
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
+    private ImageView googleBtn;
+    private FirebaseFirestore db;
+    private UserController usercontroller;
+    private NotificationManagerCompat notificationManager;
+    private NotificationCompat.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +75,15 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.btn_login);
         eEmail = findViewById(R.id.txt_login_email);
         ePassword = findViewById(R.id.txt_login_password);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel("WELCOME_NOTIFICATION", "WELCOME", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+
         if(mAuth.getCurrentUser() != null){
             db.collection("users").document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -150,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                                         "User",
                                         doc.getId(),
                                         (String)doc.getData().get("imageUrl"));
+                                welcomeNotification();
                                 User.setCurrentUser(user);
                                 moveMainPage();
                             }
@@ -181,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
                                             String address = (String) document.getData().get("address");
                                             String password = (String) document.getData().get("password");
                                             String role = (String) document.getData().get("role");
-
+                                            welcomeNotification();
                                             User.setCurrentUser(new User(fullName, email, password, address, role, document.getId(), ""));
                                             finish();
                                             moveMainPage();
@@ -197,6 +216,16 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void welcomeNotification() {
+        notificationManager = NotificationManagerCompat.from(LoginActivity.this);
+        builder = new NotificationCompat.Builder(this, "WELCOME_NOTIFICATION")
+                .setSmallIcon(R.drawable.kofi)
+                .setContentTitle("WELCOME")
+                .setContentText("Welcome to KoFi!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+        notificationManager.notify(1, builder.build());
+    }
 
     private void moveRegisterPage(){
         Intent registerIntent = new Intent(this, RegisterActivity.class);
