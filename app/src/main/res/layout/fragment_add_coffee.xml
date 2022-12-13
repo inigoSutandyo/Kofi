@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:letterSpacing="0.1"
-        android:text="Add New Coffee"
+        android:text="@string/add_coffee_title"
         android:textAllCaps="false"
         android:textColor="@color/brown"
         android:textFontWeight="700"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Coffee Name" />
+        android:text="@string/coffee_name" />
 
     <EditText
         android:id="@+id/txt_coffee_name"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Coffee Price" />
+        android:text="@string/coffee_price" />
 
     <EditText
         android:id="@+id/txt_coffee_price"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
-        android:text="Add Coffee"
+        android:text="@string/add_coffee_button"
         android:textColor="@color/white" />
 
 </LinearLayout>

@@ -142,7 +142,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comments"
+                android:text="@string/comment"
                 android:textSize="18dp" />
 
             <LinearLayout
@@ -160,7 +160,7 @@
                     android:id="@+id/comment_btn"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:text="ADD"
+                    android:text="@string/add"
                     android:layout_marginHorizontal="8dp"
                     android:textSize="12dp" />
 

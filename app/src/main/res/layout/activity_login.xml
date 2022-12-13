@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:letterSpacing="0.1"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/brown"
         android:textFontWeight="700"
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Email Address" />
+        android:text="@string/email_address" />
 
     <EditText
         android:id="@+id/txt_login_email"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Password" />
+        android:text="@string/password" />
 
     <EditText
         android:id="@+id/txt_login_password"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
-        android:text="Login"
+        android:text="@string/login"
         style="@style/Theme.Button" />
 
     <LinearLayout
@@ -88,7 +88,7 @@
             android:layout_weight="6"
             android:clickable="true"
             android:onClick="onClick"
-            android:text="Click here to sign up."
+            android:text="@string/click_register"
             android:textAlignment="center"
             android:textColor="@color/brown"
             tools:ignore="TouchTargetSizeCheck" />
@@ -103,8 +103,8 @@
 
     <ImageView
         android:id="@+id/google_btn"
-        android:layout_width="150px"
-        android:layout_height="150px"
+        android:layout_width="100px"
+        android:layout_height="100px"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:src="@drawable/google" />

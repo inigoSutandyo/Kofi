@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KofiApp</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="email_address">Alamat Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="click_register">Tekan disini untuk mendaftar</string>
+    <string name="join_us">Gabung sekarang !</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="update_profile_button">Ubah Profile</string>
+    <string name="delete_account_button">Hapus Akun</string>
+    <string name="email">Email</string>
+    <string name="repeat_password">Ulangi Kata Sandi</string>
+    <string name="address">Alamat</string>
+    <string name="add_coffee_title">Tambahan Kopi Baru</string>
+    <string name="coffee_name">Nama Kopi</string>
+    <string name="coffee_price">Harga Kopi</string>
+    <string name="add_coffee_button">Tambahkan Kopi</string>
+    <string name="add_coffee_shop_title">Tambahkan Toko Kopi Baru</string>
+    <string name="coffee_shop_name">Nama Toko Kopi</string>
+    <string name="coffee_shop_address">Alamat Toko Kopi</string>
+    <string name="coffee_shop_description">Deskripsi Toko Kopi</string>
+    <string name="add_coffee_shop_button">Tambahkan Toko Kopi</string>
+    <string name="add">Tambah</string>
+    <string name="update_coffee_shop_title">Ubah Toko Kopi</string>
+    <string name="update_coffee_shop_button">Ubah Toko</string>
+    <string name="coffee_selections">Pilihan Coffee</string>
+    <string name="reply">Balas</string>
+    <string name="comment">Komen</string>
+    <string name="newest">Terbaru</string>
+    <string name="notifications">Notifikasi</string>
+</resources>

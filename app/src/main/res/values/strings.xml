@@ -1,5 +1,32 @@
 <resources>
     <string name="app_name">KofiApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="click_register">Click here to sign up</string>
+    <string name="join_us">Join Us</string>
+    <string name="full_name">Full name</string>
+    <string name="update_profile_button">Update Profile</string>
+    <string name="delete_account_button">Delete Account</string>
+    <string name="email">Email</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="address">Address</string>
+    <string name="add_coffee_title">Add New Coffee</string>
+    <string name="coffee_name">Coffee Name</string>
+    <string name="coffee_price">Coffee Price</string>
+    <string name="add_coffee_button">Add Coffee</string>
+    <string name="add_coffee_shop_title">Insert New Shop</string>
+    <string name="coffee_shop_name">Shop Name</string>
+    <string name="coffee_shop_address">Shop Address</string>
+    <string name="coffee_shop_description">Shop Description</string>
+    <string name="add_coffee_shop_button">Add Shop</string>
+    <string name="add">Add</string>
+    <string name="update_coffee_shop_title">Update Coffee Shop</string>
+    <string name="update_coffee_shop_button">Update Shop</string>
+    <string name="coffee_selections">Coffee Selections</string>
+    <string name="reply">Reply</string>
+    <string name="comment">Comment</string>
+    <string name="newest">Newest</string>
+    <string name="notifications">Notifications</string>
 </resources>

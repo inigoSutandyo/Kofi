@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:letterSpacing="0.1"
-        android:text="Insert New Shop"
+        android:text="@string/add_coffee_shop_title"
         android:textAllCaps="false"
         android:textColor="@color/brown"
         android:textFontWeight="700"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Shop Name" />
+        android:text="@string/coffee_shop_name" />
 
     <EditText
         android:id="@+id/txt_shop_name"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Shop Address" />
+        android:text="@string/coffee_shop_address" />
 
     <EditText
         android:id="@+id/txt_shop_address"
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Shop Description" />
+        android:text="@string/coffee_shop_description" />
 
     <EditText
         android:id="@+id/txt_shop_description"
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
-        android:text="Add Shop"
+        android:text="@string/add_coffee_shop_button"
         android:textColor="@color/white" />
 
 </LinearLayout>

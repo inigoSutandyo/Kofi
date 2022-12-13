@@ -24,7 +24,7 @@
                 android:id="@+id/btn_newest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Newest"
+                android:text="@string/newest"
                 android:textColor="@color/brown"
                 app:backgroundTint="@color/white"
                 android:padding="0dp"

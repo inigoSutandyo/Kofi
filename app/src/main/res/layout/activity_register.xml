@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:letterSpacing="0.1"
-        android:text="Join Us"
+        android:text="@string/join_us"
         android:textAllCaps="false"
         android:textColor="@color/brown"
         android:textFontWeight="700"
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Full Name" />
+        android:text="@string/full_name" />
 
     <EditText
         android:id="@+id/txt_full_name"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Email" />
+        android:text="@string/email" />
 
     <EditText
         android:id="@+id/txt_email"
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Password" />
+        android:text="@string/password" />
 
     <EditText
         android:id="@+id/txt_password"
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Repeat Password" />
+        android:text="@string/repeat_password" />
 
     <EditText
         android:id="@+id/txt_repeat_password"
@@ -88,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Address" />
+        android:text="@string/address" />
 
     <EditText
         android:id="@+id/txt_address"
@@ -104,5 +104,5 @@
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/rounded_corner"
-        android:text="Register" />
+        android:text="@string/register" />
 </LinearLayout>
