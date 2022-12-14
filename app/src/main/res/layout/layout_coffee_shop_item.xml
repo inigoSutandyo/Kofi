@@ -3,6 +3,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="64dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="6dp"
     app:cardCornerRadius="12dp"
@@ -32,39 +33,27 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/card_shop_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical">
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="Coffee Shop Name"
+                android:maxLines="1"/>
 
-                <TextView
-                    android:id="@+id/card_shop_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxWidth="200dp"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/card_shop_address"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/card_shop_address"
-                    android:maxWidth="200dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp" />
-            </LinearLayout>
+                android:textSize="14dp"
+                android:maxLines="1"
+                android:text="Coffee Shop Address"/>
         </LinearLayout>
     </LinearLayout>
     <ImageView

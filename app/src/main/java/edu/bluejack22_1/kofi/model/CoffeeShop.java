@@ -107,10 +107,15 @@ public class CoffeeShop {
 
     public Double getAverageRating() {
         Double d = new Double(this.reviewCount);
-        if (d == null || totalRating == null) {
+        if (d == null || totalRating == null || totalRating.isNaN() || d.isNaN()) {
             return 0.0;
         } else {
-            return totalRating / d;
+            Double avg = totalRating / d;
+            if (avg.isNaN()) {
+                return 0.0;
+            } else {
+                return avg;
+            }
         }
     }
 }

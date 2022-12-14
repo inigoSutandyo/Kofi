@@ -130,7 +130,7 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
         nameView.setText(coffeeShop.getShopName());
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
-        ratingView.setText( String.format("%.2f", coffeeShop.getAverageRating()));
+        ratingView.setText( String.format("%.1f", coffeeShop.getAverageRating()));
         shopEditView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
