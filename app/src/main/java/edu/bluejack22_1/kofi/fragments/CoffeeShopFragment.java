@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.app.ActivityOptions;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.transition.Scene;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +52,7 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
     private CoffeeShop coffeeShop;
     private TextView nameView, addressView, descriptionView, ratingView;
     private ImageView shopImageView, shopEditView, backImage;
+
 
     private CoffeeShopPagerAdapter coffeeShopPagerAdapter;
     private ViewPager2 viewPager2;
@@ -158,6 +162,12 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+        );
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }

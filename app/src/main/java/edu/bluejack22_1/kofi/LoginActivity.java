@@ -1,6 +1,7 @@
 package edu.bluejack22_1.kofi;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -229,11 +230,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void moveRegisterPage(){
         Intent registerIntent = new Intent(this, RegisterActivity.class);
-        startActivity(registerIntent);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
+        startActivity(registerIntent, bundle);
     }
     private void moveMainPage(){
         finish();
         Intent mainIntent = new Intent(this, MainActivity.class);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         startActivity(mainIntent);
     }
 }

@@ -2,6 +2,7 @@ package edu.bluejack22_1.kofi.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.transition.Scene;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,8 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
             }
             notifyItemChanged(position);
         });
+
+
     }
 
     @Override
@@ -109,6 +112,7 @@ public class CoffeeShopAdapter extends RecyclerView.Adapter<CoffeeShopAdapter.Co
                     }
                 }
             });
+
         }
     }
 }
