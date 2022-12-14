@@ -48,7 +48,7 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
 
     private CoffeeShop coffeeShop;
     private TextView nameView, addressView, descriptionView, ratingView;
-    private ImageView shopImageView, shopEditView;
+    private ImageView shopImageView, shopEditView, backImage;
 
     private CoffeeShopPagerAdapter coffeeShopPagerAdapter;
     private ViewPager2 viewPager2;
@@ -84,9 +84,10 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
         nameView = view.findViewById(R.id.detail_shop_name);
         addressView = view.findViewById(R.id.detail_shop_address);
         descriptionView = view.findViewById(R.id.detail_shop_description);
-        shopImageView = view.findViewById(R.id.shopimage);
+        shopImageView = view.findViewById(R.id.detail_shop_image);
         ratingView = view.findViewById(R.id.detail_shop_rating);
         shopEditView = view.findViewById(R.id.detail_shop_edit);
+        backImage = view.findViewById(R.id.detail_shop_back);
         return view;
     }
 
@@ -131,6 +132,11 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
         addressView.setText(coffeeShop.getShopAddress());
         descriptionView.setText(coffeeShop.getShopDescription());
         ratingView.setText( String.format("%.1f", coffeeShop.getAverageRating()));
+
+        backImage.setOnClickListener(view1 -> {
+            returnFragment();
+        });
+
         shopEditView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,6 +164,6 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
 
     @Override
     public void returnFragment() {
-
+        replaceFragment(new HomeFragment());
     }
 }
