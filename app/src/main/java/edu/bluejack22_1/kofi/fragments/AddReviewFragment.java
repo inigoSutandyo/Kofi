@@ -1,7 +1,11 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,6 +24,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.ReviewController;
+import edu.bluejack22_1.kofi.databinding.FragmentAddReviewBinding;
+import edu.bluejack22_1.kofi.databinding.FragmentUpdateProfileBinding;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
 import edu.bluejack22_1.kofi.model.Review;
@@ -43,8 +49,11 @@ public class AddReviewFragment extends Fragment implements FragmentInterface, Re
     private RatingBar ratingBar;
     private EditText editReview;
     private Button button;
-    private ImageView back;
+    private ImageView back, image;
     private String shopID;
+    private ActivityResultLauncher<String> mImage;
+    private FragmentAddReviewBinding binding;
+    private Uri imageUri;
 
     public AddReviewFragment() {
         // Required empty public constructor
@@ -72,18 +81,25 @@ public class AddReviewFragment extends Fragment implements FragmentInterface, Re
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_review, container, false);
-
+        binding = FragmentAddReviewBinding.inflate(inflater, container, false);
         Bundle args = getArguments();
         Float rating = args.getFloat("RATING");
         shopID = args.getString("SHOP_ID");
 
-        ratingBar = view.findViewById(R.id.rating_review);
-        editReview = view.findViewById(R.id.text_review);
-        button = view.findViewById(R.id.btn_review);
-        back = view.findViewById(R.id.back_add_review);
+        ratingBar = binding.ratingReview;
+        editReview = binding.textReview;
+        button = binding.btnReview;
+        back = binding.backAddReview;
         ratingBar.setRating(rating);
+        image = binding.imageReview;
 
+        onClickButton();
+        onClickImage();
+
+        return binding.getRoot();
+    }
+
+    private void onClickButton() {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +113,20 @@ public class AddReviewFragment extends Fragment implements FragmentInterface, Re
                 returnFragment();
             }
         });
-        return  view;
+    }
+
+    private void onClickImage() {
+        mImage = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                image.setImageURI(result);
+                imageUri = result;
+            }
+        });
+        image.setOnClickListener(view1 -> {
+            mImage.launch("image/*");
+        });
+
     }
 
     private void addReview() {
@@ -107,7 +136,7 @@ public class AddReviewFragment extends Fragment implements FragmentInterface, Re
             Log.d("REVIEW", "cannot be empty");
         } else {
             ReviewController controller = new ReviewController();
-            controller.addReview(content.trim(), ratingD, shopID, this);
+            controller.addReview(content.trim(), ratingD, shopID, imageUri, this);
             Log.d("REVIEW", "success");
         }
     }

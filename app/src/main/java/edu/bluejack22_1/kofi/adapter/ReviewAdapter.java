@@ -67,6 +67,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             e.printStackTrace();
         }
 
+        if (review.getImageUrl() != null && !review.getImageUrl().equals("")) {
+            holder.reviewImage.setVisibility(View.VISIBLE);
+            Glide.with(holder.itemView)
+                    .load(review.getImageUrl())
+                    .into(holder.reviewImage);
+        } else {
+            holder.reviewImage.setVisibility(View.GONE);
+        }
+
         holder.content.setText(review.getContent());
         String userid = User.getCurrentUser().getUserId();
 
@@ -85,7 +94,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView name, rating, content;
-        ImageView deleteBtn, likeBtn, userImage;
+        ImageView deleteBtn, likeBtn, userImage, reviewImage;
         View itemView;
         public ReviewViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface, ReviewListener listener) {
             super(itemView);
@@ -96,6 +105,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             deleteBtn = itemView.findViewById(R.id.card_review_delete);
             likeBtn = itemView.findViewById(R.id.card_review_like);
             userImage = itemView.findViewById(R.id.card_review_image);
+            reviewImage = itemView.findViewById(R.id.card_review_image2);
 
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

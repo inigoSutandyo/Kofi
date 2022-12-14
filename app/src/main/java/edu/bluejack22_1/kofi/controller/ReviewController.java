@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.controller;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,34 +28,67 @@ import edu.bluejack22_1.kofi.model.User;
 public class ReviewController {
     FirebaseFirestore db;
     private UserController userController;
+    private FirebaseStorage storage;
     public ReviewController(){
         db = FirebaseFirestore.getInstance();
         userController = new UserController();
+        storage = FirebaseStorage.getInstance();
     }
 
-    public void addReview(String content, double rating, String shopId, ReviewListener listener) {
+    public void addReview(String content, double rating, String shopId, Uri imageUri, ReviewListener listener) {
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
-
-        Review review = new Review(content, rating, "", ref,new Timestamp(new Date()));
+        String imageUrl = "";
+        if (imageUri != null) {
+            imageUrl = imageUri.toString();
+        }
+        Review review = new Review(content, rating, "", ref,new Timestamp(new Date()), imageUrl);
         Log.d("Reference", ref.toString());
         Log.d("ShopID", shopId);
         db.collection("coffeeshop").document(shopId).collection("reviews").add(review)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        task.getResult()
-                                .update("reviewId", task.getResult().getId())
-                                .addOnCompleteListener(t -> {
-                                    db.collection("users")
-                                            .document(User.getCurrentUser().getUserId())
-                                            .update("reviews", FieldValue.arrayUnion(task.getResult()));
-                                    db.collection("coffeeshop")
-                                            .document(shopId)
-                                            .update("totalRating", FieldValue.increment(rating)
-                                                    , "reviewCount", FieldValue.increment(1));
-                                    listener.onSuccessReview();
+                        if(imageUri != null){
+                            uploadReviewImage(imageUri, task.getResult(), shopId, rating, listener);
+                        } else {
+                            setNewReview(task.getResult(), shopId, rating, listener);
+                        }
 
-                                });
                     }
+                });
+    }
+
+    private void uploadReviewImage(Uri uri, DocumentReference documentReference,String shopId, Double rating, ReviewListener listener) {
+        StorageReference storageReference = FirebaseStorage
+                .getInstance()
+                .getReference("images/reviews/"+documentReference.getId());
+
+        storageReference.putFile(uri)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        storageReference.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                            documentReference
+                                    .update("imageUrl", downloadUri.toString())
+                                    .addOnSuccessListener(unused -> {
+                                        setNewReview(documentReference, shopId, rating, listener);
+                                    });
+                        });
+                    }
+                });
+    }
+
+    private void setNewReview(DocumentReference documentReference, String shopId, Double rating, ReviewListener listener) {
+        documentReference
+                .update("reviewId", documentReference.getId())
+                .addOnCompleteListener(t -> {
+                    db.collection("users")
+                            .document(User.getCurrentUser().getUserId())
+                            .update("reviews", FieldValue.arrayUnion(documentReference));
+                    db.collection("coffeeshop")
+                            .document(shopId)
+                            .update("totalRating", FieldValue.increment(rating)
+                                    , "reviewCount", FieldValue.increment(1));
+                    listener.onSuccessReview();
+
                 });
     }
 

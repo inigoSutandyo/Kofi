@@ -12,20 +12,19 @@ public class Review {
     private DocumentReference userRef;
     private Timestamp dateCreated;
     private ArrayList<String> likers;
+    private String imageUrl;
 
     public ArrayList<String> getLikers() {
         return likers;
     }
 
-    public void setLikers(ArrayList<String> likers) {
-        this.likers = likers;
-    }
+
 
     public Review() {
         this.likers = new ArrayList<>();
     }
 
-    public Review(String content, double rating, String reviewId, DocumentReference userRef, Timestamp dateCreated) {
+    public Review(String content, double rating, String reviewId, DocumentReference userRef, Timestamp dateCreated, String imageUrl) {
         this.content = content;
         this.rating = rating;
         this.reviewId = reviewId;
@@ -33,6 +32,19 @@ public class Review {
         this.user = User.getCurrentUser();
         this.dateCreated = dateCreated;
         this.likers = new ArrayList<>();
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setLikers(ArrayList<String> likers) {
+        this.likers = likers;
     }
 
     public Timestamp getDateCreated() {
