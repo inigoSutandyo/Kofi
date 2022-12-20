@@ -1,5 +1,6 @@
 package edu.bluejack22_1.kofi.fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,6 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import edu.bluejack22_1.kofi.LoginActivity;
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.controller.UserController;
 import edu.bluejack22_1.kofi.databinding.FragmentUpdateProfileBinding;
@@ -56,7 +61,8 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
     FirebaseStorage storage;
     StorageReference storageReference;
     private Button deleteAccBtn;
-
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -112,7 +118,8 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
         currentUser = mAuth.getCurrentUser();
         deleteAccBtn = binding.btnDeleteAcc;
         storageReference = storage.getReference().child("images/"+ currentUser.getUid());
-
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this.getActivity(), gso);
         Glide.with(binding.getRoot()).load(userData.getImageUrl()).placeholder(R.drawable.default_profile).into(binding.updateProfileImage);
 
         eFullname.setText(userData.getFullName());
@@ -180,5 +187,12 @@ public class UpdateProfileFragment extends Fragment implements FragmentInterface
     }
 
     @Override
-    public void onSuccessUser() {}
+    public void onSuccessUser() {
+        getActivity().finish();
+        mAuth.signOut();
+        gsc.signOut();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        User.setCurrentUser(null);
+    }
 }
