@@ -25,9 +25,14 @@
     <string name="add">Tambah</string>
     <string name="update_coffee_shop_title">Ubah Toko Kopi</string>
     <string name="update_coffee_shop_button">Ubah Toko</string>
-    <string name="coffee_selections">Pilihan Coffee</string>
+    <string name="coffee_selections">Pilihan Kopi</string>
     <string name="reply">Balas</string>
     <string name="comment">Komen</string>
     <string name="newest">Terbaru</string>
     <string name="notifications">Notifikasi</string>
+    <string name="edit_profile">Ubah Profil</string>
+    <string name="favourites">Favorit</string>
+    <string name="reviews">Ulasan</string>
+    <string name="comment_detail">Detail Komen</string>
+    <string name="review_detail">Detail Ulasan</string>
 </resources>

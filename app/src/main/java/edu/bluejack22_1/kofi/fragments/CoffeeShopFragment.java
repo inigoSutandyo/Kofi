@@ -28,6 +28,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Locale;
+
 import edu.bluejack22_1.kofi.R;
 import edu.bluejack22_1.kofi.adapter.CoffeeShopPagerAdapter;
 import edu.bluejack22_1.kofi.interfaces.FragmentInterface;
@@ -107,8 +109,12 @@ public class CoffeeShopFragment extends Fragment implements FragmentInterface {
         viewPager2 = view.findViewById(R.id.detail_shop_pager);
         viewPager2.setAdapter(coffeeShopPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.detail_shop_tab);
+        if(Locale.getDefault().toString().equals("en_US")){
+            new TabLayoutMediator(tabLayout, viewPager2, (tab,position) -> tab.setText(position == 1 ? "Review" : "Menu")).attach();
+        } else{
+            new TabLayoutMediator(tabLayout, viewPager2, (tab,position) -> tab.setText(position == 1 ? "Ulasan" : "Menu")).attach();
 
-        new TabLayoutMediator(tabLayout, viewPager2, (tab,position) -> tab.setText(position == 1 ? "Review" : "Menu")).attach();
+        }
 
     }
 

@@ -264,6 +264,7 @@ public class ReviewFragment extends Fragment implements
         args.putString("IMAGE", comment.getUser().getImageUrl());
         args.putString("SHOP_ID", shopID);
         args.putString("REVIEW_ID", reviewID);
+        Log.d("Argumentpass", userID);
         args.putString("USER_ID", userID);
         commentFragment.setArguments(args);
         replaceFragment(commentFragment);

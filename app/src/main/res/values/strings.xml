@@ -29,4 +29,9 @@
     <string name="comment">Comment</string>
     <string name="newest">Newest</string>
     <string name="notifications">Notifications</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="favourites">Favourites</string>
+    <string name="reviews">Review</string>
+    <string name="comment_detail">Comment Detail</string>
+    <string name="review_detail">Review Detail</string>
 </resources>

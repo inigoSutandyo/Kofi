@@ -51,6 +51,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -188,7 +189,11 @@ public class ProfileFragment extends Fragment implements
         viewPager2 = view.findViewById(R.id.profile_pager);
         viewPager2.setAdapter(profilePagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.profile_tab);
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(position == 1 ? "Reviews" : "Favorites")).attach();
+        if(Locale.getDefault().toString().equals("en_US")) {
+            new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(position == 1 ? "Reviews" : "Favorites")).attach();
+        } else{
+            new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(position == 1 ? "Ulasan" : "Favorit")).attach();
+        }
     }
 
     @Override

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +129,9 @@ public class CommentFragment extends Fragment implements
         commentTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.d("Testing", userId);
+                Log.d("Testing", User.getCurrentUser().getUserId());
                 if(User.getCurrentUser().getUserId().equals(userId)){
                     commentTxt.setVisibility(View.INVISIBLE);
                     commentEdit.setText(commentTxt.getText());
