@@ -177,6 +177,9 @@ public class ProfileCollectionFragment extends Fragment implements
     @Override
     public void onCompleteShop(DocumentSnapshot docSnap) {
         CoffeeShop cf = docSnap.toObject(CoffeeShop.class);
+        if (cf == null) {
+            return;
+        }
         coffeeShops.add(cf);
         coffeeShopAdapter.notifyDataSetChanged();
     }

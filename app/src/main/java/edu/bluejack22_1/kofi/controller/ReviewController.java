@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import edu.bluejack22_1.kofi.interfaces.listeners.ReviewListener;
+import edu.bluejack22_1.kofi.model.CoffeeShop;
 import edu.bluejack22_1.kofi.model.Review;
 import edu.bluejack22_1.kofi.model.User;
 
@@ -92,11 +93,27 @@ public class ReviewController {
                 });
     }
 
-    public void updateReview(String content, double rating, String shopId, String reviewId, ReviewListener listener){
+    public void updateReview(String content, double rating, String shopId, Review review, ReviewListener listener){
+        if (review == null) return;
         DocumentReference ref = db.collection("users").document(User.getCurrentUser().getUserId());
-        db.collection("coffeeshop").document(shopId).collection("reviews").document(reviewId).update("content", content, "rating", rating).addOnCompleteListener(task -> {
-            listener.onSuccessReview();
-        });
+        db.collection("coffeeshop")
+                .document(shopId)
+                .collection("reviews")
+                .document(review.getReviewId()).update("content", content, "rating", rating)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentReference documentReference = db.collection("coffeeshop").document(shopId);
+                        documentReference.get()
+                                .addOnCompleteListener(task1 -> {
+                                   if (task1.isSuccessful()) {
+                                       CoffeeShop cf = task1.getResult().toObject(CoffeeShop.class);
+                                       Double totalRating = cf.getTotalRating() - review.getRating() + rating;
+                                       documentReference.update("totalRating", totalRating);
+                                   }
+                                });
+                    }
+                    listener.onSuccessReview();
+                });
     }
 
     public void deleteReview(String shopId, Review review, ReviewListener listener){

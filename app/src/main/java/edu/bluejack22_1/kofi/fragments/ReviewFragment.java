@@ -107,7 +107,7 @@ public class ReviewFragment extends Fragment implements
         shopID = bundle.getString("SHOP_ID");
         reviewID = bundle.getString("REVIEW_ID");
         userID = bundle.getString("USER_ID");
-        Log.d("UserID", userID);
+//        Log.d("UserID", userID);
         userName = view.findViewById(R.id.user_name_review_detail);
         userImg = view.findViewById(R.id.user_image_review_detail);
         ratingBar = view.findViewById(R.id.edit_rating);
@@ -138,6 +138,7 @@ public class ReviewFragment extends Fragment implements
                 }
             }
         });
+
         reviewTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,7 +167,7 @@ public class ReviewFragment extends Fragment implements
         commentController.addComment(shopID, review, commentTxt.getText().toString(), this);
     }
     private void updateReview(String content){
-        reviewController.updateReview(content, ratingBar.getRating(), shopID, reviewID, this);
+        reviewController.updateReview(content, ratingBar.getRating(), shopID, review, this);
     }
 
     @Override
@@ -265,7 +266,6 @@ public class ReviewFragment extends Fragment implements
         args.putString("IMAGE", comment.getUser().getImageUrl());
         args.putString("SHOP_ID", shopID);
         args.putString("REVIEW_ID", reviewID);
-        Log.d("Argumentpass", userID);
         args.putString("USER_ID", userID);
         commentFragment.setArguments(args);
         replaceFragment(commentFragment);
