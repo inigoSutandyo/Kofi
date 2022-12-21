@@ -109,9 +109,9 @@ public class SearchShopFragment extends Fragment implements CoffeeShopListener, 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                if (s.equals(search)) return false;
+                Log.d("SEARCH", "onQueryTextSubmit: " + s);
                 search = s;
-                coffeeShops.clear();
-                coffeeShopAdapter.notifyDataSetChanged();
                 coffeeShopController.getCoffeeShopList(listener);
                 return false;
             }
@@ -190,6 +190,7 @@ public class SearchShopFragment extends Fragment implements CoffeeShopListener, 
 
     @Override
     public void onCompleteShopCollection(QuerySnapshot querySnap) {
+       coffeeShops.clear();
         for (QueryDocumentSnapshot document : querySnap) {
             String name = (String) document.getData().get("shopName");
             if (name.toLowerCase().contains(search.toLowerCase())) {
@@ -197,6 +198,7 @@ public class SearchShopFragment extends Fragment implements CoffeeShopListener, 
                 coffeeShops.add(coffeeShop);
             }
         }
+        coffeeShopAdapter.notifyDataSetChanged();
         sortByDate();
     }
 
