@@ -107,6 +107,7 @@ public class ReviewFragment extends Fragment implements
         shopID = bundle.getString("SHOP_ID");
         reviewID = bundle.getString("REVIEW_ID");
         userID = bundle.getString("USER_ID");
+        Log.d("UserID", userID);
         userName = view.findViewById(R.id.user_name_review_detail);
         userImg = view.findViewById(R.id.user_image_review_detail);
         ratingBar = view.findViewById(R.id.edit_rating);

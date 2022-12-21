@@ -229,6 +229,7 @@ public class CommentFragment extends Fragment implements
         Bundle bundle = new Bundle();
         bundle.putString("REVIEW_ID",reviewId);
         bundle.putString("SHOP_ID", shopId);
+        bundle.putString("USER_ID", userId);
         Fragment reviewFragment = new ReviewFragment();
         reviewFragment.setArguments(bundle);
         replaceFragment(reviewFragment);
