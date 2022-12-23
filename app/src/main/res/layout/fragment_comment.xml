@@ -121,7 +121,7 @@
 
                 <Button
                     android:id="@+id/reply_btn"
-                    android:layout_width="60dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add"
                     android:layout_marginHorizontal="8dp"
