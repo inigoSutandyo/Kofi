@@ -34,4 +34,6 @@
     <string name="reviews">Review</string>
     <string name="comment_detail">Comment Detail</string>
     <string name="review_detail">Review Detail</string>
+    <string name="popular">Popular</string>
+    <string name="rating">Rating</string>
 </resources>

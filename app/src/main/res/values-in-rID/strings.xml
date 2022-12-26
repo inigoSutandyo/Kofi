@@ -35,4 +35,6 @@
     <string name="reviews">Ulasan</string>
     <string name="comment_detail">Detail Komen</string>
     <string name="review_detail">Detail Ulasan</string>
+    <string name="popular">Populer</string>
+    <string name="rating">Nilai</string>
 </resources>
